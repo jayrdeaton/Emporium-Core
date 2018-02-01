@@ -41,12 +41,17 @@ let test = async () => {
   Thing.remove({name: 'updatedThing'});
 
   let allPeople = await Person.fetch();
+  let onePerson = allPeople[1];
+  onePerson.age = 18;
+  onePerson.save();
   console.log('All People Count: ', allPeople.length, '\n');
 
   await Person.remove({name: 'One'});
   console.log('Removed person named: One \n')
 
   let firstPerson = await Person.fetchOne();
+  firstPerson.name = 'New Name';
+  await firstPerson.save();
   console.log('First Person: ', firstPerson, '\n');
 };
 

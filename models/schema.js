@@ -29,6 +29,7 @@ module.exports = class Schema {
     emporium.models[schemaName] = class {
       constructor(data) {
         this._id = uuid();
+        if (data && data._id) this._id = data._id;
         let schema = emporium.schemas[schemaName];
         for (let attribute of schema.attributes) {
           if (attribute.default) this[attribute.name] = attribute.default
@@ -67,6 +68,7 @@ module.exports = class Schema {
       };
       static async fetch(query) {
         if (!query) query = {};
+        let Model = emporium.models[schemaName]
         let result = [];
         let objects = emporium.data[schemaName]
         if (!objects) objects = await this.open();
@@ -78,13 +80,14 @@ module.exports = class Schema {
             };
           };
           if (match) {
-            result.push(object);
+            result.push(new Model(object));
           };
         };
         return result;
       };
       static async fetchOne(query) {
         if (!query) query = {};
+        let Model = emporium.models[schemaName]
         let objects = emporium.data[schemaName]
         if (!objects) objects = await this.open();
         if (objects.length == 0) return null;
@@ -96,7 +99,7 @@ module.exports = class Schema {
             };
           };
           if (match) {
-            return object;
+            return new Model(object);
           };
         };
       };
@@ -127,8 +130,26 @@ module.exports = class Schema {
       static async saveData(data) {
         await writeFile(`${homedir}/.emporium/${emporium.config.name}/${schemaName}.json`, data, emporium.config.pretty);
       };
+      async fetchStored(query) {
+        if (!query) query = {};
+        let Model = emporium.models[schemaName]
+        let objects = emporium.data[schemaName]
+        if (!objects) objects = await this.open();
+        if (objects.length == 0) return null;
+        for (let object of objects) {
+          let match = true;
+          for (let key of Object.keys(query)) {
+            if (object[key] !== query[key]) {
+              match = false;
+            };
+          };
+          if (match) {
+            return object;
+          };
+        };
+      };
       async save() {
-        let existing = await emporium.models[schemaName].fetchOne({_id: this._id});
+        let existing = await this.fetchStored({_id: this._id});
         if (existing) {
           Object.assign(existing, this);
         } else {
