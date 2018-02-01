@@ -1,0 +1,20 @@
+{
+  "name": "emporium",
+  "version": "1.0.0",
+  "description": "A local JSON data store for node",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "local",
+    "JSON",
+    "data",
+    "store"
+  ],
+  "author": "Jay Deaton",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^3.2.1"
+  }
+}
