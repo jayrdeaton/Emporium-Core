@@ -53,6 +53,9 @@ let test = async () => {
   people = await Person.fetch({_skip: 5});
   console.log('All People But 5 Count: ', people.length, '\n');
 
+  // people = await Person.fetch({_sort: {name: -1}});
+  // console.log(people);
+
   await Person.remove({name: 'One'});
   console.log('Removed person named: One \n')
 

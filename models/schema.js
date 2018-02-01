@@ -68,15 +68,20 @@ module.exports = class Schema {
       };
       static async fetch(query) {
         if (!query) query = {};
-        let result = [];
+        let results = [];
         let limit;
         let skip;
+        let sort;
         if (query._limit == 0) {
-          return result;
+          return results;
         } else if (query._limit) {
           limit = query._limit;
           delete query._limit;
         };
+        if (query._sort) {
+          sort = query._sort;
+          delete query._sort;
+        }
         if (query._skip && query._skip > 0) {
           skip = query._skip;
           delete query._skip;
@@ -96,11 +101,35 @@ module.exports = class Schema {
               skip--;
               continue;
             };
-            result.push(new Model(object));
-            if (limit && result.length === limit) return result;
+            results.push(new Model(object));
+            if (limit && results.length === limit) break;
           };
         };
-        return result;
+        // if (results.length > 0 && sort) {
+        //   let keys = Object.keys(sort);
+        //   keys.reverse();
+        //   for (let key of keys) {
+        //     let sortedSet = [];
+        //     for (let result of results) {
+        //       for (let [index, sorted] of sortedSet.entries()) {
+        //         if (result[key] > sorted[key]) {
+        //           sortedSet.splice(index + 1, 0, result);
+        //           continue;
+        //         } else if (index === sortedSet - 1) {
+        //           sortedSet.push(result);
+        //         };
+        //       };
+        //       if (sortedSet.length === 0) sortedSet.push(result);
+        //     };
+        //     // results.sort((a, b) => {
+        //     //   // let bool = sort[key] > 0 ? true : false;
+        //     //   if (a[key] > b[key]) return 1;
+        //     //   if (a[key] > b[key]) return -1;
+        //     //   return 0;
+        //     // });
+        //   };
+        // };
+        return results;
       };
       static async fetchOne(query) {
         if (!query) query = {};
