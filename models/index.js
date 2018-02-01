@@ -1,3 +1,4 @@
-let Schema = require('./schema');
+let Attribute = require('./attribute'),
+  Schema = require('./schema');
 
-module.exports = { Schema };
+module.exports = { Attribute, Schema };

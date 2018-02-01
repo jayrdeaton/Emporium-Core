@@ -68,8 +68,20 @@ module.exports = class Schema {
       };
       static async fetch(query) {
         if (!query) query = {};
-        let Model = emporium.models[schemaName]
         let result = [];
+        let limit;
+        let skip;
+        if (query._limit == 0) {
+          return result;
+        } else if (query._limit) {
+          limit = query._limit;
+          delete query._limit;
+        };
+        if (query._skip && query._skip > 0) {
+          skip = query._skip;
+          delete query._skip;
+        };
+        let Model = emporium.models[schemaName]
         let objects = emporium.data[schemaName]
         if (!objects) objects = await this.open();
         for (let object of objects) {
@@ -80,7 +92,12 @@ module.exports = class Schema {
             };
           };
           if (match) {
+            if (skip) {
+              skip--;
+              continue;
+            };
             result.push(new Model(object));
+            if (limit && result.length === limit) return result;
           };
         };
         return result;
@@ -130,7 +147,10 @@ module.exports = class Schema {
       static async saveData(data) {
         await writeFile(`${homedir}/.emporium/${emporium.config.name}/${schemaName}.json`, data, emporium.config.pretty);
       };
-      async fetchStored(query) {
+      static async limit(int, test) {
+        console.log(this, test, int)
+      };
+      static async fetchStored(query) {
         if (!query) query = {};
         let Model = emporium.models[schemaName]
         let objects = emporium.data[schemaName]
@@ -149,7 +169,7 @@ module.exports = class Schema {
         };
       };
       async save() {
-        let existing = await this.fetchStored({_id: this._id});
+        let existing = await emporium.models[schemaName].fetchStored({_id: this._id});
         if (existing) {
           Object.assign(existing, this);
         } else {
