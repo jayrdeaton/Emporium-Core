@@ -2,8 +2,11 @@ let Emporium = require('./');
 
 let test = async () => {
   let emporium = new Emporium('Tester');
-  let Schema = emporium.Schema;
 
+  emporium.path = '~/Developer/EmporiumTest';
+  emporium.pretty();
+
+  let Schema = emporium.Schema;
 
   let models = emporium.models;
 
@@ -23,12 +26,12 @@ let test = async () => {
 
   let person;
 
-  person = new Person({name: 'One', age: 1, married: true});
-  await person.save();
-  person = new Person({name: 'Two', age: 2, married: false});
-  await person.save();
-  person = new Person({name: 'Three', age: 3, married: true});
-  await person.save();
+  // person = new Person({name: 'One', age: 1, married: true});
+  // await person.save();
+  // person = new Person({name: 'Two', age: 2, married: false});
+  // await person.save();
+  // person = new Person({name: 'Three', age: 3, married: true});
+  // await person.save();
 
   let ThingSchema = new Schema('Thing', {
     name: {type: String, default: 'Thing'},
@@ -50,33 +53,38 @@ let test = async () => {
 
   let people = await Person.fetch()
 
-  person = people[1];
-  person.age = 18;
-  person.save();
-  console.log('All People Count: ', people.length, '\n');
-
-  people = await Person.fetch({_limit: 5});
-  console.log('Some People Count: ', people.length, '\n');
-
-  people = await Person.fetch({_skip: 5});
-  console.log('All People But 5 Count: ', people.length, '\n');
-
-  // people = await Person.fetch({_sort: {name: -1}});
-  // console.log(people);
-
-  await Person.remove({name: 'One'});
-  console.log('Removed person named: One \n')
-
-  person = await Person.fetchOne();
-  person.name = 'New Name';
+  person = await Person.fetchOne({_id: 'e15df890-0b88-11e8-aa8b-a1e785bdd26e'});
+  console.log(person)
+  person.age = 26;
   await person.save();
-  console.log('First Person: ', person, '\n');
+  // person = people[1];
+  // person.name = 'New Name';
+  // person.age = 180;
+  // await person.save();
+  // console.log('All People Count: ', people.length, '\n');
+  //
+  // people = await Person.fetch({_limit: 2});
+  // console.log('Some People Count: ', people.length, '\n');
+  //
+  // people = await Person.fetch({_skip: 2});
+  // console.log('All People But 2 Count: ', people.length, '\n');
+  //
+  // // people = await Person.fetch({_sort: {name: -1}});
+  // // console.log(people);
+  //
+  // await Person.remove({name: 'One'});
+  // console.log('Removed person named: One \n')
 
-  Array.prototype.myUcase = function() {
-    for (i = 0; i < this.length; i++) {
-        this[i] = this[i].toUpperCase();
-    }
-  };
+  // person = await Person.fetchOne();
+  // person.name = 'New Name';
+  // await person.save();
+  // console.log('First Person: ', person, '\n');
+  //
+  // Array.prototype.myUcase = function() {
+  //   for (i = 0; i < this.length; i++) {
+  //       this[i] = this[i].toUpperCase();
+  //   }
+  // };
 };
 
 test().then(() => {

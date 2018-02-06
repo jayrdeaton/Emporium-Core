@@ -4,7 +4,8 @@ let uuid = require('uuid').v1,
   homedir = os.homedir(),
   helpers = require('../helpers'),
   readFile = helpers.readFile,
-  writeFile = helpers.writeFile;
+  writeFile = helpers.writeFile,
+  checkDirectory = helpers.checkDirectory;
 
 module.exports = (emporium, schema) => {
   return class Model {
@@ -57,11 +58,7 @@ module.exports = (emporium, schema) => {
     // };
     static async open() {
       let result;
-      if (fs.existsSync(`${homedir}/.emporium/${emporium.config.name}/${schema.name}.json`)) {
-        result = await readFile(`${homedir}/.emporium/${emporium.config.name}/${schema.name}.json`);
-      } else {
-        result = await writeFile(`${homedir}/.emporium/${emporium.config.name}/${schema.name}.json`, [], emporium.config.pretty);
-      };
+      result = await readFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`);
       emporium.data[schema.name] = result;
       return result;
     };
@@ -173,7 +170,8 @@ module.exports = (emporium, schema) => {
       if (results.length > 0) await this.saveData(objects);
     };
     static async saveData(data) {
-      await writeFile(`${homedir}/.emporium/${emporium.config.name}/${schema.name}.json`, data, emporium.config.pretty);
+      checkDirectory(`${emporium.config.directory}/${emporium.config.name}`);
+      await writeFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`, data, emporium.config.pretty);
     };
     static async limit(int, test) {
       console.log(this, test, int)
@@ -199,11 +197,12 @@ module.exports = (emporium, schema) => {
     async save() {
       let existing = await emporium.models[schema.name].fetchStored({_id: this._id});
       if (existing) {
-        Object.assign(existing, this);
+        for (let key of Object.getOwnPropertyNames(this)) if (existing[key] !== this[key]) existing[key] = this[key];
       } else {
         emporium.data[schema.name].push(this);
       };
-      await writeFile(`${homedir}/.emporium/${emporium.config.name}/${schema.name}.json`, emporium.data[schema.name], emporium.config.pretty);
+      checkDirectory(`${emporium.config.directory}/${emporium.config.name}`);
+      await writeFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`, emporium.data[schema.name], emporium.config.pretty);
     };
   };
 };

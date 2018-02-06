@@ -23,10 +23,9 @@ module.exports = class Schema {
     };
   };
   hide(array) {
-    this.hidden = array || [];
+    if (array) this.hidden = this.hidden.concat(array);
   };
   lock(array) {
     if (array) this.locked = this.locked.concat(array);
-    console.log(this.locked)
   };
 };
