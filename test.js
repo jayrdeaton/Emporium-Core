@@ -1,19 +1,21 @@
-let emporium = require('./'),
-  Schema = require('./models').Schema,
-  models = emporium.models;
+let Emporium = require('./');
 
 let test = async () => {
-  emporium.config.pretty = true;
+  let emporium = new Emporium('Tester');
+  let Schema = emporium.Schema;
 
-  emporium.open();
 
-  new Schema('Person', {
+  let models = emporium.models;
+
+  let PersonSchema = new Schema('Person', {
     name: String,
     age: Number,
     married: Boolean
   });
 
-  let Person = models.Person;
+  emporium.add(PersonSchema);
+
+  let Person = models.Person
 
   let person;
 
@@ -24,11 +26,13 @@ let test = async () => {
   person = new Person({name: 'Three', age: 3, married: true});
   await person.save();
 
-  new Schema('Thing', {
+  let ThingSchema = new Schema('Thing', {
     name: {type: String, default: 'Thing'},
     description: {type: String, required: true},
     purchased: {type: Date, default: new Date}
   });
+
+  emporium.add(ThingSchema);
 
   let Thing = models.Thing;
 
@@ -64,12 +68,11 @@ let test = async () => {
   await person.save();
   console.log('First Person: ', person, '\n');
 
-  // Array.prototype.myUcase = function() {
-  //   for (i = 0; i < this.length; i++) {
-  //       this[i] = this[i].toUpperCase();
-  //   }
-  // };
-
+  Array.prototype.myUcase = function() {
+    for (i = 0; i < this.length; i++) {
+        this[i] = this[i].toUpperCase();
+    }
+  };
 };
 
 test().then(() => {

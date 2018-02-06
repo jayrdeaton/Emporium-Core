@@ -16,40 +16,39 @@ npm install --save emporium
 
 ### Using
 
-Instantiate object
+Instantiate object with optional name, default name is 'Emporium'
 
 ```
-let emporium = require('emporium');
+let Emporium = require('emporium');
+let emporium = new Emporium('Sample');
 ```
 
-Open a store by passing in a name
-
-```
-emporium.open('Sample');
-```
-
-Create some schemas
+Create some schemas and add them to your Emporium
 
 ```
 let Schema = emporium.Schema;
 
-new Schema('Person', {
+let PersonSchema = new Schema('Person', {
   name: String,
   age: Number,
   married: Boolean
 });
+
+emporium.add(PersonSchema);
 ```
 
 Create fancier schemas
 
 ```
-new Schema('Pet', {
+let PetSchema = new Schema('Pet', {
   name: {type: String, default: 'Pet'},
   type: {type: String, required: true},
   loved: {type: Boolean, default: true}
   description: String,
   createdAt: {type: Date, default: new Date}
 });
+
+emporium.add(PetSchema);
 ```
 
 Get your models from Emporium
