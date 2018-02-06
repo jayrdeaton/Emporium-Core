@@ -9,9 +9,13 @@ let test = async () => {
 
   let PersonSchema = new Schema('Person', {
     name: String,
+    createdAt: {type: Date, default: new Date, locked: true},
     age: Number,
     married: Boolean
   });
+
+  PersonSchema.hide(['_id']);
+  PersonSchema.lock(['_id']);
 
   emporium.add(PersonSchema);
 

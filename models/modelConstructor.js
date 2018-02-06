@@ -25,7 +25,18 @@ module.exports = (emporium, schema) => {
       for (let attribute of schema.attributes) {
         if (attribute.default) this[attribute.name] = attribute.default
         if (data && data[attribute.name]) this[attribute.name] = attribute.type(data[attribute.name]);
+        if (schema.hidden)
         if (attribute.required && !this[attribute.name]) throw `${schema.name} missing required value: ${attribute.name}!`;
+      };
+      for (let hide of schema.hidden) {
+        Object.defineProperty(this, hide, {
+          enumerable: false
+        });
+      };
+      for (let lock of schema.locked) {
+        Object.defineProperty(this, lock, {
+          writable: false
+        });
       };
     };
     // static init(data) {
@@ -186,7 +197,6 @@ module.exports = (emporium, schema) => {
       return null;
     };
     async save() {
-      console.log('save');
       let existing = await emporium.models[schema.name].fetchStored({_id: this._id});
       if (existing) {
         Object.assign(existing, this);

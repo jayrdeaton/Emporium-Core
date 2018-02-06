@@ -1,8 +1,7 @@
-let constructModel = require('./model'),
+let modelConstructor = require('./modelConstructor'),
   Schema = require('./schema'),
   fs = require('fs'),
   os = require('os'),
-  uuid = require('uuid').v1,
   homedir = os.homedir();
 
 module.exports = class Emporium {
@@ -16,7 +15,7 @@ module.exports = class Emporium {
     if (!fs.existsSync(`${homedir}/.emporium/${this.config.name}`)) fs.mkdirSync(`${homedir}/.emporium/${this.config.name}`);
   };
   add(schema) {
-    let Model = constructModel(this, schema);
+    let Model = modelConstructor(this, schema);
     this.models[schema.name] = Model;
   };
 };

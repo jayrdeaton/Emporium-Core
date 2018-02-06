@@ -51,6 +51,37 @@ let PetSchema = new Schema('Pet', {
 emporium.add(PetSchema);
 ```
 
+Make attributes readOnly or hidden
+
+```
+let ThingSchema = new Schema('Thing', {
+  createdAt: {type: Date, default: new Date, locked: true}
+  secret: {type: String, default: 'Shhhhh', hidden: true}
+});
+
+// or...
+let ThingSchema = new Schema('Thing', {
+  createdAt: {type: Date, default: new Date, readOnly: true}
+  secret: {type: String, default: 'Shhhhh', hidden: true}
+});
+
+// or...
+let ThingSchema = new Schema('Thing', {
+  createdAt: {type: Date, default: new Date}
+  secret: {type: String, default: 'Shhhhh'}
+});
+
+ThingSchema.lock(['createdAt']);
+ThingSchema.hide(['secret']);
+```
+
+You can also hide and lock default `_id` attribute
+
+```
+ThingSchema.lock(['_id']);
+ThingSchema.hide(['_id']);
+```
+
 Get your models from Emporium
 
 ```

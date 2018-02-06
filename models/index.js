@@ -1,6 +1,6 @@
 let Attribute = require('./attribute'),
   Emporium = require('./emporium'),
-  Model = require('./model'),
+  modelConstructor = require('./modelConstructor'),
   Schema = require('./schema');
 
-module.exports = { Attribute, Emporium, Model, Schema };
+module.exports = { Attribute, Emporium, modelConstructor, Schema };
