@@ -3,7 +3,7 @@ let Emporium = require('./');
 let test = async () => {
   let emporium = new Emporium('Tester');
 
-  emporium.path = '~/Developer/EmporiumTest';
+  // emporium.path = '~/Developer/EmporiumTest';
   emporium.pretty();
 
   let Schema = emporium.Schema;
