@@ -70,16 +70,16 @@ let test = async () => {
   await Person.remove({name: 'One'});
   console.log('Removed person named: One \n')
 
-  person = await Person.fetchOne();
-  person.name = 'New Name';
-  await person.save();
-  console.log('First Person: ', person, '\n');
+  // person = await Person.fetchOne();
+  // person.name = 'New Name';
+  // await person.save();
+  // console.log('First Person: ', person, '\n');
 
-  Array.prototype.myUcase = function() {
-    for (i = 0; i < this.length; i++) {
-        this[i] = this[i].toUpperCase();
-    }
-  };
+  // Array.prototype.myUcase = function() {
+  //   for (i = 0; i < this.length; i++) {
+  //       this[i] = this[i].toUpperCase();
+  //   }
+  // };
 };
 
 test().then(() => {

@@ -127,10 +127,13 @@ module.exports = (emporium, schema) => {
       // };
       return results;
     };
+    static async find(query) {
+      return this.fetch(query);
+    };
     static async fetchOne(query) {
       if (!query) query = {};
-      let Model = emporium.models[schema.name]
-      let objects = emporium.data[schema.name]
+      let Model = emporium.models[schema.name];
+      let objects = emporium.data[schema.name];
       if (!objects) objects = await this.open();
       if (objects.length == 0) return null;
       for (let object of objects) {
@@ -145,9 +148,12 @@ module.exports = (emporium, schema) => {
         };
       };
     };
+    static async findOne(query) {
+      return this.fetchOne(query);
+    };
     static async remove (query) {
       if (!query) return null;
-      let objects = emporium.data[schema.name]
+      let objects = emporium.data[schema.name];
       if (!objects) objects = await this.open();
       if (objects.length == 0) return null;
       let results = [];
@@ -168,6 +174,7 @@ module.exports = (emporium, schema) => {
       };
       emporium.data[schema.name] = objects;
       if (results.length > 0) await this.saveData(objects);
+      return true;
     };
     static async saveData(data) {
       checkDirectory(`${emporium.config.directory}/${emporium.config.name}`);
@@ -178,7 +185,7 @@ module.exports = (emporium, schema) => {
     };
     static async fetchStored(query) {
       if (!query) query = {};
-      let objects = emporium.data[schema.name]
+      let objects = emporium.data[schema.name];
       if (!objects) objects = await this.open();
       if (objects.length == 0) return null;
       for (let object of objects) {
@@ -203,6 +210,10 @@ module.exports = (emporium, schema) => {
       };
       checkDirectory(`${emporium.config.directory}/${emporium.config.name}`);
       await writeFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`, emporium.data[schema.name], emporium.config.pretty);
+    };
+    async remove() {
+      let Model = emporium.models[schema.name];
+      return Model.remove({ _id: this._id });
     };
   };
 };
