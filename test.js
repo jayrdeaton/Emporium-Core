@@ -51,7 +51,7 @@ let test = async () => {
 
   Thing.remove({name: 'updatedThing'});
 
-  let people = await Person.fetch()
+  let people = await Person.fetch();
 
   person = people[1];
   person.name = 'New Name';
@@ -70,6 +70,18 @@ let test = async () => {
   await Person.remove({name: 'One'});
   console.log('Removed person named: One \n')
 
+  people = await Person.fetch({_sort: {name: 1}});
+  console.log('People sorted by ascending name');
+  for (person of people) {
+    console.log(person.name);
+  };
+  console.log();
+  people = await Person.fetch({_sort: {name: -1}});
+  console.log('People sorted by decending name');
+  for (person of people) {
+    console.log(person.name);
+  };
+  console.log();
   // person = await Person.fetchOne();
   // person.name = 'New Name';
   // await person.save();

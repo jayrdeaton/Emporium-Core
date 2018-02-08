@@ -101,30 +101,26 @@ module.exports = (emporium, schema) => {
           if (limit && results.length === limit) break;
         };
       };
-      // if (results.length > 0 && sort) {
-      //   let keys = Object.keys(sort);
-      //   keys.reverse();
-      //   for (let key of keys) {
-      //     let sortedSet = [];
-      //     for (let result of results) {
-      //       for (let [index, sorted] of sortedSet.entries()) {
-      //         if (result[key] > sorted[key]) {
-      //           sortedSet.splice(index + 1, 0, result);
-      //           continue;
-      //         } else if (index === sortedSet - 1) {
-      //           sortedSet.push(result);
-      //         };
-      //       };
-      //       if (sortedSet.length === 0) sortedSet.push(result);
-      //     };
-      //     // results.sort((a, b) => {
-      //     //   // let bool = sort[key] > 0 ? true : false;
-      //     //   if (a[key] > b[key]) return 1;
-      //     //   if (a[key] > b[key]) return -1;
-      //     //   return 0;
-      //     // });
-      //   };
-      // };
+      if (results.length > 0 && sort) {
+        let keys = Object.keys(sort);
+        keys.reverse();
+        let sortedSet = [];
+        for (let key of keys) {
+          if (sort[key] < 0 ) {
+            results.sort((b, a) => {
+              if (a[key] > b[key]) return 1;
+              if (a[key] > b[key]) return -1;
+              return 0;
+            });
+          } else {
+            results.sort((a, b) => {
+              if (a[key] > b[key]) return 1;
+              if (a[key] > b[key]) return -1;
+              return 0;
+            });
+          };
+        };
+      };
       return results;
     };
     static async find(query) {
