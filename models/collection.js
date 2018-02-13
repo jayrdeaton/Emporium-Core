@@ -24,15 +24,15 @@ module.exports = class Collection extends Array {
     if (!data) return this;
     for (let key of Object.keys(data).reverse()) {
       if (data[key] < 0 ) {
-        super.sort((b, a) => {
-          if (a[key] > b[key]) return 1;
-          if (a[key] > b[key]) return -1;
+        super.sort((a, b) => {
+          if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) return 1;
+          if (String(a[key]).toLowerCase() > String(b[key]).toLowerCase()) return -1;
           return 0;
         });
       } else {
         super.sort((a, b) => {
-          if (a[key] > b[key]) return 1;
-          if (a[key] > b[key]) return -1;
+          if (String(a[key]).toLowerCase() > String(b[key]).toLowerCase()) return 1;
+          if (String(a[key]).toLowerCase() < String(b[key]).toLowerCase()) return -1;
           return 0;
         });
       };
