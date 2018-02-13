@@ -114,6 +114,21 @@ let pets = Pet.fetch({name: 'Brian', type: 'Dog'});
 let pet = Pet.fetchOne({name: 'Brian', type: 'Dog'});
 ```
 
+For more refined fetches, use filter, sort, limit, skip
+You can pass these in through fetch, or in their own methods.
+
+```
+let filter = {name: 'Peter'},
+  sort = {name: -1},
+  limit = 5,
+  skip = 3;
+let people = Person.fetch(filter, sort, limit, skip);
+
+// Or
+
+let people = Person.fetch().filter(filter).sort(sort).limit(limit).skip(skip);
+```
+
 Remove those saved objects, by passing in the same filter
 
 ```
