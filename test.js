@@ -33,23 +33,23 @@ let test = async () => {
   person = new Person({name: 'Three', age: 3, married: true});
   await person.save();
 
-  let ThingSchema = new Schema('Thing', {
-    name: {type: String, default: 'Thing'},
-    description: {type: String, required: true},
-    purchased: {type: Date, default: new Date}
-  });
-
-  emporium.add(ThingSchema);
-
-  let Thing = models.Thing;
-
-  let thing;
-  thing = new Thing({description: 'Default name "Thing"'});
-  await thing.save();
-  thing = new Thing({name: 'Different Name', description: 'Description is required'});
-  await thing.save();
-
-  Thing.remove({name: 'updatedThing'});
+  // let ThingSchema = new Schema('Thing', {
+  //   name: {type: String, default: 'Thing'},
+  //   description: {type: String, required: true},
+  //   purchased: {type: Date, default: new Date}
+  // });
+  //
+  // emporium.add(ThingSchema);
+  //
+  // let Thing = models.Thing;
+  //
+  // let thing;
+  // thing = new Thing({description: 'Default name "Thing"'});
+  // await thing.save();
+  // thing = new Thing({name: 'Different Name', description: 'Description is required'});
+  // await thing.save();
+  //
+  // Thing.remove({name: 'updatedThing'});
 
   let people = await Person.fetch();
 
@@ -58,10 +58,10 @@ let test = async () => {
   await person.save();
   console.log('All People Count: ', people.length, '\n');
 
-  people = await Person.fetch({_limit: 2});
+  people = await Person.fetch().limit(2);
   console.log('Some People Count: ', people.length, '\n');
 
-  people = await Person.fetch({_skip: 2});
+  people = await Person.fetch().skip(2);
   console.log('All People But 2 Count: ', people.length, '\n');
 
   // people = await Person.fetch({_sort: {name: -1}});
@@ -70,28 +70,32 @@ let test = async () => {
   await Person.remove({name: 'One'});
   console.log('Removed person named: One \n')
 
-  people = await Person.fetch({_sort: {name: 1}});
+  people = await Person.fetch().sort({name: 1});
   console.log('People sorted by ascending name');
   for (person of people) {
     console.log(person.name);
   };
   console.log();
-  people = await Person.fetch({_sort: {name: -1}});
+  people = await Person.fetch().sort({name: -1});
   console.log('People sorted by decending name');
   for (person of people) {
     console.log(person.name);
   };
   console.log();
-  // person = await Person.fetchOne();
-  // person.name = 'New Name';
-  // await person.save();
-  // console.log('First Person: ', person, '\n');
 
-  // Array.prototype.myUcase = function() {
-  //   for (i = 0; i < this.length; i++) {
-  //       this[i] = this[i].toUpperCase();
-  //   }
-  // };
+  // await Person.remove({name: 'Two'});
+  // await Person.remove({name: 'Three'});
+
+//   // person = await Person.fetchOne();
+//   // person.name = 'New Name';
+//   // await person.save();
+//   // console.log('First Person: ', person, '\n');
+//
+//   // Array.prototype.myUcase = function() {
+//   //   for (i = 0; i < this.length; i++) {
+//   //       this[i] = this[i].toUpperCase();
+//   //   }
+//   // };
 };
 
 test().then(() => {

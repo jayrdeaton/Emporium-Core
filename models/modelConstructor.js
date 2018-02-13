@@ -1,11 +1,8 @@
 let uuid = require('uuid').v1,
-  fs = require('fs'),
-  os = require('os'),
-  homedir = os.homedir(),
-  helpers = require('../helpers'),
-  readFile = helpers.readFile,
-  writeFile = helpers.writeFile,
-  checkDirectory = helpers.checkDirectory;
+  { join } = require('path');
+  Collection = require('./collection'),
+  Fetch = require('./fetch'),
+  { checkDirectory, readFile, writeFile } = require('../helpers');
 
 module.exports = (emporium, schema) => {
   return class Model {
@@ -58,91 +55,26 @@ module.exports = (emporium, schema) => {
     // };
     static async open() {
       let result;
-      result = await readFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`);
+      if (emporium.data[schema.name]) return emporium.data[schema.name];
+      result = await readFile(join(emporium.config.directory, emporium.config.name, `${schema.name}.json`));
       emporium.data[schema.name] = result;
       return result;
     };
-    static async fetch(query) {
-      if (!query) query = {};
-      let results = [];
-      let limit;
-      let skip;
-      let sort;
-      if (query._limit == 0) {
-        return results;
-      } else if (query._limit) {
-        limit = query._limit;
-        delete query._limit;
-      };
-      if (query._sort) {
-        sort = query._sort;
-        delete query._sort;
-      }
-      if (query._skip && query._skip > 0) {
-        skip = query._skip;
-        delete query._skip;
-      };
-      let Model = emporium.models[schema.name]
-      let objects = emporium.data[schema.name]
-      if (!objects) objects = await this.open();
-      for (let object of objects) {
-        let match = true;
-        for (let key of Object.keys(query)) {
-          if (object[key] !== query[key]) {
-            match = false;
-          };
-        };
-        if (match) {
-          if (skip) {
-            skip--;
-            continue;
-          };
-          results.push(new Model(object));
-          if (limit && results.length === limit) break;
-        };
-      };
-      if (results.length > 0 && sort) {
-        let keys = Object.keys(sort);
-        keys.reverse();
-        let sortedSet = [];
-        for (let key of keys) {
-          if (sort[key] < 0 ) {
-            results.sort((b, a) => {
-              if (a[key] > b[key]) return 1;
-              if (a[key] > b[key]) return -1;
-              return 0;
-            });
-          } else {
-            results.sort((a, b) => {
-              if (a[key] > b[key]) return 1;
-              if (a[key] > b[key]) return -1;
-              return 0;
-            });
-          };
-        };
-      };
-      return results;
+    static fetch(filter, sort, limit, skip) {
+      return new Fetch((resolve, reject) => {
+        this.open().then((data) => {
+          resolve(new Collection(...data));
+        }).catch((err) => {
+          reject(err);
+        });
+      }, this, filter, sort, limit, skip);
     };
     static async find(query) {
       return this.fetch(query);
     };
     static async fetchOne(query) {
-      if (!query) query = {};
-      let Model = emporium.models[schema.name];
-      let objects = emporium.data[schema.name];
-      if (!objects) objects = await this.open();
-      if (objects.length == 0) return null;
-      for (let object of objects) {
-        let match = true;
-        for (let key of Object.keys(query)) {
-          if (object[key] !== query[key]) {
-            match = false;
-          };
-        };
-        if (match) {
-          return new Model(object);
-        };
-      };
+      let results = await this.fetch(query, null, 1);
+      return results[0];
     };
     static async findOne(query) {
       return this.fetchOne(query);
@@ -173,39 +105,32 @@ module.exports = (emporium, schema) => {
       return true;
     };
     static async saveData(data) {
-      checkDirectory(`${emporium.config.directory}/${emporium.config.name}`);
-      await writeFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`, data, emporium.config.pretty);
-    };
-    static async limit(int, test) {
-      console.log(this, test, int)
+      checkDirectory(join(emporium.config.directory, emporium.config.name));
+      await writeFile(join(emporium.config.directory, emporium.config.name, `${schema.name}.json`), data, emporium.config.pretty);
     };
     static async fetchStored(query) {
-      if (!query) query = {};
       let objects = emporium.data[schema.name];
       if (!objects) objects = await this.open();
-      if (objects.length == 0) return null;
-      for (let object of objects) {
-        let match = true;
-        for (let key of Object.keys(query)) {
-          if (object[key] !== query[key]) {
-            match = false;
-          };
-        };
-        if (match) {
-          return object;
-        };
-      };
-      return null;
+      if (!query) return objects;
+      let result;
+      for (let key of Object.keys(query)) result = objects.filter(object => object[key] == query[key]);
+      return result;
+    };
+    static async fetchOneStored(query) {
+      let result = await this.fetchStored(query)
+      return result[0];
     };
     async save() {
-      let existing = await emporium.models[schema.name].fetchStored({_id: this._id});
+      let existing = await emporium.models[schema.name].fetchOneStored({_id: this._id});
       if (existing) {
         for (let key of Object.getOwnPropertyNames(this)) if (existing[key] !== this[key]) existing[key] = this[key];
       } else {
-        emporium.data[schema.name].push(this);
+        let object = {};
+        for (let key of Object.getOwnPropertyNames(this)) object[key] = this[key];
+        emporium.data[schema.name].push(object);
       };
-      checkDirectory(`${emporium.config.directory}/${emporium.config.name}`);
-      await writeFile(`${emporium.config.directory}/${emporium.config.name}/${schema.name}.json`, emporium.data[schema.name], emporium.config.pretty);
+      checkDirectory(join(emporium.config.directory, emporium.config.name));
+      await writeFile(join(emporium.config.directory, emporium.config.name, `${schema.name}.json`), emporium.data[schema.name], emporium.config.pretty);
     };
     async remove() {
       let Model = emporium.models[schema.name];

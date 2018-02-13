@@ -1,11 +1,12 @@
-let fs = require('fs');
+let { existsSync, mkdirSync } = require('fs'),
+  { join, sep } = require('path');
 
 module.exports = (dir) => {
-  let array = dir.split('/');
-  let workingDir = array[0];
+  let array = dir.split(sep);
   array.shift();
+  let workingDir = sep;
   for (let item of array) {
-    workingDir += `/${item}`;
-    if (!fs.existsSync(workingDir)) fs.mkdirSync(workingDir);
+    workingDir = join(workingDir, item);
+    if (!existsSync(workingDir)) mkdirSync(workingDir);
   };
 };
