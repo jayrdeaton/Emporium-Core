@@ -129,6 +129,21 @@ let people = Person.fetch(filter, sort, limit, skip);
 let people = Person.fetch().filter(filter).sort(sort).limit(limit).skip(skip);
 ```
 
+Fetch filter supports regex
+
+```
+// Case insensitive search
+let people = Person.fetch().filter({name: /peter/i})
+
+// Partial string search
+let people = Person.fetch().filter({name: /pete/})
+
+// Case insensitive search using a string variable
+let name = 'brian';
+let regex = new RegExp(brian, i);
+let pets = Pet.fetch().filter({name: regex});
+```
+
 Remove those saved objects, by passing in the same filter
 
 ```

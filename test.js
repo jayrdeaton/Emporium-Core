@@ -24,14 +24,14 @@ let test = async () => {
 
   let Person = models.Person
 
-  let person;
-
-  person = new Person({name: 'One', age: 1, married: true});
-  await person.save();
-  person = new Person({name: 'Two', age: 2, married: false});
-  await person.save();
-  person = new Person({name: 'Three', age: 3, married: true});
-  await person.save();
+  // let person;
+  //
+  // person = new Person({name: 'One', age: 1, married: true});
+  // await person.save();
+  // person = new Person({name: 'Two', age: 2, married: false});
+  // await person.save();
+  // person = new Person({name: 'Three', age: 3, married: true});
+  // await person.save();
 
   // let ThingSchema = new Schema('Thing', {
   //   name: {type: String, default: 'Thing'},

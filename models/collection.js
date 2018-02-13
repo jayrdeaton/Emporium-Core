@@ -5,7 +5,10 @@ module.exports = class Collection extends Array {
   filter(data) {
     if (!data) return this;
     let result;
-    for (let key of Object.keys(data)) result = super.filter(object => object[key] == data[key]);
+    for (let key of Object.keys(data)) {
+      if (typeof data[key] === 'string') result = super.filter(object => object[key] === data[key]);
+      if (typeof data[key] === 'object') result = super.filter(object => data[key].test(object[key]));
+    };
     return result;
   };
   limit(data) {
