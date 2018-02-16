@@ -13,6 +13,7 @@ let test = async () => {
   let PersonSchema = new Schema('Person', {
     name: String,
     createdAt: {type: Date, default: new Date, locked: true},
+    info: Array,
     age: Number,
     married: Boolean
   });
@@ -24,6 +25,13 @@ let test = async () => {
 
   let Person = models.Person
 
+  // let person = new Person({name: 'Array Test', info: [1, 2, 3, 4]});
+  //
+  // person.save();
+
+  // let person = await Person.fetchOne({name: 'Array Test'});
+
+  // console.log(person);
   // let person;
   //
   // person = new Person({name: 'One', age: 1, married: true});

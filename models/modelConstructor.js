@@ -22,7 +22,13 @@ module.exports = (emporium, schema) => {
       if (data._id) this._id = data._id;
       for (let attribute of schema.attributes) {
         if (attribute.default) this[attribute.name] = attribute.default
-        if (data && data[attribute.name]) this[attribute.name] = attribute.type(data[attribute.name]);
+        if (data && data[attribute.name]) {
+          if (attribute.type === Array) {
+            this[attribute.name] = attribute.type(...data[attribute.name]);
+          } else {
+            this[attribute.name] = attribute.type(data[attribute.name]);
+          };
+        };
         if (schema.hidden)
         if (attribute.required && !this[attribute.name]) throw `${schema.name} missing required value: ${attribute.name}!`;
       };
