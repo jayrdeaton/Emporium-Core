@@ -29,7 +29,9 @@ let test = async () => {
   //
   // person.save();
 
-  // let person = await Person.fetchOne({name: 'Array Test'});
+  let person = await Person.fetchOne({info: [1,2,3,4]});
+
+  console.log(person)
 
   // console.log(person);
   // let person;

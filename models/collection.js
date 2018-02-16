@@ -7,7 +7,21 @@ module.exports = class Collection extends Array {
     let result;
     for (let key of Object.keys(data)) {
       if (typeof data[key] === 'string') result = super.filter(object => object[key] === data[key]);
-      if (typeof data[key] === 'object') result = super.filter(object => data[key].test(object[key]));
+      if (typeof data[key] === 'object') {
+        if (Object.keys(data[key]).length == 0) {
+          // RegExp
+          result = super.filter(object => data[key].test(object[key]));
+        } else {
+          // Arrays and Objects
+          result = super.filter((object) => {
+            if (!object[key]) return false;
+            for (let k of data[key]) {
+              if (data[key][k] !== object[key][k]) return false;
+            };
+            return true;
+          });
+        };
+      };
     };
     return result;
   };
