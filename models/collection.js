@@ -15,7 +15,7 @@ module.exports = class Collection extends Array {
           // Arrays and Objects
           result = super.filter((object) => {
             if (!object[key]) return false;
-            for (let k of data[key]) {
+            for (let k in data[key]) {
               if (data[key][k] !== object[key][k]) return false;
             };
             return true;

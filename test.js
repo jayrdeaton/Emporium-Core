@@ -25,13 +25,13 @@ let test = async () => {
 
   let Person = models.Person
 
-  // let person = new Person({name: 'Array Test', info: [1, 2, 3, 4]});
+  // let newPerson = new Person({name: 'Array Test', info: [ 0, 0, 1440, 900 ]});
   //
-  // person.save();
+  // await newPerson.save();
 
-  let person = await Person.fetchOne({info: [1,2,3,4]});
+  let person = await Person.fetchOne({info: [ 0, 0, 1440, 900 ]});
 
-  console.log(person)
+  console.log("found", person)
 
   // console.log(person);
   // let person;
