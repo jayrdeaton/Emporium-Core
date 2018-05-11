@@ -1,7 +1,9 @@
-let { writeFile } = require('fs');
+let { writeFile } = require('fs'),
+  expandHomeDir = require('./expandHomeDir');
 
 module.exports = (dir, array, pretty) => {
   return new Promise((resolve, reject) => {
+    dir = expandHomeDir(dir);
     let space = 0;
     if (pretty) space = 2;
     let data = [];

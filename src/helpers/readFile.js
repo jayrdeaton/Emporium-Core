@@ -1,7 +1,9 @@
-let { existsSync, readFile } = require('fs');
+let { existsSync, readFile } = require('fs'),
+  expandHomeDir = require('./expandHomeDir');
 
-module.exports = (dir) => {
+module.exports = async (dir) => {
   return new Promise((resolve, reject) => {
+    dir = expandHomeDir(dir);
     if (existsSync(dir)) {
       readFile(dir, (err, data) => {
         if (err) reject(err);

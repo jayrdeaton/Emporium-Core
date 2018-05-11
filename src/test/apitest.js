@@ -11,18 +11,15 @@ let test = async () => {
   })
 
   let schema = new Schema({
-    access_token: String,
+    access_token: {type: String, default: null},
     application_id: {type: String, default: null},
     created_at: {type: Number, default: Date.now},
     expires_in: {type: Number, default: 7200},
-    grant_type: String,
-    password: String,
     previous_refresh_token: {type: String, default: null},
     scopes: {type: String, default: null},
     token: {type: String, default: null},
     token_type: {type: String, default: null},
     updated_at: {type: Number, default: Date.now},
-    username: String,
     // Relationships
     resource_owner_id: {type: String, default: null}
   });
@@ -32,6 +29,7 @@ let test = async () => {
   let Token = emporium.storable('Token', schema);
 
   let token = await Token.create({ username: 'example@example.com', password: 'password', grant_type: 'password'});
+
   let accountAdapter = new APIAdapter({
     domain: 'http://localhost:3000/api',
     headers: { "Content-Type": "application/json; charset=utf-8" }
@@ -91,11 +89,8 @@ let test = async () => {
   schema.setAdapter(catalogAdapter, 'bundles');
 
   let Bundle = emporium.storable('Bundle', schema);
-  await Bundle.create();
-  await Bundle.create();
-  await Bundle.create();
   let bundles = await Bundle.get();
-  // Bundle.delete(bundles);
+  Bundle.delete(bundles);
   // let bundles = await Bundle.get({skip: 1, filter: {name: 'AAA'}});
   // let bundles = await Bundle.get({skip: 3});
   console.log(bundles.length)

@@ -15,6 +15,10 @@
   "author": "Jay Deaton",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "npm": "^6.0.0"
+  },
+  "devDependencies": {
     "uuid": "^3.2.1"
   }
 }

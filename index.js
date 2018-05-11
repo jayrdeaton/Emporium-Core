@@ -1,3 +1,5 @@
-let Emporium = require('./models').Emporium;
+let { APIAdapter, Emporium, JSONAdapter, MemoryAdapter, Schema, Storable,
+  Table } = require('./src/models');
+let adapters = require('./src/adapters');
 
-module.exports = Emporium;
+module.exports = { adapters, Emporium, Schema };
