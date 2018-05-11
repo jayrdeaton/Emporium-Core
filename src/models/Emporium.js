@@ -1,4 +1,6 @@
 let { storableConstructor } = require('../constructors');
+let Schema = require('./Schema');
+let adapters = require('../adapters');
 
 let Emporium = class Emporium {
   constructor(name) {
@@ -14,5 +16,8 @@ let Emporium = class Emporium {
     return Model;
   };
 };
+
+Emporium.Schema = Schema;
+Emporium.adapters = adapters;
 
 module.exports = Emporium;

@@ -1,4 +1,5 @@
-let { adapters, Emporium, Schema } = require('./');
+let Emporium = require('./'),
+  { adapters, Schema } = Emporium;
 
 let test = async () => {
   let emporium = new Emporium();
