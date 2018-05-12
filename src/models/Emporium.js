@@ -10,9 +10,9 @@ let Emporium = class Emporium {
   };
   storable(name, schema) {
     schema.name = name;
-    if (!schema.resourceName) schema.resourceName = name;
     let Model = storableConstructor(this, schema);
     this.models[schema.name] = Model;
+    this.schemas[schema.name] = schema;
     return Model;
   };
 };
