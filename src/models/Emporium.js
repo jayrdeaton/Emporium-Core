@@ -4,7 +4,6 @@ let adapters = require('../adapters');
 
 let Emporium = class Emporium {
   constructor(name) {
-    this.data = {};
     this.models = {};
     this.schemas = {};
   };
