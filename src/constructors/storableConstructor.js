@@ -36,7 +36,7 @@ module.exports = (emporium, schema) => {
       };
     };
     static async create(body) {
-      let object = await schema.adapter.create(schema, body);
+      let result = await schema.adapter.create(schema, body);
       if (Array.isArray(result)) {
         let objects = [];
         for (let entry of result) objects.push(new this(entry));
