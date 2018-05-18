@@ -3,7 +3,7 @@ let { is, isnt } = require('amprisand'),
   { homedir } = require('os'),
   rimraf = require('rimraf');
 
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'EMPORIUM_TEST';
 
 describe('Emporium Test Setup', () => {
   it('should setup test environment', () => {

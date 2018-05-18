@@ -20,7 +20,7 @@ let APIAdapter = class APIAdapter {
       headers: this.headers,
       data
     };
-    if (process.env.NODE_ENV === 'test') throw request;
+    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
   };
@@ -35,7 +35,7 @@ let APIAdapter = class APIAdapter {
       headers: this.headers,
       data
     };
-    if (process.env.NODE_ENV === 'test') throw request;
+    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
   };
@@ -50,7 +50,7 @@ let APIAdapter = class APIAdapter {
       request.params = {};
       Object.keys(query).forEach((key) => { request.params[key] = JSON.stringify(query[key]) });
     };
-    if (process.env.NODE_ENV === 'test') throw request;
+    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
   };
@@ -62,7 +62,7 @@ let APIAdapter = class APIAdapter {
       method: 'GET',
       headers: this.headers
     };
-    if (process.env.NODE_ENV === 'test') throw request;
+    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
   };
@@ -82,7 +82,7 @@ let APIAdapter = class APIAdapter {
       headers: this.headers,
       data
     };
-    if (process.env.NODE_ENV === 'test') throw request;
+    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
   };
