@@ -1,4 +1,5 @@
-let axios = require('axios');
+let axios = require('axios'),
+  { getRequestData } = require('../helpers');
 
 let APIAdapter = class APIAdapter {
   constructor(data) {
@@ -12,25 +13,29 @@ let APIAdapter = class APIAdapter {
   };
   async create(schema, body) {
     let endpoint = schema.resourceName || schema.name;
+    let data = getRequestData(body);
     let request = {
       url: `${this.domain}/${endpoint}`,
       method: 'POST',
       headers: this.headers,
-      data: JSON.stringify(body)
+      data
     };
+    if (process.env.NODE_ENV === 'test') throw request;
     let response = await axios(request);
     return response.data;
   };
   async update(schema, body) {
     let endpoint = schema.resourceName || schema.name;
+    let data = getRequestData(body);
     let url = `${this.domain}/${endpoint}`;
     if (schema.identifier && body[schema.identifier]) url += `/${body[schema.identifier]}`;
     let request = {
       url,
       method: 'PUT',
       headers: this.headers,
-      data: JSON.stringify(body)
+      data
     };
+    if (process.env.NODE_ENV === 'test') throw request;
     let response = await axios(request);
     return response.data;
   };
@@ -45,29 +50,39 @@ let APIAdapter = class APIAdapter {
       request.params = {};
       Object.keys(query).forEach((key) => { request.params[key] = JSON.stringify(query[key]) });
     };
+    if (process.env.NODE_ENV === 'test') throw request;
     let response = await axios(request);
     return response.data;
   };
   async find(schema, identifier) {
     let endpoint = schema.resourceName || schema.name;
+    let url = `${this.domain}/${endpoint}/${identifier}`;
     let request = {
-      url: `${this.domain}/${endpoint}/${identifier}`,
+      url,
       method: 'GET',
       headers: this.headers
     };
+    if (process.env.NODE_ENV === 'test') throw request;
     let response = await axios(request);
     return response.data;
   };
   async delete(schema, body) {
     let endpoint = schema.resourceName || schema.name;
     let url = `${this.domain}/${endpoint}`;
-    if (schema.identifier && body[schema.identifier]) url += `/${body[schema.identifier]}`;
+    let data;
+    if (typeof body === 'string' || typeof body === 'number') {
+      url += `/${body}`;
+    } else {
+      if (typeof body === 'object' && !Array.isArray(body)) if (schema.identifier && body[schema.identifier]) url += `/${body[schema.identifier]}`;
+      data = getRequestData(body);
+    };
     let request = {
       url,
       method: 'DELETE',
       headers: this.headers,
-      data: JSON.stringify(body)
+      data
     };
+    if (process.env.NODE_ENV === 'test') throw request;
     let response = await axios(request);
     return response.data;
   };

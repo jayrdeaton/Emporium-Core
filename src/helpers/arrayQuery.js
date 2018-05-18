@@ -2,8 +2,7 @@ let filter = (array, data) => {
   if (!data) return array;
   let result;
   for (let key of Object.keys(data)) {
-    if (typeof data[key] === 'string' || typeof data[key] === 'number') result = array.filter(object => object[key] === data[key]);
-    if (typeof data[key] === 'object') {
+    if (typeof data[key] === 'object' && data[key] !== null) {
       if (Object.keys(data[key]).length == 0) {
         // RegExp
         result = array.filter(object => data[key].test(object[key]));
@@ -17,6 +16,8 @@ let filter = (array, data) => {
           return true;
         });
       };
+    } else {
+      result = array.filter(object => object[key] === data[key]);
     };
   };
   return result;

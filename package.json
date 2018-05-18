@@ -4,7 +4,7 @@
   "description": "A local JSON data store for node",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "mocha src/test; exit 0"
   },
   "keywords": [
     "local",
@@ -15,10 +15,14 @@
   "author": "Jay Deaton",
   "license": "ISC",
   "dependencies": {
+    "amprisand": "^0.1.2",
     "axios": "^0.18.0",
-    "npm": "^6.0.0"
+    "npm": "^6.0.1"
   },
   "devDependencies": {
+    "faker": "^4.1.0",
+    "mocha": "^5.1.1",
+    "rimraf": "^2.6.2",
     "uuid": "^3.2.1"
   }
 }

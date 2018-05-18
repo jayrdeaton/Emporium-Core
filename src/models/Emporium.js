@@ -4,15 +4,13 @@ let adapters = require('../adapters');
 
 let Emporium = class Emporium {
   constructor(name) {
-    this.models = {};
-    this.schemas = {};
   };
   storable(name, schema) {
     schema.name = name;
-    let Model = storableConstructor(this, schema);
-    this.models[schema.name] = Model;
-    this.schemas[schema.name] = schema;
-    return Model;
+    let Storable = storableConstructor(this, schema);
+    this[schema.name] = Storable;
+    this[`${schema.name}_Schema`] = schema;
+    return Storable;
   };
 };
 

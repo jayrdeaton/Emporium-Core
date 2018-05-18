@@ -35,39 +35,36 @@ module.exports = (emporium, schema) => {
         });
       };
     };
-    static async create(body) {
-      let result = await schema.adapter.create(schema, body);
-      if (Array.isArray(result)) {
-        let objects = [];
-        for (let entry of result) objects.push(new this(entry));
-        return objects;
+    static convertObjects(data) {
+      let result;
+      if (Array.isArray(data)) {
+        result = [];
+        for (let entry of data) result.push(new this(entry));
       } else {
-        return new this(result);
+        result = new this(data);
       };
+      return result;
+    };
+    static async create(body) {
+      body = this.convertObjects(body);
+      let result = await schema.adapter.create(schema, body);
+      return this.convertObjects(result);
     };
     static async update(body) {
+      body = this.convertObjects(body);
       let result = await schema.adapter.update(schema, body);
-      if (Array.isArray(result)) {
-        let objects = [];
-        for (let entry of result) objects.push(new this(entry));
-        return objects;
-      } else {
-        return new this(result);
-      };
+      return this.convertObjects(result);
     };
     static async get(query) {
-      let response = [];
-      let objects = await schema.adapter.get(schema, query);
-      for (let object of objects) {
-        response.push(new this(object));
-      };
-      return response;
+      let result = await schema.adapter.get(schema, query);
+      return this.convertObjects(result);
     };
     static async find(identifier) {
       if (!schema.identifier) return null;
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
-      let object = await schema.adapter.find(schema, identifier);
-      return new this(object);
+      if (!identifier) return null;
+      let result = await schema.adapter.find(schema, identifier);
+      return this.convertObjects(result);
     };
     static delete(body) {
       return schema.adapter.delete(schema, body);
