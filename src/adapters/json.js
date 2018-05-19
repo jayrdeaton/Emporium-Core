@@ -1,5 +1,5 @@
 let { join } = require('path'),
-  { arrayQuery, checkDirectory, readFile, removeArrayEntry, updateArrayEntry, wholeObject, writeFile } = require('../helpers');
+  { arrayQuery, checkDirectory, readFile, removeArrayEntry, updateArrayEntry, writeFile } = require('../helpers');
 
 let JSONAdapter = class JSONAdapter {
   constructor(data) {
@@ -23,9 +23,7 @@ let JSONAdapter = class JSONAdapter {
     } else {
       objects.push(body);
     };
-    let data = [];
-    for (let object of objects) data.push(wholeObject(object));
-    await writeFile(join(dir, `${endpoint}.json`), data, this.pretty);
+    await writeFile(join(dir, `${endpoint}.json`), objects, this.pretty);
     return body;
   };
   async update(schema, body) {
@@ -38,9 +36,7 @@ let JSONAdapter = class JSONAdapter {
     } else {
       objects = updateArrayEntry(objects, body, schema.identifier);
     };
-    let data = [];
-    for (let object of objects) data.push(wholeObject(object));
-    await writeFile(join(dir, `${endpoint}.json`), data, this.pretty);
+    await writeFile(join(dir, `${endpoint}.json`), objects, this.pretty);
     return body;
   };
   async get(schema, query) {
@@ -66,9 +62,7 @@ let JSONAdapter = class JSONAdapter {
     } else {
       objects = removeArrayEntry(objects, body, schema.identifier);
     };
-    let data = [];
-    for (let object of objects) data.push(wholeObject(object));
-    await writeFile(join(dir, `${endpoint}.json`), data, this.pretty);
+    await writeFile(join(dir, `${endpoint}.json`), objects, this.pretty);
     return null;
   };
 };

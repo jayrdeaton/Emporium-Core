@@ -110,30 +110,6 @@ describe('API', () => {
       return;
     });
   });
-  describe('Storable.create([])', () => {
-    it('should create two new storables with set values', async () => {
-      let a = new Storable(fakeObject());
-      let b = new Storable(fakeObject());
-      storables.push(a);
-      storables.push(b);
-      let request;
-      try {
-        await Storable.create([a, b]);
-      } catch(req) {
-        request = req;
-      };
-      request.is();
-      request.is(Object);
-      request.url.is('http://localhost:8000/API_Test_Model');
-      request.method.is('POST');
-      request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
-      let data = JSON.parse(request.data);
-      data.is(Array);
-      data[0].is(a);
-      data[1].is(b);
-      return;
-    });
-  });
   describe('Storable.update({})', () => {
     it('should update a storable', async () => {
       let object = storables[0];
@@ -150,28 +126,6 @@ describe('API', () => {
       request.method.is('PUT');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.data).is(object);
-      return;
-    });
-  });
-  describe('Storable.update([])', () => {
-    it('should update two storables', async () => {
-      let a = storables[0];
-      let b = storables[1];
-      let request;
-      try {
-        await Storable.update([a, b]);
-      } catch(req) {
-        request = req;
-      };
-      request.is();
-      request.is(Object);
-      request.url.is('http://localhost:8000/API_Test_Model');
-      request.method.is('PUT');
-      request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
-      let data = JSON.parse(request.data);
-      data.is(Array);
-      data[0].is(a);
-      data[1].is(b);
       return;
     });
   });
@@ -195,7 +149,7 @@ describe('API', () => {
   describe('Storable.get(filter)', () => {
     it('should get a filtered array of one storables', async () => {
       let request;
-      let filter = {string: storables[1].string}
+      let filter = {string: storables[0].string}
       try {
         await Storable.get({ filter });
       } catch(req) {
@@ -354,28 +308,6 @@ describe('API', () => {
       request.url.is(`http://localhost:8000/API_Test_Model/${object.uuid}`);
       request.method.is('DELETE');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
-      JSON.parse(request.data).is(object);
-      return;
-    });
-  });
-  describe('Storable.delete([])', () => {
-    it('should delete two storables', async () => {
-      let a = storables[0];
-      let b = storables[1];
-      let request;
-      try {
-        await Storable.delete([a, b]);
-      } catch(req) {
-        request = req;
-      };
-      request.is();
-      request.is(Object);
-      request.url.is('http://localhost:8000/API_Test_Model');
-      request.method.is('DELETE');
-      request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
-      let data = JSON.parse(request.data);
-      data[0].is(a);
-      data[1].is(b);
       return;
     });
   });
@@ -414,7 +346,6 @@ describe('API', () => {
       request.url.is(`http://localhost:8000/API_Test_Model/${object.uuid}`);
       request.method.is('DELETE');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
-      JSON.parse(request.data).is(object);
       return;
     });
   });

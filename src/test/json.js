@@ -194,28 +194,28 @@ describe('JSON', () => {
       return;
     });
   });
-  // describe('Storable.delete({})', () => {
-  //   it('should delete a storable', async () => {
-  //     let object = storables.shift();
-  //     let result = await Storable.delete(object);
-  //     let remaining = await Storable.get();
-  //     isnt(result);
-  //     remaining.is(Array);
-  //     remaining.length.is(3);
-  //     return;
-  //   });
-  // });
-  // describe('Storable.delete([])', () => {
-  //   it('should delete two storables', async () => {
-  //     let objects = storables.splice(0, 2);
-  //     let result = await Storable.delete(objects);
-  //     let remaining = await Storable.get();
-  //     isnt(result);
-  //     remaining.is(Array);
-  //     remaining.length.is(1);
-  //     return;
-  //   });
-  // });
+  describe('Storable.delete({})', () => {
+    it('should delete a storable', async () => {
+      let object = storables.shift();
+      let result = await Storable.delete(object);
+      let remaining = await Storable.get();
+      isnt(result);
+      remaining.is(Array);
+      remaining.length.is(3);
+      return;
+    });
+  });
+  describe('Storable.delete([])', () => {
+    it('should delete two storables', async () => {
+      let objects = storables.splice(0, 2);
+      let result = await Storable.delete(objects);
+      let remaining = await Storable.get();
+      isnt(result);
+      remaining.is(Array);
+      remaining.length.is(1);
+      return;
+    });
+  });
   describe('storable.save()', () => {
     it('should update a storable', async () => {
       let object = storables[0];

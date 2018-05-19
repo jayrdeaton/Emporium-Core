@@ -1,5 +1,5 @@
 let axios = require('axios'),
-  { getRequestData } = require('../helpers');
+  { wholeObject } = require('../helpers');
 
 let APIAdapter = class APIAdapter {
   constructor(data) {
@@ -13,7 +13,7 @@ let APIAdapter = class APIAdapter {
   };
   async create(schema, body) {
     let endpoint = schema.resourceName || schema.name;
-    let data = getRequestData(body);
+    let data = JSON.stringify(wholeObject(body));
     let request = {
       url: `${this.domain}/${endpoint}`,
       method: 'POST',
@@ -25,10 +25,10 @@ let APIAdapter = class APIAdapter {
     return response.data;
   };
   async update(schema, body) {
+    if (!schema.identifier || !body[schema.identifier]) return null;
     let endpoint = schema.resourceName || schema.name;
-    let data = getRequestData(body);
-    let url = `${this.domain}/${endpoint}`;
-    if (schema.identifier && body[schema.identifier]) url += `/${body[schema.identifier]}`;
+    let data = JSON.stringify(wholeObject(body));
+    let url = `${this.domain}/${endpoint}/${body[schema.identifier]}`;
     let request = {
       url,
       method: 'PUT',
@@ -67,20 +67,21 @@ let APIAdapter = class APIAdapter {
     return response.data;
   };
   async delete(schema, body) {
+    if (!schema.identifier || (typeof body === 'object' && !body[schema.identifier])) {
+      console.log(body)
+      return null;
+    }
     let endpoint = schema.resourceName || schema.name;
     let url = `${this.domain}/${endpoint}`;
-    let data;
-    if (typeof body === 'string' || typeof body === 'number') {
+    if (typeof body === 'string') {
       url += `/${body}`;
     } else {
-      if (typeof body === 'object' && !Array.isArray(body)) if (schema.identifier && body[schema.identifier]) url += `/${body[schema.identifier]}`;
-      data = getRequestData(body);
+      url += `/${body[schema.identifier]}`;
     };
     let request = {
       url,
       method: 'DELETE',
-      headers: this.headers,
-      data
+      headers: this.headers
     };
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
