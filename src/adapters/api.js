@@ -68,7 +68,6 @@ let APIAdapter = class APIAdapter {
   };
   async delete(schema, body) {
     if (!schema.identifier || (typeof body === 'object' && !body[schema.identifier])) {
-      console.log(body)
       return null;
     }
     let endpoint = schema.resourceName || schema.name;
