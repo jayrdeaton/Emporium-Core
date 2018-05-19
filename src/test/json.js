@@ -2,8 +2,7 @@ let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  Schema = Emporium.Schema,
-  JSONAdapter = Emporium.adapters.json,
+  { JSONAdapter, Schema } = Emporium,
   emporium, adapter, schema, Storable, storables;
 
 let fakeObject = () => {
@@ -31,8 +30,23 @@ describe('JSON', () => {
   });
   describe('new JSONAdapter()', () => {
     it('should create and configure a new JSON Adapter', () => {
-      adapter = new JSONAdapter({name: 'TEST', pretty: true});
+      adapter = new JSONAdapter({
+        name: 'TESTY',
+        pretty: false
+      });
       adapter.is(Object);
+    });
+  });
+  describe('emporium.setAdapter()', () => {
+    it('should set the adapter for this emporium', () => {
+      emporium.setAdapter(adapter);
+      emporium._adapter.is(adapter);
+    });
+  });
+  describe('emporium.setIdentifier()', () => {
+    it('should set the identifier for this emporium', () => {
+      emporium.setIdentifier('id');
+      emporium._identifier.is('id');
     });
   });
   describe('new Schema()', () => {
@@ -50,9 +64,7 @@ describe('JSON', () => {
         hidden: {type: String, default: null},
         locked: {type: String, default: null}
       });
-      schema.identifier = 'uuid';
       schema.hide('hidden').lock('locked');
-      schema.setAdapter(adapter);
       schema.is(Object);
     });
   });
@@ -60,6 +72,8 @@ describe('JSON', () => {
     it('should create a new Storable', () => {
       Storable = emporium.storable('JSON_Test_Model', schema);
       is(Storable);
+      schema.adapter.is(adapter);
+      schema.identifier.is('id');
     });
   });
   describe('emporium.storables[Storable]', () => {
@@ -70,6 +84,31 @@ describe('JSON', () => {
   describe('emporium.storables[Other]', () => {
     it('Other should not be available through emporium', () => {
       isnt(emporium['Test']);
+    });
+  });
+  describe('schema.setAdapter()', () => {
+    it('should set the adapter for this schema', () => {
+      adapter = new JSONAdapter({
+        name: 'TEST',
+        pretty: true
+      });
+      adapter.is(Object);
+      schema.setAdapter(adapter);
+      schema.adapter.is(adapter);
+      emporium._adapter.isnt(adapter);
+    });
+  });
+  describe('schema.setIdentifier()', () => {
+    it('should set the adapter for this schema', () => {
+      schema.setIdentifier('uuid');
+      schema.identifier.is('uuid');
+      emporium._identifier.isnt('uuid');
+    });
+  });
+  describe('schema.setResourceName()', () => {
+    it('should set the resourceName for this schema', () => {
+      schema.setResourceName('api_test_models');
+      schema.resourceName.is('api_test_models');
     });
   });
   describe('Storable.create()', () => {

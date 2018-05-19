@@ -1,5 +1,4 @@
-let api = require('./api'),
-  json = require('./json'),
-  memory = require('./memory');
-
-module.exports = { api, json, memory };
+let APIAdapter = require('./APIAdapter'),
+  JSONAdapter = require('./JSONAdapter');
+  
+module.exports = { APIAdapter, JSONAdapter };

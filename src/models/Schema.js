@@ -15,9 +15,14 @@ module.exports = class Schema {
       };
     };
   };
-  setAdapter(adapter, resourceName) {
+  setAdapter(adapter) {
     this.adapter = adapter;
-    if (resourceName) this.resourceName = resourceName;
+  };
+  setIdentifier(identifier) {
+    this.identifier = identifier;
+  };
+  setResourceName(resourceName) {
+    this.resourceName = resourceName;
   };
   hide(array) {
     if (array) this.hidden = this.hidden.concat(array);
