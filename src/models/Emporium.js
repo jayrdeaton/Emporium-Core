@@ -3,7 +3,7 @@ let Schema = require('./Schema');
 let { APIAdapter, JSONAdapter } = require('../adapters');
 
 let Emporium = class Emporium {
-  constructor(name) {
+  constructor() {
     this._adapter = null;
     this._identifier = null;
   };

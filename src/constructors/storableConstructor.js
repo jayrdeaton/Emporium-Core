@@ -48,11 +48,13 @@ module.exports = (emporium, schema) => {
     static async create(body) {
       body = this.convertObjects(body);
       let result = await schema.adapter.create(schema, body);
+      if (!result) return result;
       return this.convertObjects(result);
     };
     static async update(body) {
       body = this.convertObjects(body);
       let result = await schema.adapter.update(schema, body);
+      if (!result) return result;
       return this.convertObjects(result);
     };
     static async get(query) {
@@ -64,6 +66,7 @@ module.exports = (emporium, schema) => {
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
       if (!identifier) return null;
       let result = await schema.adapter.find(schema, identifier);
+      if (!result) return result;
       return this.convertObjects(result);
     };
     static delete(body) {
