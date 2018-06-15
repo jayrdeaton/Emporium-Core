@@ -5,11 +5,13 @@ let APIAdapter = class APIAdapter {
   constructor(data) {
     this.domain = null;
     this.headers = null;
+    this.encodingMethod = null;
 
     if (!data) return;
 
     if (data.domain) this.domain = data.domain;
     if (data.headers) this.headers = data.headers;
+    if (data.encodingMethod) this.encodingMethod = data.encodingMethod;
   };
   async create(schema, body) {
     let endpoint = schema.resourceName || schema.name;
@@ -48,7 +50,15 @@ let APIAdapter = class APIAdapter {
     };
     if (query) {
       request.params = {};
-      Object.keys(query).forEach((key) => { request.params[key] = JSON.stringify(query[key]) });
+      Object.keys(query).forEach((key) => {
+        if (typeof query[key] === 'object') {
+          if (this.encodingMethod) {
+            request.params[key] = this.encodingMethod(query[key]);
+          } else {
+            request.params[key] = JSON.stringify(query[key]);
+          };
+        } else { request.params[key] = query[key] };
+      });
     };
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
