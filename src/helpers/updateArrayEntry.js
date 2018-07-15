@@ -5,4 +5,6 @@ module.exports = (array, object, identifier) => {
       return array;
     };
   };
+  array.push(object);
+  return array;
 };
