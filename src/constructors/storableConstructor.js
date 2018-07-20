@@ -13,6 +13,7 @@ module.exports = (emporium, schema) => {
               this[attribute] = definition.type(data[attribute]);
             };
           };
+          if (definition.type && definition.type === Number || definition.type === String) this[attribute] = definition.type(this[attribute]);
           if (definition.required && !this[attribute]) throw `${schema.name} missing required value: ${attribute}!`;
         } else {
           if (data && data[attribute]) {
