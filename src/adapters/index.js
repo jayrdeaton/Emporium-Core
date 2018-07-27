@@ -1,4 +1,5 @@
 let APIAdapter = require('./APIAdapter'),
-  JSONAdapter = require('./JSONAdapter');
-  
-module.exports = { APIAdapter, JSONAdapter };
+  JSONAdapter = require('./JSONAdapter'),
+  MemoryAdapter = require('./MemoryAdapter');
+
+module.exports = { APIAdapter, JSONAdapter, MemoryAdapter };

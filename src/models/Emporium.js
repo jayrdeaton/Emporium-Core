@@ -1,6 +1,6 @@
 let { storableConstructor } = require('../constructors');
 let Schema = require('./Schema');
-let { APIAdapter, JSONAdapter } = require('../adapters');
+let { APIAdapter, JSONAdapter, MemoryAdapter } = require('../adapters');
 
 let Emporium = class Emporium {
   constructor() {
@@ -27,5 +27,6 @@ let Emporium = class Emporium {
 Emporium.Schema = Schema;
 Emporium.APIAdapter = APIAdapter;
 Emporium.JSONAdapter = JSONAdapter;
+Emporium.MemoryAdapter = MemoryAdapter;
 
 module.exports = Emporium;
