@@ -1,6 +1,6 @@
 {
   "name": "emporium",
-  "version": "2.1.12",
+  "version": "2.2.0",
   "description": "A local JSON data store for node",
   "main": "index.js",
   "scripts": {
