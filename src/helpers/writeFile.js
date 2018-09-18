@@ -1,14 +1,13 @@
 let { writeFile } = require('fs'),
+  { promisify } = require('util'),
   expandHomeDir = require('./expandHomeDir');
 
+writeFile = promisify(writeFile);
+
 module.exports = (dir, data, pretty) => {
-  return new Promise((resolve, reject) => {
-    dir = expandHomeDir(dir);
-    let space = 0;
-    if (pretty) space = 2;
-    writeFile(dir, JSON.stringify(data, null, space), (err) => {
-      if (err) reject(err);
-      resolve(data);
-    });
-  });
+  dir = expandHomeDir(dir);
+  let space = 0;
+  if (pretty) space = 2;
+  await writeFile(dir, JSON.stringify(data, null, space));
+  return data;
 };

@@ -1,17 +1,15 @@
 let { existsSync, readFile } = require('fs'),
+  { promisify } = require('util'),
   expandHomeDir = require('./expandHomeDir');
 
+readFile = promisify(readFile);
+
 module.exports = async (dir) => {
-  return new Promise((resolve, reject) => {
-    dir = expandHomeDir(dir);
-    if (existsSync(dir)) {
-      readFile(dir, (err, data) => {
-        if (err) reject(err);
-        let result = JSON.parse(data);
-        resolve(result);
-      });
-    } else {
-      resolve([]);
-    };
-  });
+  dir = expandHomeDir(dir);
+  if (existsSync(dir)) {
+    let data = await readFile(dir);
+    return JSON.parse(data);
+  } else {
+    return [];
+  };
 };
