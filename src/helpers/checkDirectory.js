@@ -7,7 +7,7 @@ module.exports = (dir) => {
   if (existsSync(dir)) return;
   let array = dir.split(sep);
   if (array[0] === '') array.shift();
-  let workingDir = '/';
+  let workingDir =sep;
   for (let item of array) {
     workingDir = join(workingDir, item);
     if (!existsSync(workingDir)) mkdirSync(workingDir);
