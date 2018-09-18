@@ -4,7 +4,7 @@ let { writeFile } = require('fs'),
 
 writeFile = promisify(writeFile);
 
-module.exports = (dir, data, pretty) => {
+module.exports = async (dir, data, pretty) => {
   dir = expandHomeDir(dir);
   let space = 0;
   if (pretty) space = 2;
