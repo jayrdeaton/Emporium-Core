@@ -30,6 +30,7 @@ let JSONAdapter = class JSONAdapter {
     if (!schema.identifier) return null;
     let endpoint = schema.resourceName || schema.name;
     let dir = join(this.path, this.name);
+    checkDirectory(dir);
     let objects = await this.get(schema, null);
     if (Array.isArray(body)) {
       for (let entry of body) objects = updateArrayEntry(objects, entry, schema.identifier);
