@@ -6,7 +6,7 @@ module.exports = (emporium, schema) => {
         if (typeof definition === 'object') {
           if (definition.default !== undefined) this[attribute] = definition.default
           if (typeof definition.default === 'function') this[attribute] = definition.default();
-          if (data && data[attribute] !== undefined) {
+          if (data && data[attribute] !== undefined && data[attribute] !== null) {
             if (definition.type === Array) {
               this[attribute] = definition.type(...data[attribute]);
             } else {
@@ -15,7 +15,7 @@ module.exports = (emporium, schema) => {
           };
           if (definition.required && !this[attribute]) throw `${schema.name} missing required value: ${attribute}!`;
         } else {
-          if (data && data[attribute] !== undefined) {
+          if (data && data[attribute] !== undefined && data[attribute] !== null) {
             if (definition === Array) {
               this[attribute] = definition(...data[attribute]);
             } else {
