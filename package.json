@@ -17,7 +17,7 @@
   "dependencies": {
     "amprisand": "^0.1.2",
     "axios": "^0.18.0",
-    "npm": "^6.2.0"
+    "npm": "^6.4.1"
   },
   "devDependencies": {
     "faker": "^4.1.0",
