@@ -13,7 +13,7 @@ module.exports = (emporium, schema) => {
               this[attribute] = definition.type(data[attribute]);
             };
           };
-          if (definition.required && !this[attribute]) throw `${schema.name} missing required value: ${attribute}!`;
+          if (schema.required.includes(attribute) && (this[attribute] === undefined || this[attribute] === null)) throw new Error(`${schema.name} missing required value: ${attribute}!`);
         } else {
           if (data && data[attribute] !== undefined && data[attribute] !== null) {
             if (definition === Array) {
@@ -34,6 +34,25 @@ module.exports = (emporium, schema) => {
           writable: false
         });
       };
+      // if (schema.required.length > 0) {
+      //   this._requiredValues = {};
+      //   Object.defineProperty(this, '_requiredValues', {
+      //     enumerable: false
+      //   });
+      // };
+      // for (let require of schema.required) {
+      //   let value = this[require];
+      //   Object.defineProperty(this, require, {
+      //     get() {
+      //       return this._requiredValues[require];
+      //     },
+      //     set(value) {
+      //       if (value === undefined || value === null) throw new Error(`${schema.name} missing required value: ${require}!`);
+      //       this._requiredValues[require] = value;
+      //     }
+      //   });
+      //   this[require] = value;
+      // };
     };
     static convertObjects(data) {
       let result;
@@ -47,12 +66,14 @@ module.exports = (emporium, schema) => {
     };
     static async create(body) {
       body = this.convertObjects(body);
+      for (let key of schema.required) if (body[key] === undefined || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.create(schema, body);
       if (!result) return result;
       return this.convertObjects(result);
     };
     static async update(body) {
       body = this.convertObjects(body);
+      for (let key of schema.required) if (body[key] === undefined || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.update(schema, body);
       if (!result) return result;
       return this.convertObjects(result);

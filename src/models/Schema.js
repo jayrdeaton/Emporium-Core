@@ -3,6 +3,7 @@ module.exports = class Schema {
     this.attributes = data;
     this.hidden = [];
     this.locked = [];
+    this.required = [];
     this.name = null;
     this.resourceName = null;
     this.identifier = null;
@@ -12,6 +13,7 @@ module.exports = class Schema {
       if (typeof value === 'object') {
         if (value.hidden) this.hidden.push(key)
         if (value.readOnly || value.locked) this.locked.push(key);
+        if (value.required) this.required.push(key);
       };
     };
   };
@@ -24,12 +26,34 @@ module.exports = class Schema {
   setResourceName(resourceName) {
     this.resourceName = resourceName;
   };
-  hide(array) {
-    if (array) this.hidden = this.hidden.concat(array);
+  hide(value) {
+    if (Array.isArray(value)) {
+      this.hidden.concat(value);
+    } else if (typeof value === 'string') {
+      this.hidden.push(value)
+    } else {
+      throw new Error(`Unexpected input ${value}`)
+    }
     return this;
   };
-  lock(array) {
-    if (array) this.locked = this.locked.concat(array);
+  lock(value) {
+    if (Array.isArray(value)) {
+      this.locked.concat(value);
+    } else if (typeof value === 'string') {
+      this.locked.push(value)
+    } else {
+      throw new Error(`Unexpected input ${value}`)
+    }
+    return this;
+  };
+  require(value) {
+    if (Array.isArray(value)) {
+      this.required.concat(value);
+    } else if (typeof value === 'string') {
+      this.required.push(value)
+    } else {
+      throw new Error(`Unexpected input ${value}`)
+    }
     return this;
   };
 };

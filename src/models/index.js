@@ -1,5 +1,4 @@
 let Emporium = require('./Emporium'),
-  Schema = require('./Schema'),
-  Storable = require('./Storable');
+  Schema = require('./Schema');
 
-module.exports = { Emporium, Schema, Storable };
+module.exports = { Emporium, Schema };
