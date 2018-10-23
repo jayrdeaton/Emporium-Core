@@ -1,113 +1,35 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../'),
+  Emporium = require('../../../'),
   { APIAdapter, Schema } = Emporium,
-  emporium, adapter, schema, Storable, storables = [];
+  schema, Storable, storables = [];
 
-let fakeObject = () => {
-  return {
-    uuid: uuid.v1(),
-
-    array: [faker.random.word()],
-    boolean: faker.random.boolean(),
-    date: Date.now(),
-    number: faker.random.number(),
-    object: {test: faker.random.word()},
-    string: faker.random.word(),
-
-    hidden: faker.random.word(),
-    locked: faker.random.word()
-  };
-};
-
-describe('API', () => {
-  describe('new Emporium()', () => {
-    it('should create a new Emporium', () => {
-      emporium = new Emporium();
-      emporium.is(Object);
-    });
-  });
+describe('APIAdapter', () => {
   describe('new APIAdapter()', () => {
     it('should create and configure a new API Adapter', () => {
-      adapter = new APIAdapter({
-        domain: 'http://localhost:8080',
-      });
-      adapter.is(Object);
-    });
-  });
-  describe('emporium.setAdapter()', () => {
-    it('should set the adapter for this emporium', () => {
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-    });
-  });
-  describe('emporium.setIdentifier()', () => {
-    it('should set the identifier for this emporium', () => {
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-    });
-  });
-  describe('new Schema()', () => {
-    it('should create a new Schema', () => {
-      schema = new Schema({
-        uuid: {type: String, default: uuid.v1},
-
-        array: {type: Array, default: []},
-        boolean: {type: Boolean, default: false},
-        date: {type: Number, default: Date.now},
-        number: {type: Number, default: 0},
-        object: {type: Object, default: {}},
-        string: {type: String, default: null},
-
-        hidden: {type: String, default: null},
-        locked: {type: String, default: null}
-      });
-      schema.hide('hidden').lock('locked');
-      schema.is(Object);
-    });
-  });
-  describe('emporium.storable()', () => {
-    it('should create a new Storable', () => {
-      Storable = emporium.storable('API_Test_Model', schema);
-      schema.adapter.is(adapter);
-      schema.identifier.is('id');
-      is(Storable);
-    });
-  });
-  describe('emporium.storables[Storable]', () => {
-    it('Storable should be available through emporium', () => {
-      is(emporium['API_Test_Model']);
-    });
-  });
-  describe('emporium.storables[Other]', () => {
-    it('Other should not be available through emporium', () => {
-      isnt(emporium['Test']);
-    });
-  });
-  describe('schema.setAdapter()', () => {
-    it('should set the adapter for this schema', () => {
-      adapter = new APIAdapter({
+      let adapter = new APIAdapter({
         domain: 'http://localhost:8000',
         headers: { "Content-Type": "application/json; charset=utf-8" }
       });
       adapter.is(Object);
-      schema.setAdapter(adapter);
-      schema.adapter.is(adapter);
-      emporium._adapter.isnt(adapter);
-    });
-  });
-  describe('schema.setIdentifier()', () => {
-    it('should set the adapter for this schema', () => {
-      schema.setIdentifier('uuid');
-      schema.identifier.is('uuid');
-      emporium._identifier.isnt('uuid');
+      let emporium = new Emporium();
+      emporium.setAdapter(adapter);
+      emporium._adapter.is(adapter);
+      emporium.setIdentifier('id');
+      emporium._identifier.is('id');
+      schema = new Schema({
+        id: {type: String, default: uuid.v1},
+        key: String
+      });
+      Storable = emporium.storable('Test_Model', schema);
+      is(Storable);
     });
   });
   describe('schema.setResourceName()', () => {
     it('should set the resourceName for this schema', () => {
-      schema.setResourceName('api_test_models');
-      schema.resourceName.is('api_test_models');
+      schema.setResourceName('test_models');
+      schema.resourceName.is('test_models');
     });
   });
   describe('Storable.create()', () => {
@@ -120,7 +42,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('POST');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       return;
@@ -128,7 +50,7 @@ describe('API', () => {
   });
   describe('Storable.create({})', () => {
     it('should create a new storable with set values', async () => {
-      let object = new Storable(fakeObject());
+      let object = new Storable({key: faker.random.word()});
       storables.push(object);
       let request;
       try {
@@ -138,7 +60,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('POST');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.data).is(object);
@@ -148,7 +70,7 @@ describe('API', () => {
   describe('Storable.update({})', () => {
     it('should update a storable', async () => {
       let object = storables[0];
-      object.number = faker.random.number();
+      object.key = faker.random.word();
       let request;
       try {
         await Storable.update(object);
@@ -157,7 +79,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('PUT');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.data).is(object);
@@ -174,7 +96,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       isnt(request.data)
@@ -184,7 +106,7 @@ describe('API', () => {
   describe('Storable.get(filter)', () => {
     it('should get a filtered array of one storables', async () => {
       let request;
-      let filter = {string: storables[0].string}
+      let filter = {key: storables[0].key}
       try {
         await Storable.get({ filter });
       } catch(req) {
@@ -192,7 +114,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.params.filter).is(filter);
@@ -211,7 +133,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.params.sort).is(sort);
@@ -230,7 +152,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.params.limit).is(limit);
@@ -249,7 +171,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.params.skip).is(skip);
@@ -268,7 +190,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is('http://localhost:8000/api_test_models');
+      request.url.is('http://localhost:8000/test_models');
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       JSON.parse(request.params.offset).is(offset);
@@ -287,7 +209,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       isnt(request.data)
@@ -299,13 +221,13 @@ describe('API', () => {
       let object = storables[0];
       let request;
       try {
-        await Storable.find(object.uuid);
+        await Storable.find(object.id);
       } catch(req) {
         request = req;
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('GET');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       isnt(request.data)
@@ -317,13 +239,13 @@ describe('API', () => {
       let object = storables[0];
       let request;
       try {
-        await Storable.delete(object.uuid);
+        await Storable.delete(object.id);
       } catch(req) {
         request = req;
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('DELETE');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       return;
@@ -340,7 +262,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('DELETE');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       return;
@@ -358,7 +280,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('PUT');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       let data = JSON.parse(request.data);
@@ -378,7 +300,7 @@ describe('API', () => {
       };
       request.is();
       request.is(Object);
-      request.url.is(`http://localhost:8000/api_test_models/${object.uuid}`);
+      request.url.is(`http://localhost:8000/test_models/${object.id}`);
       request.method.is('DELETE');
       request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
       return;

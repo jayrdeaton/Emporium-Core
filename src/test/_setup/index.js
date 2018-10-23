@@ -5,16 +5,8 @@ let { is, isnt } = require('amprisand'),
 
 process.env.NODE_ENV = 'EMPORIUM_TEST';
 
-describe('Emporium Test Setup', () => {
+describe('setup', () => {
   it('should setup test environment', () => {
     return;
-  });
-});
-
-describe('Clean JSON Store', () => {
-  it('should remove test json files', (done) => {
-    rimraf(join(homedir(), '.emporium', 'TEST'), () => {
-      done();
-    });
   });
 });
