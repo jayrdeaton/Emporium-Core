@@ -1,3 +1,4 @@
+console.log("HEYO")
 let { join } = require('path'),
   { arrayQuery, checkDirectory, readFile, removeArrayEntry, updateArrayEntry, writeFile } = require('../helpers');
 
