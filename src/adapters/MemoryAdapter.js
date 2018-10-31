@@ -1,4 +1,4 @@
-let { arrayQuery, checkDirectory, readFile, removeArrayEntry, updateArrayEntry, writeFile } = require('../helpers');
+let { arrayQuery, removeArrayEntry, updateArrayEntry } = require('../helpers');
 
 let MemoryAdapter = class MemoryAdapter {
   constructor(data) {

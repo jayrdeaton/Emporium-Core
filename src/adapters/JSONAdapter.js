@@ -1,6 +1,6 @@
-console.log("HEYO")
 let { join } = require('path'),
-  { arrayQuery, checkDirectory, readFile, removeArrayEntry, updateArrayEntry, writeFile } = require('../helpers');
+  { arrayQuery, removeArrayEntry, updateArrayEntry } = require('../helpers'),
+  { checkDirectory, readFile, writeFile } = require('../jsonHelpers');
 
 let JSONAdapter = class JSONAdapter {
   constructor(data) {
