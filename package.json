@@ -1,14 +1,12 @@
 {
   "name": "emporium",
   "version": "2.3.1",
-  "description": "A local JSON data store for node",
+  "description": "A flexible data store utility",
   "main": "index.js",
   "scripts": {
     "test": "mocha src/test; exit 0"
   },
   "keywords": [
-    "local",
-    "JSON",
     "data",
     "store"
   ],
