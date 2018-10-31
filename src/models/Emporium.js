@@ -1,5 +1,6 @@
-let { storableConstructor } = require('../constructors');
-let Schema = require('./Schema');
+let { storableConstructor } = require('../constructors'),
+  Schema = require('./Schema'),
+  { APIAdapter, MemoryAdapter } = require('../adapters');
 
 let Emporium = class Emporium {
   constructor() {
@@ -24,21 +25,7 @@ let Emporium = class Emporium {
 };
 
 Emporium.Schema = Schema;
-
-Object.defineProperty(Emporium, 'APIAdapter', {
-  get: () => {
-    return require('../adapters/APIAdapter');
-  }
-});
-Object.defineProperty(Emporium, 'JSONAdapter', {
-  get: () => {
-    return require('../adapters/JSONAdapter');
-  }
-});
-Object.defineProperty(Emporium, 'MemoryAdapter', {
-  get: () => {
-    return require('../adapters/MemoryAdapter');
-  }
-});
+Emporium.APIAdapter = APIAdapter;
+Emporium.MemoryAdapter = MemoryAdapter;
 
 module.exports = Emporium;

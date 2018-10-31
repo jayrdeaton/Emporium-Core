@@ -1,15 +1,7 @@
-let { is, isnt } = require('amprisand'),
-  { join } = require('path'),
-  { homedir } = require('os'),
-  rimraf = require('rimraf'),
-  { promisify } = require('util');
-
-rimraf = promisify(rimraf);
+let { is, isnt } = require('amprisand');
 
 describe('teardown', () => {
-  describe('Clean JSON Store', () => {
-    it('should remove test json files', async () => {
-      await rimraf(join(homedir(), '.emporium', 'TEST'));
-    });
+  it('should teardown test environment', async () => {
+
   });
 });

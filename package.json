@@ -13,13 +13,12 @@
   "author": "Jay Deaton",
   "license": "ISC",
   "dependencies": {
-    "amprisand": "^0.1.2",
     "axios": "^0.18.0"
   },
   "devDependencies": {
+    "amprisand": "^0.1.2",
     "faker": "^4.1.0",
     "mocha": "^5.2.0",
-    "rimraf": "^2.6.2",
     "uuid": "^3.3.2"
   }
 }
