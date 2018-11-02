@@ -1,3 +1,5 @@
+let { getAttributeValue } = require('../helpers');
+
 module.exports = (emporium, schema) => {
   let Storable = class Storable {
     constructor(data) {
@@ -7,20 +9,12 @@ module.exports = (emporium, schema) => {
           if (definition.default !== undefined) this[attribute] = definition.default
           if (typeof definition.default === 'function') this[attribute] = definition.default();
           if (data && data[attribute] !== undefined && data[attribute] !== null) {
-            if (definition.type === Array) {
-              this[attribute] = definition.type(...data[attribute]);
-            } else {
-              this[attribute] = definition.type(data[attribute]);
-            };
+            this[attribute] = getAttributeValue(definition.type, data[attribute]);
           };
           if (schema.required.includes(attribute) && (this[attribute] === undefined || this[attribute] === null)) throw new Error(`${schema.name} missing required value: ${attribute}!`);
         } else {
           if (data && data[attribute] !== undefined && data[attribute] !== null) {
-            if (definition === Array) {
-              this[attribute] = definition(...data[attribute]);
-            } else {
-              this[attribute] = definition(data[attribute]);
-            };
+            this[attribute] = getAttributeValue(definition, data[attribute]);
           };
         };
       };
@@ -34,25 +28,6 @@ module.exports = (emporium, schema) => {
           writable: false
         });
       };
-      // if (schema.required.length > 0) {
-      //   this._requiredValues = {};
-      //   Object.defineProperty(this, '_requiredValues', {
-      //     enumerable: false
-      //   });
-      // };
-      // for (let require of schema.required) {
-      //   let value = this[require];
-      //   Object.defineProperty(this, require, {
-      //     get() {
-      //       return this._requiredValues[require];
-      //     },
-      //     set(value) {
-      //       if (value === undefined || value === null) throw new Error(`${schema.name} missing required value: ${require}!`);
-      //       this._requiredValues[require] = value;
-      //     }
-      //   });
-      //   this[require] = value;
-      // };
     };
     static convertObjects(data) {
       let result;
