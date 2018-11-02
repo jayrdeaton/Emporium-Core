@@ -1,4 +1,4 @@
-module.exports = (type, value) => {
+module.exports = (value, type) => {
   let result;
   if (type === Array || type.prototype instanceof Array) {
     result = new type(...value);

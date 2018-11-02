@@ -13,6 +13,18 @@ describe('Schema', () => {
       schema.is(Object);
     });
   });
+  describe('new Schema(invalid)', () => {
+    it('should fail to create a new Schema', () => {
+      let result, error;
+      try {
+        result = new Schema({ id: {default: uuid.v1} });
+      } catch(err) {
+        error = err;
+      };
+      is(error);
+      isnt(result);
+    });
+  });
   describe('schema.setAdapter()', () => {
     it('should set the adapter for this schema', () => {
       let adapter = new MemoryAdapter();

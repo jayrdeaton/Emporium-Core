@@ -11,7 +11,8 @@ module.exports = class Schema {
     for (let key of Object.keys(data)) {
       let value = data[key]
       if (typeof value === 'object') {
-        if (value.hidden) this.hidden.push(key)
+        if (!value.type) throw new Error(`Schema attribute '${key}' requires a type`);
+        if (value.hidden) this.hidden.push(key);
         if (value.readOnly || value.locked) this.locked.push(key);
         if (value.required) this.required.push(key);
       };
@@ -30,30 +31,30 @@ module.exports = class Schema {
     if (Array.isArray(value)) {
       this.hidden.concat(value);
     } else if (typeof value === 'string') {
-      this.hidden.push(value)
+      this.hidden.push(value);
     } else {
-      throw new Error(`Unexpected input ${value}`)
-    }
+      throw new Error(`Unexpected input ${value}`);
+    };
     return this;
   };
   lock(value) {
     if (Array.isArray(value)) {
       this.locked.concat(value);
     } else if (typeof value === 'string') {
-      this.locked.push(value)
+      this.locked.push(value);
     } else {
-      throw new Error(`Unexpected input ${value}`)
-    }
+      throw new Error(`Unexpected input ${value}`);
+    };
     return this;
   };
   require(value) {
     if (Array.isArray(value)) {
       this.required.concat(value);
     } else if (typeof value === 'string') {
-      this.required.push(value)
+      this.required.push(value);
     } else {
-      throw new Error(`Unexpected input ${value}`)
-    }
+      throw new Error(`Unexpected input ${value}`);
+    };
     return this;
   };
 };

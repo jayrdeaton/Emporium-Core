@@ -1,7 +1,7 @@
 let arrayQuery = require('./arrayQuery'),
-  getAttributeValue = require('./getAttributeValue'),
+  getValueWithType = require('./getValueWithType'),
   removeArrayEntry = require('./removeArrayEntry'),
   updateArrayEntry = require('./updateArrayEntry'),
   wholeObject = require('./wholeObject');
 
-module.exports = { arrayQuery, getAttributeValue, removeArrayEntry, updateArrayEntry, wholeObject };
+module.exports = { arrayQuery, getValueWithType, removeArrayEntry, updateArrayEntry, wholeObject };

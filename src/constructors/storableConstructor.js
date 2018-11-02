@@ -1,22 +1,21 @@
-let { getAttributeValue } = require('../helpers');
+let { getValueWithType } = require('../helpers');
 
 module.exports = (emporium, schema) => {
   let Storable = class Storable {
     constructor(data) {
       for (let attribute of Object.keys(schema.attributes)) {
         let definition = schema.attributes[attribute];
+        let type;
         if (typeof definition === 'object') {
-          if (definition.default !== undefined) this[attribute] = definition.default
-          if (typeof definition.default === 'function') this[attribute] = definition.default();
-          if (data && data[attribute] !== undefined && data[attribute] !== null) {
-            this[attribute] = getAttributeValue(definition.type, data[attribute]);
-          };
-          if (schema.required.includes(attribute) && (this[attribute] === undefined || this[attribute] === null)) throw new Error(`${schema.name} missing required value: ${attribute}!`);
+          type = definition.type;
+          if (typeof definition.default !== "undefined") if (typeof definition.default === 'function') { this[attribute] = definition.default() } else { this[attribute] = definition.default };
+          if (data && typeof data[attribute] !== "undefined" && data[attribute] !== null) this[attribute] = data[attribute];
+          if (schema.required.includes(attribute) && (typeof this[attribute] === "undefined" || this[attribute] === null)) throw new Error(`${schema.name} missing required value: ${attribute}!`);
         } else {
-          if (data && data[attribute] !== undefined && data[attribute] !== null) {
-            this[attribute] = getAttributeValue(definition, data[attribute]);
-          };
+          type = definition;
+          if (data && typeof data[attribute] !== "undefined" && data[attribute] !== null) this[attribute] = data[attribute];
         };
+        this[attribute] = getValueWithType(this[attribute], type);
       };
       for (let hide of schema.hidden) {
         Object.defineProperty(this, hide, {
@@ -41,14 +40,14 @@ module.exports = (emporium, schema) => {
     };
     static async create(body) {
       body = this.convertObjects(body);
-      for (let key of schema.required) if (body[key] === undefined || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      for (let key of schema.required) if (typeof body[key] === "undefined" || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.create(schema, body);
       if (!result) return result;
       return this.convertObjects(result);
     };
     static async update(body) {
       body = this.convertObjects(body);
-      for (let key of schema.required) if (body[key] === undefined || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      for (let key of schema.required) if (typeof body[key] === "undefined" || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.update(schema, body);
       if (!result) return result;
       return this.convertObjects(result);
