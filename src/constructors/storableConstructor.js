@@ -73,8 +73,7 @@ module.exports = (emporium, schema) => {
     };
     delete() {
       return schema.adapter.delete(schema, this);
-    }
+    };
   };
-
   return Storable;
 };
