@@ -10,7 +10,7 @@ describe('APIAdapter', () => {
     it('should create and configure a new API Adapter', () => {
       let adapter = new APIAdapter({
         domain: 'http://localhost:8000',
-        headers: { "Content-Type": "application/json; charset=utf-8" }
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
       });
       adapter.is(Object);
       let emporium = new Emporium();
@@ -24,6 +24,27 @@ describe('APIAdapter', () => {
       });
       Storable = emporium.storable('Test_Model', schema);
       is(Storable);
+    });
+  });
+  describe('adapter.setHeaders()', () => {
+    it('should configure an API Adapters headers', () => {
+      let adapter = new APIAdapter({
+        domain: 'http://localhost:8000',
+      });
+      adapter.is(Object);
+      isnt(adapter.headers);
+      adapter.setHeaders({ 'Test': 'Test' });
+      adapter.headers.is({ 'Test': 'Test' });
+    });
+  });
+  describe('adapter.setDomain()', () => {
+    it('should configure an API Adapters domain', () => {
+      let adapter = new APIAdapter({
+        domain: 'http://localhost:8000',
+      });
+      adapter.is(Object);
+      adapter.setDomain('Test');
+      adapter.domain.is('Test');
     });
   });
   describe('schema.setResourceName()', () => {

@@ -102,6 +102,9 @@ let APIAdapter = class APIAdapter {
       this.headers[key] = headers[key];
     });
   };
+  setDomain(domain) {
+    this.domain = domain;
+  }
 };
 
 module.exports = APIAdapter;
