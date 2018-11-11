@@ -4,7 +4,7 @@
   "description": "A flexible data store utility",
   "main": "index.js",
   "scripts": {
-    "test": "mocha src/test; exit 0"
+    "test": "mocha ./test; exit 0"
   },
   "keywords": [
     "data",

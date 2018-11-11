@@ -1,12 +1,12 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, storables = [];
 
-describe('Date', () => {
-  describe('new Schema({ key: Date })', () => {
+describe('DateExtension', () => {
+  describe('new Schema({ key: DateExtension })', () => {
     it('should create a new Schema', () => {
       let adapter = new MemoryAdapter();
       adapter.is(Object);
@@ -15,9 +15,14 @@ describe('Date', () => {
       emporium._adapter.is(adapter);
       emporium.setIdentifier('id');
       emporium._identifier.is('id');
+      let DateExtension = class DateExtension extends Date {
+        constructor(data) {
+          super(data);
+        };
+      };
       schema = new Schema({
         id: {type: String, default: uuid.v1},
-        key: Date
+        key: DateExtension
       });
       Storable = emporium.storable('Test_Model', schema);
       is(Storable);
@@ -36,7 +41,7 @@ describe('Date', () => {
     });
   });
   describe('Storable.create({ key: Boolean })', () => {
-    it('should successfully create a storable with a Date', async () => {
+    it('should successfully create a storable with a DateExtension', async () => {
       let storable, error, key = faker.random.boolean();
       try {
         storable = await Storable.create({ key });
@@ -47,7 +52,7 @@ describe('Date', () => {
       is(storable);
     });
   });
-  describe('Storable.create({ key: Date })', () => {
+  describe('Storable.create({ key: DateExtension })', () => {
     it('should successfully create a storable with a Date', async () => {
       let storable, error, key = faker.date.recent();
       try {

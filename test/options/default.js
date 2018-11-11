@@ -1,7 +1,7 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, defaultValue, storables = [];
 

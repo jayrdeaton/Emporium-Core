@@ -1,12 +1,12 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, storables = [];
 
-describe('Boolean', () => {
-  describe('new Schema({ key: Boolean })', () => {
+describe('Object', () => {
+  describe('new Schema({ key: Object })', () => {
     it('should create a new Schema', () => {
       let adapter = new MemoryAdapter();
       adapter.is(Object);
@@ -17,7 +17,7 @@ describe('Boolean', () => {
       emporium._identifier.is('id');
       schema = new Schema({
         id: {type: String, default: uuid.v1},
-        key: Boolean
+        key: Object
       });
       Storable = emporium.storable('Test_Model', schema);
       is(Storable);
@@ -36,7 +36,7 @@ describe('Boolean', () => {
     });
   });
   describe('Storable.create({ key: Boolean })', () => {
-    it('should successfully create a storable with a Boolean', async () => {
+    it('should successfully create a storable with a Date', async () => {
       let storable, error, key = faker.random.boolean();
       try {
         storable = await Storable.create({ key });

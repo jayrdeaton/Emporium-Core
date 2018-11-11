@@ -1,13 +1,13 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, defaultValue, storables = [];
 
-describe('locked', () => {
-  describe(`new Schema({ key: { type: String, locked: true } })`, () => {
-    it('should create a new Schema with a locked key', () => {
+describe('hidden', () => {
+  describe(`new Schema({ key: { type: String, hidden: true } })`, () => {
+    it('should create a new Schema with a hidden key', () => {
       let adapter = new MemoryAdapter();
       adapter.is(Object);
       let emporium = new Emporium();
@@ -18,15 +18,14 @@ describe('locked', () => {
       defaultValue = faker.random.word();
       schema = new Schema({
         id: {type: String, default: uuid.v1},
-        key: {type: String, default: defaultValue, locked: true}
+        key: {type: String, default: defaultValue, hidden: true}
       });
       Storable = emporium.storable('Test_Model', schema);
-      is(schema.locked.includes('key'));
       is(Storable);
     });
   });
   describe('Storable.create()', () => {
-    it('should create a storable with locked value', async () => {
+    it('should create a storable with hidden value', async () => {
       let storable, error;
       try {
         storable = await Storable.create();
@@ -36,12 +35,11 @@ describe('locked', () => {
       isnt(error);
       is(storable);
       storable.key.is(defaultValue);
-      storable.key = faker.random.word();
-      storable.key.is(defaultValue);
+      isnt(Object.keys(storable).includes('key'));
     });
   });
-  describe(`schema.lock('key')`, () => {
-    it('should lock key', () => {
+  describe(`schema.hide('key')`, () => {
+    it('should hide a key', () => {
       let adapter = new MemoryAdapter();
       adapter.is(Object);
       let emporium = new Emporium();
@@ -54,14 +52,13 @@ describe('locked', () => {
         id: {type: String, default: uuid.v1},
         key: {type: String, default: defaultValue}
       });
-      schema.lock('key');
+      schema.hide('key');
       Storable = emporium.storable('Test_Model', schema);
-      is(schema.locked.includes('key'));
       is(Storable);
     });
   });
   describe('Storable.create()', () => {
-    it('should create a storable with locked value', async () => {
+    it('should create a storable with hidden value', async () => {
       let storable, error;
       try {
         storable = await Storable.create();
@@ -71,8 +68,7 @@ describe('locked', () => {
       isnt(error);
       is(storable);
       storable.key.is(defaultValue);
-      storable.key = faker.random.word();
-      storable.key.is(defaultValue);
+      isnt(Object.keys(storable).includes('key'));
     });
   });
 });

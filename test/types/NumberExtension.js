@@ -1,12 +1,12 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, storables = [];
 
-describe('StringExtension', () => {
-  describe('new Schema({ key: StringExtension })', () => {
+describe('NumberExtension', () => {
+  describe('new Schema({ key: NumberExtension })', () => {
     it('should create a new Schema', () => {
       let adapter = new MemoryAdapter();
       adapter.is(Object);
@@ -15,14 +15,14 @@ describe('StringExtension', () => {
       emporium._adapter.is(adapter);
       emporium.setIdentifier('id');
       emporium._identifier.is('id');
-      let StringExtension = class StringExtension extends String {
+      let NumberExtension = class NumberExtension extends Number {
         constructor(data) {
           super(data);
         };
       };
       schema = new Schema({
-        id: {type: StringExtension, default: uuid.v1},
-        key: StringExtension
+        id: {type: String, default: uuid.v1},
+        key: NumberExtension
       });
       Storable = emporium.storable('Test_Model', schema);
       is(Storable);
@@ -64,7 +64,7 @@ describe('StringExtension', () => {
       is(storable);
     });
   });
-  describe('Storable.create({ key: Number })', () => {
+  describe('Storable.create({ key: NumberExtension })', () => {
     it('should successfully create a storable with a Number', async () => {
       let storable, error, key = faker.random.number();
       try {
@@ -88,7 +88,7 @@ describe('StringExtension', () => {
       is(storable);
     });
   });
-  describe('Storable.create({ key: StringExtension })', () => {
+  describe('Storable.create({ key: String })', () => {
     it('should successfully create a storable with a String', async () => {
       let storable, error, key = faker.random.word();
       try {

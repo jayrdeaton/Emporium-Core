@@ -1,7 +1,7 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, storable, defaultValue, storables = [];
 
@@ -53,6 +53,7 @@ describe('required', () => {
       } catch(err) {
         error = err;
       };
+      console.log(error);
       is(error);
       isnt(storable);
     });
@@ -92,6 +93,18 @@ describe('required', () => {
         error = err;
       };
       is(error);
+    });
+  });
+  describe('new Storable()', () => {
+    it('should succeed to construct a storable without required value', async () => {
+      let error;
+      try {
+        storable = new Storable();
+      } catch(err) {
+        error = err;
+      };
+      isnt(error);
+      is(storable);
     });
   });
 });

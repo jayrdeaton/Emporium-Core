@@ -1,12 +1,12 @@
 let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../../'),
+  Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
   schema, Storable, storables = [];
 
-describe('ArrayExtension', () => {
-  describe('new Schema({ key: ArrayExtension })', () => {
+describe('Array', () => {
+  describe('new Schema({ key: Array })', () => {
     it('should create a new Schema', () => {
       let adapter = new MemoryAdapter();
       adapter.is(Object);
@@ -15,20 +15,15 @@ describe('ArrayExtension', () => {
       emporium._adapter.is(adapter);
       emporium.setIdentifier('id');
       emporium._identifier.is('id');
-      let ArrayExtension = class ArrayExtension extends Array {
-        constructor(data) {
-          super(data);
-        };
-      };
       schema = new Schema({
         id: {type: String, default: uuid.v1},
-        key: ArrayExtension
+        key: Array
       });
       Storable = emporium.storable('Test_Model', schema);
       is(Storable);
     });
   });
-  describe('Storable.create({ key: ArrayExtension })', () => {
+  describe('Storable.create({ key: Array })', () => {
     it('should create a storable with Array', async () => {
       let storable, error, key = [ faker.random.word(), faker.random.word() ];
       try {
