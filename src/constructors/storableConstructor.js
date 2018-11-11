@@ -9,7 +9,7 @@ module.exports = (emporium, schema) => {
         if (typeof definition === 'object') {
           type = definition.type;
           if (typeof definition.default !== "undefined") if (typeof definition.default === 'function') { this[attribute] = definition.default() } else { this[attribute] = definition.default };
-          if (data && typeof data[attribute] !== "undefined" && data[attribute] !== null) this[attribute] = data[attribute];
+          if (data && typeof data[attribute] !== "undefined" && data[attribute] !== null && attribute !== schema.identifier) this[attribute] = data[attribute];
           if (schema.required.includes(attribute) && (typeof this[attribute] === "undefined" || this[attribute] === null)) throw new Error(`${schema.name} missing required value: ${attribute}!`);
         } else {
           type = definition;
