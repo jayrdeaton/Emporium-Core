@@ -37,8 +37,8 @@ module.exports = (emporium, schema) => {
       };
       return result;
     };
-    static async batch(query, body) {
-      let result = await schema.adapter.batch(schema, query, body);
+    static async batch(body, query) {
+      let result = await schema.adapter.batch(schema, body, query);
       return this.convertObjects(result);
     };
     static async count(query) {

@@ -13,7 +13,7 @@ let APIAdapter = class APIAdapter {
     if (data.headers) this.headers = data.headers;
     if (data.encodingMethod) this.encodingMethod = data.encodingMethod;
   };
-  async batch(schema, query, body) {
+  async batch(schema, body, query) {
     let endpoint = schema.resourceName || schema.name;
     let data = JSON.stringify(wholeObject(body));
     let request = {

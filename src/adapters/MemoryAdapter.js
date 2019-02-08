@@ -11,7 +11,7 @@ let MemoryAdapter = class MemoryAdapter {
     objects = arrayQuery(objects, query);
     return objects.length;
   };
-  async batch(schema, query, body) {
+  async batch(schema, body, query) {
     let endpoint = schema.resourceName || schema.name;
     let objects = [];
     if (this.database[endpoint]) Object.assign(objects, this.database[endpoint]);
