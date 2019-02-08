@@ -53,7 +53,6 @@ describe('required', () => {
       } catch(err) {
         error = err;
       };
-      console.log(error);
       is(error);
       isnt(storable);
     });
