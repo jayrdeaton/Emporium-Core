@@ -51,6 +51,14 @@ module.exports = (emporium, schema) => {
     static delete(body) {
       return schema.adapter.delete(schema, body);
     };
+    static async duplicate(identifier) {
+      if (!schema.identifier) return null;
+      if (typeof identifier === 'object') identifier = identifier[schema.identifier];
+      if (!identifier) return null;
+      let result = await schema.adapter.duplicate(schema, identifier);
+      if (!result) return result;
+      return this.convertObjects(result);
+    };
     static async find(identifier) {
       if (!schema.identifier) return null;
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
