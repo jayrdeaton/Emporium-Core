@@ -69,6 +69,18 @@ let APIAdapter = class APIAdapter {
     let response = await axios(request);
     return response.data;
   };
+  async duplicate(schema, identifier) {
+    let endpoint = schema.resourceName || schema.name;
+    let url = `${this.domain}/${endpoint}/${identifier}/duplicate`;
+    let request = {
+      url,
+      method: 'GET',
+      headers: this.headers
+    };
+    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
+    let response = await axios(request);
+    return response.data;
+  };
   async find(schema, identifier) {
     let endpoint = schema.resourceName || schema.name;
     let url = `${this.domain}/${endpoint}/${identifier}`;
