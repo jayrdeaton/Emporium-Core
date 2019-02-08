@@ -34,7 +34,7 @@ let APIAdapter = class APIAdapter {
     };
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
-    return response.data;
+    return response.data.count;
   };
   async create(schema, body) {
     let endpoint = schema.resourceName || schema.name;
