@@ -50,7 +50,7 @@ let MemoryAdapter = class MemoryAdapter {
     let objects = await this.get(schema, query);
     let object = null;
     if (objects.length > 0) object = objects[0];
-    if (object) objects.push(new Object(object));
+    if (object) this.database[endpoint].push(object);
     return object;
   };
   async find(schema, identifier) {
