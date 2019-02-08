@@ -4,6 +4,13 @@ let MemoryAdapter = class MemoryAdapter {
   constructor(data) {
     this.database = {};
   };
+  async count(schema, query) {
+    let endpoint = schema.resourceName || schema.name;
+    let objects = [];
+    if (this.database[endpoint]) Object.assign(objects, this.database[endpoint]);
+    objects = arrayQuery(objects, query);
+    return objects.length;
+  };
   async create(schema, body) {
     let endpoint = schema.resourceName || schema.name;
     let objects = await this.get(schema, null);
@@ -14,34 +21,6 @@ let MemoryAdapter = class MemoryAdapter {
     };
     this.database[endpoint] = objects;
     return body;
-  };
-  async update(schema, body) {
-    if (!schema.identifier) return null;
-    let endpoint = schema.resourceName || schema.name;
-    let objects = await this.get(schema, null);
-    if (Array.isArray(body)) {
-      for (let entry of body) objects = updateArrayEntry(objects, entry, schema.identifier);
-    } else {
-      objects = updateArrayEntry(objects, body, schema.identifier);
-    };
-    this.database[endpoint] = objects;
-    return body;
-  };
-  async get(schema, query) {
-    let endpoint = schema.resourceName || schema.name;
-    let objects = [];
-    if (this.database[endpoint]) Object.assign(objects, this.database[endpoint]);
-    objects = arrayQuery(objects, query);
-    return objects;
-  };
-  async find(schema, identifier) {
-    if (!schema.identifier) return null;
-    let endpoint = schema.resourceName || schema.name;
-    let query = {filter: {[schema.identifier]: identifier}};
-    let objects = await this.get(schema, query);
-    let result;
-    if (objects.length > 0) result = objects[0];
-    return result;
   };
   async delete(schema, body) {
     if (!schema.identifier) return null;
@@ -54,6 +33,34 @@ let MemoryAdapter = class MemoryAdapter {
     };
     this.database[endpoint] = objects;
     return null;
+  };
+  async find(schema, identifier) {
+    if (!schema.identifier) return null;
+    let endpoint = schema.resourceName || schema.name;
+    let query = {filter: {[schema.identifier]: identifier}};
+    let objects = await this.get(schema, query);
+    let result;
+    if (objects.length > 0) result = objects[0];
+    return result;
+  };
+  async get(schema, query) {
+    let endpoint = schema.resourceName || schema.name;
+    let objects = [];
+    if (this.database[endpoint]) Object.assign(objects, this.database[endpoint]);
+    objects = arrayQuery(objects, query);
+    return objects;
+  };
+  async update(schema, body) {
+    if (!schema.identifier) return null;
+    let endpoint = schema.resourceName || schema.name;
+    let objects = await this.get(schema, null);
+    if (Array.isArray(body)) {
+      for (let entry of body) objects = updateArrayEntry(objects, entry, schema.identifier);
+    } else {
+      objects = updateArrayEntry(objects, body, schema.identifier);
+    };
+    this.database[endpoint] = objects;
+    return body;
   };
 };
 
