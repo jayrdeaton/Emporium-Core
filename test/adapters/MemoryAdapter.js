@@ -51,6 +51,27 @@ describe('MemoryAdapter', () => {
       return;
     });
   });
+  describe('Storable.batch()', () => {
+    it('should update a batch of storables', async () => {
+      let result = await Storable.batch({ key: faker.random.word() });
+      result.is();
+      return;
+    });
+  });
+  describe('Storable.count()', () => {
+    it('should count how many storables', async () => {
+      let result = await Storable.count();
+      result.is(Number);
+      return;
+    });
+  });
+  describe('Storable.duplicate()', () => {
+    it('should duplicate a given storable', async () => {
+      let result = await Storable.duplicate(storables[1].id);
+      result.is(Object);
+      return;
+    });
+  });
   describe('Storable.update({})', () => {
     it('should update a storable', async () => {
       let object = storables[0];
@@ -75,26 +96,26 @@ describe('MemoryAdapter', () => {
     });
   });
   describe('Storable.get()', () => {
-    it('should get an array of four storables', async () => {
+    it('should get an array of five storables', async () => {
       storables = await Storable.get();
       storables.is(Array);
-      storables.length.is(4);
+      storables.length.is(5);
       return;
     });
   });
   describe('Storable.get(filter)', () => {
-    it('should get a filtered array of one storables', async () => {
+    it('should get a filtered array of three storables', async () => {
       let result = await Storable.get({ filter: {key: storables[1].key} });
       result.is(Array);
-      result.length.is(1);
+      result.length.is(3);
       return;
     });
   });
   describe('Storable.get(sort)', () => {
-    it('should get a sorted array of four storables', async () => {
+    it('should get a sorted array of five storables', async () => {
       let result = await Storable.get({ sort: {id:-1} });
       result.is(Array);
-      result.length.is(4);
+      result.length.is(5);
       let previous = result.shift();
       for (let object of result) {
         is(previous.id >= object.id);
@@ -112,18 +133,18 @@ describe('MemoryAdapter', () => {
     });
   });
   describe('Storable.get(skip)', () => {
-    it('should get a skipped array of three storables', async () => {
+    it('should get a skipped array of four storables', async () => {
       let result = await Storable.get({ skip: 1 });
       result.is(Array);
-      result.length.is(3);
+      result.length.is(4);
       return;
     });
   });
   describe('Storable.get(offset)', () => {
-    it('should get an offset array of three storables', async () => {
+    it('should get an offset array of four storables', async () => {
       let result = await Storable.get({ offset: 1 });
       result.is(Array);
-      result.length.is(3);
+      result.length.is(4);
       return;
     });
   });
@@ -152,7 +173,7 @@ describe('MemoryAdapter', () => {
       let remaining = await Storable.get();
       isnt(result);
       remaining.is(Array);
-      remaining.length.is(3);
+      remaining.length.is(4);
       return;
     });
   });
@@ -163,7 +184,7 @@ describe('MemoryAdapter', () => {
       let remaining = await Storable.get();
       isnt(result);
       remaining.is(Array);
-      remaining.length.is(1);
+      remaining.length.is(2);
       return;
     });
   });

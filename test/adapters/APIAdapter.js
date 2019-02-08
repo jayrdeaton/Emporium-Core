@@ -88,6 +88,56 @@ describe('APIAdapter', () => {
       return;
     });
   });
+  describe('Storable.batch()', () => {
+    it('should update a batch of storables', async () => {
+      let request;
+      let query = { filter: { name: 'test' } };
+      try {
+        await Storable.batch({id: 'test'}, query);
+      } catch(req) {
+        request = req;
+      };
+      request.is();
+      request.is(Object);
+      request.url.is('http://localhost:8000/test_models/batch');
+      request.params.filter.is(JSON.stringify(query.filter));
+      request.method.is('PUT');
+      request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
+      return;
+    });
+  });
+  describe('Storable.count()', () => {
+    it('should count how many storables', async () => {
+      let request;
+      try {
+        await Storable.count();
+      } catch(req) {
+        request = req;
+      };
+      request.is();
+      request.is(Object);
+      request.url.is('http://localhost:8000/test_models/count');
+      request.method.is('GET');
+      request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
+      return;
+    });
+  });
+  describe('Storable.duplicate()', () => {
+    it('should duplicate a storable', async () => {
+      let request;
+      try {
+        await Storable.duplicate('test_id');
+      } catch(req) {
+        request = req;
+      };
+      request.is();
+      request.is(Object);
+      request.url.is('http://localhost:8000/test_models/test_id/duplicate');
+      request.method.is('GET');
+      request.headers.is({ 'Content-Type': 'application/json; charset=utf-8' });
+      return;
+    });
+  });
   describe('Storable.update({})', () => {
     it('should update a storable', async () => {
       let object = storables[0];
