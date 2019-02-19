@@ -45,29 +45,29 @@ module.exports = (emporium, schema) => {
       let result = await schema.adapter.count(schema, query);
       return result;
     };
-    static async create(body) {
+    static async create(body, query) {
       body = this.convertObjects(body);
       for (let key of schema.required) if (typeof body[key] === "undefined" || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
-      let result = await schema.adapter.create(schema, body);
+      let result = await schema.adapter.create(schema, body, query);
       if (!result) return result;
       return this.convertObjects(result);
     };
     static delete(body) {
       return schema.adapter.delete(schema, body);
     };
-    static async duplicate(identifier) {
+    static async duplicate(identifier, query) {
       if (!schema.identifier) return null;
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
       if (!identifier) return null;
-      let result = await schema.adapter.duplicate(schema, identifier);
+      let result = await schema.adapter.duplicate(schema, identifier, query);
       if (!result) return result;
       return this.convertObjects(result);
     };
-    static async find(identifier) {
+    static async find(identifier, query) {
       if (!schema.identifier) return null;
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
       if (!identifier) return null;
-      let result = await schema.adapter.find(schema, identifier);
+      let result = await schema.adapter.find(schema, identifier, query);
       if (!result) return result;
       return this.convertObjects(result);
     };
@@ -75,16 +75,16 @@ module.exports = (emporium, schema) => {
       let result = await schema.adapter.get(schema, query);
       return this.convertObjects(result);
     };
-    static async update(body) {
+    static async update(body, query) {
       body = this.convertObjects(body);
       for (let key of schema.required) if (typeof body[key] === "undefined" || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
-      let result = await schema.adapter.update(schema, body);
+      let result = await schema.adapter.update(schema, body, query);
       if (!result) return result;
       return this.convertObjects(result);
     };
-    async save() {
+    async save(query) {
       for (let key of schema.required) if (typeof this[key] === "undefined" || this[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
-      let object = await schema.adapter.update(schema, this);
+      let object = await schema.adapter.update(schema, this, query);
       return new this.constructor(object);
     };
     delete() {

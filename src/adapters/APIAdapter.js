@@ -39,7 +39,7 @@ let APIAdapter = class APIAdapter {
     let response = await axios(request);
     return response.data.count;
   };
-  async create(schema, body) {
+  async create(schema, body, query) {
     let endpoint = schema.resourceName || schema.name;
     let data = JSON.stringify(wholeObject(body));
     let request = {
@@ -48,6 +48,7 @@ let APIAdapter = class APIAdapter {
       headers: this.headers,
       data
     };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
@@ -70,7 +71,7 @@ let APIAdapter = class APIAdapter {
     let response = await axios(request);
     return response.data;
   };
-  async duplicate(schema, identifier) {
+  async duplicate(schema, identifier, query) {
     let endpoint = schema.resourceName || schema.name;
     let url = `${this.domain}/${endpoint}/${identifier}/duplicate`;
     let request = {
@@ -78,11 +79,12 @@ let APIAdapter = class APIAdapter {
       method: 'GET',
       headers: this.headers
     };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
   };
-  async find(schema, identifier) {
+  async find(schema, identifier, query) {
     let endpoint = schema.resourceName || schema.name;
     let url = `${this.domain}/${endpoint}/${identifier}`;
     let request = {
@@ -90,6 +92,7 @@ let APIAdapter = class APIAdapter {
       method: 'GET',
       headers: this.headers
     };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
@@ -106,7 +109,7 @@ let APIAdapter = class APIAdapter {
     let response = await axios(request);
     return response.data;
   };
-  async update(schema, body) {
+  async update(schema, body, query) {
     if (!schema.identifier || !body[schema.identifier]) return null;
     let endpoint = schema.resourceName || schema.name;
     let data = JSON.stringify(wholeObject(body));
@@ -117,6 +120,7 @@ let APIAdapter = class APIAdapter {
       headers: this.headers,
       data
     };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
