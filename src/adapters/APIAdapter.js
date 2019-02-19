@@ -53,9 +53,7 @@ let APIAdapter = class APIAdapter {
     return response.data;
   };
   async delete(schema, body) {
-    if (!schema.identifier || (typeof body === 'object' && !body[schema.identifier])) {
-      return null;
-    }
+    if (!schema.identifier || (typeof body === 'object' && !body[schema.identifier])) return null;
     let endpoint = schema.resourceName || schema.name;
     let url = `${this.domain}/${endpoint}`;
     if (typeof body === 'string') {
