@@ -97,6 +97,7 @@ describe('APIAdapter', () => {
       } catch(req) {
         request = req;
       };
+      console.log(request)
       request.is();
       request.is(Object);
       request.url.is('http://localhost:8000/test_models/batch');
