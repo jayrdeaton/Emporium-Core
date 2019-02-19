@@ -7,5 +7,5 @@ module.exports = (adapter, query) => {
         request.params[key] = JSON.stringify(query[key]);
       };
     } else { request.params[key] = query[key] };
-  });
+  };
 };
