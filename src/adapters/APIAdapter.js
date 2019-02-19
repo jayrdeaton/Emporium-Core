@@ -1,5 +1,5 @@
 let axios = require('axios'),
-  { wholeObject } = require('../helpers');
+  { encodeQuery, wholeObject } = require('../helpers');
 
 let APIAdapter = class APIAdapter {
   constructor(data) {
@@ -22,18 +22,7 @@ let APIAdapter = class APIAdapter {
       headers: this.headers,
       data
     };
-    if (query) {
-      request.params = {};
-      Object.keys(query).forEach((key) => {
-        if (typeof query[key] === 'object') {
-          if (this.encodingMethod) {
-            request.params[key] = this.encodingMethod(query[key]);
-          } else {
-            request.params[key] = JSON.stringify(query[key]);
-          };
-        } else { request.params[key] = query[key] };
-      });
-    };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
@@ -45,18 +34,7 @@ let APIAdapter = class APIAdapter {
       method: 'GET',
       headers: this.headers
     };
-    if (query) {
-      request.params = {};
-      Object.keys(query).forEach((key) => {
-        if (typeof query[key] === 'object') {
-          if (this.encodingMethod) {
-            request.params[key] = this.encodingMethod(query[key]);
-          } else {
-            request.params[key] = JSON.stringify(query[key]);
-          };
-        } else { request.params[key] = query[key] };
-      });
-    };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data.count;
@@ -125,18 +103,7 @@ let APIAdapter = class APIAdapter {
       method: 'GET',
       headers: this.headers
     };
-    if (query) {
-      request.params = {};
-      Object.keys(query).forEach((key) => {
-        if (typeof query[key] === 'object') {
-          if (this.encodingMethod) {
-            request.params[key] = this.encodingMethod(query[key]);
-          } else {
-            request.params[key] = JSON.stringify(query[key]);
-          };
-        } else { request.params[key] = query[key] };
-      });
-    };
+    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;
