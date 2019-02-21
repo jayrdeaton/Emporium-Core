@@ -36,6 +36,14 @@ module.exports = (emporium, schema) => {
       };
       return result;
     };
+    static removeLockedAttributes(data) {
+      if (Array.isArray(data)) {
+        for (let entry of data) for (let lock of schema.locked) delete entry[lock];
+      } else {
+        for (let lock of schema.locked) delete data[lock];
+      };
+      return data;
+    };
     static async batch(body, query) {
       let result = await schema.adapter.batch(schema, body, query);
       return this.convertObjects(result);
@@ -46,7 +54,7 @@ module.exports = (emporium, schema) => {
     };
     static async create(body, query) {
       body = this.convertObjects(body);
-      for (let key of schema.required) if (typeof body[key] === "undefined" || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.create(schema, body, query);
       if (!result) return result;
       return this.convertObjects(result);
@@ -76,13 +84,14 @@ module.exports = (emporium, schema) => {
     };
     static async update(body, query) {
       body = this.convertObjects(body);
-      for (let key of schema.required) if (typeof body[key] === "undefined" || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      body = this.removeLockedAttributes(body);
+      for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.update(schema, body, query);
       if (!result) return result;
       return this.convertObjects(result);
     };
     async save(query) {
-      for (let key of schema.required) if (typeof this[key] === "undefined" || this[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      for (let key of schema.required) if (typeof this[key] === 'undefined' || this[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let object = await schema.adapter.update(schema, this, query);
       return new this.constructor(object);
     };
