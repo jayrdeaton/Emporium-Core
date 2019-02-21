@@ -91,6 +91,7 @@ module.exports = (emporium, schema) => {
       return this.convertObjects(result);
     };
     async save(query) {
+      Storable.removeLockedAttributes(this);
       for (let key of schema.required) if (typeof this[key] === 'undefined' || this[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let object = await schema.adapter.update(schema, this, query);
       return new this.constructor(object);
