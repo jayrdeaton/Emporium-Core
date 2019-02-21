@@ -8,11 +8,11 @@ module.exports = (emporium, schema) => {
         let type;
         if (typeof definition === 'object') {
           type = definition.type;
-          if (definition.default && typeof definition.default === 'function') { this[attribute] = definition.default() } else { this[attribute] = definition.default };
+          if (definition.default !== undefined) if (typeof definition.default === 'function') { this[attribute] = definition.default() } else { this[attribute] = definition.default };
         } else {
           type = definition;
         };
-        if (data && typeof data[attribute] !== "undefined") this[attribute] = data[attribute];
+        if (data && typeof data[attribute] !== 'undefined') this[attribute] = data[attribute];
         if (typeof this[attribute] !== 'undefined' && this[attribute] !== null) this[attribute] = getValueWithType(this[attribute], type);
       };
       for (let hide of schema.hidden) {
