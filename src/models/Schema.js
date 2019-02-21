@@ -6,7 +6,7 @@ module.exports = class Schema {
     this.required = [];
     this.name = null;
     this.resourceName = null;
-    this.strict = false;
+    this.strict = true;
     this.identifier = null;
     this.adapter = null;
     for (let key of Object.keys(data)) {
