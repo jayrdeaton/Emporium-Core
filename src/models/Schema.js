@@ -28,6 +28,9 @@ module.exports = class Schema {
   setResourceName(resourceName) {
     this.resourceName = resourceName;
   };
+  setStrict(strict) {
+    this.strict = strict;
+  };
   hide(value) {
     if (Array.isArray(value)) {
       this.hidden.concat(value);
