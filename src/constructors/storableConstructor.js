@@ -37,11 +37,11 @@ module.exports = (emporium, schema) => {
       };
       return result;
     };
-    static removeLockedAttributes(data) {
+    static removeDiscardedAttributes(data) {
       if (Array.isArray(data)) {
-        for (let entry of data) for (let lock of schema.locked) delete entry[lock];
+        for (let entry of data) for (let lock of schema.discarded) delete entry[lock];
       } else {
-        for (let lock of schema.locked) delete data[lock];
+        for (let lock of schema.discarded) delete data[lock];
       };
       return data;
     };
@@ -85,14 +85,14 @@ module.exports = (emporium, schema) => {
     };
     static async update(body, query) {
       body = this.convertObjects(body);
-      body = this.removeLockedAttributes(body);
+      body = this.removeDiscardedAttributes(body);
       for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.update(schema, body, query);
       if (!result) return result;
       return this.convertObjects(result);
     };
     async save(query) {
-      Storable.removeLockedAttributes(this);
+      Storable.removeDiscardedAttributes(this);
       for (let key of schema.required) if (typeof this[key] === 'undefined' || this[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let object = await schema.adapter.update(schema, this, query);
       return new this.constructor(object);

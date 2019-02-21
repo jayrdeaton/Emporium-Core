@@ -3,6 +3,7 @@ module.exports = class Schema {
     this.attributes = data;
     this.hidden = [];
     this.locked = [];
+    this.discarded = [];
     this.required = [];
     this.name = null;
     this.resourceName = null;
@@ -14,6 +15,7 @@ module.exports = class Schema {
       if (typeof value === 'object') {
         if (!value.type) throw new Error(`Schema attribute '${key}' requires a type`);
         if (value.hidden) this.hidden.push(key);
+        if (value.discarded) this.discarded.push(key);
         if (value.readOnly || value.locked) this.locked.push(key);
         if (value.required) this.required.push(key);
       };
@@ -30,6 +32,16 @@ module.exports = class Schema {
   };
   setStrict(strict) {
     this.strict = strict;
+  };
+  discard(value) {
+    if (Array.isArray(value)) {
+      this.discarded.concat(value);
+    } else if (typeof value === 'string') {
+      this.discarded.push(value);
+    } else {
+      throw new Error(`Unexpected input ${value}`);
+    };
+    return this;
   };
   hide(value) {
     if (Array.isArray(value)) {
