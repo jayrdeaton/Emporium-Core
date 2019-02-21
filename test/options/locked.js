@@ -3,7 +3,7 @@ let { is, isnt } = require('amprisand'),
   faker = require('faker'),
   Emporium = require('../../'),
   { MemoryAdapter, Schema } = Emporium,
-  schema, Storable, defaultValue, storables = [];
+  schema, storable, Storable, defaultValue, storables = [];
 
 describe('locked', () => {
   describe(`new Schema({ key: { type: String, locked: true } })`, () => {
@@ -72,6 +72,19 @@ describe('locked', () => {
       is(storable);
       storable.key.is(defaultValue);
       storable.key = faker.random.word();
+      storable.key.is(defaultValue);
+    });
+  });
+  describe('Storable.update()', () => {
+    it('should not update a storables locked value', async () => {
+      let error;
+      try {
+        storable = await Storable.update(storable);
+      } catch(err) {
+        error = err;
+      };
+      isnt(error);
+      is(storable);
       storable.key.is(defaultValue);
     });
   });
