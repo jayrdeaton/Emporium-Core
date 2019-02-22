@@ -78,7 +78,6 @@ module.exports = (emporium, schema) => {
     };
     static async get(query) {
       let result = await schema.adapter.get(schema, query);
-      if (!result) return result;
       return result ? this.convertObjects(result) : [];
     };
     static async update(body, query) {
