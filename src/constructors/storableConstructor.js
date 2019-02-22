@@ -57,8 +57,7 @@ module.exports = (emporium, schema) => {
       body = this.convertObjects(body);
       for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.create(schema, body, query);
-      if (!result) return result;
-      return this.convertObjects(result);
+      return result ? this.convertObjects(result) : null;
     };
     static delete(body) {
       return schema.adapter.delete(schema, body);
@@ -68,28 +67,26 @@ module.exports = (emporium, schema) => {
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
       if (!identifier) return null;
       let result = await schema.adapter.duplicate(schema, identifier, query);
-      if (!result) return result;
-      return this.convertObjects(result);
+      return result ? this.convertObjects(result) : null;
     };
     static async find(identifier, query) {
       if (!schema.identifier) return null;
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
       if (!identifier) return null;
       let result = await schema.adapter.find(schema, identifier, query);
-      if (!result) return result;
-      return this.convertObjects(result);
+      return result ? this.convertObjects(result) : null;
     };
     static async get(query) {
       let result = await schema.adapter.get(schema, query);
-      return this.convertObjects(result);
+      if (!result) return result;
+      return result ? this.convertObjects(result) : [];
     };
     static async update(body, query) {
       body = this.convertObjects(body);
       body = this.removeDiscardedAttributes(body);
       for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
       let result = await schema.adapter.update(schema, body, query);
-      if (!result) return result;
-      return this.convertObjects(result);
+      return result ? this.convertObjects(result) : null;
     };
     async save(query) {
       Storable.removeDiscardedAttributes(this);
