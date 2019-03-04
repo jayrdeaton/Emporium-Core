@@ -31,13 +31,6 @@ module.exports = class Emporium {
       throw new Error(`Error loading Emporium APIAdapter: ${err}`);
     };
   };
-  static get JSONAdapter() {
-    try {
-      return require('../adapters/JSONAdapter');
-    } catch(err) {
-      throw new Error(`Error loading Emporium JSONAdapter: ${err}`);
-    };
-  };
   static get MemoryAdapter() {
     try {
       return require('../adapters/MemoryAdapter');
