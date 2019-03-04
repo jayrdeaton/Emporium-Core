@@ -1,8 +1,7 @@
 let { storableConstructor } = require('../constructors'),
-  Schema = require('./Schema'),
-  { APIAdapter, MemoryAdapter } = require('../adapters');
+  Schema = require('./Schema');
 
-let Emporium = class Emporium {
+module.exports = class Emporium {
   constructor() {
     this._adapter = null;
     this._identifier = null;
@@ -22,10 +21,21 @@ let Emporium = class Emporium {
     this[`${schema.name}_Schema`] = schema;
     return Storable;
   };
+  static get Schema() {
+    return Schema;
+  };
+  static get APIAdapter() {
+    try {
+      return require('../adapters/APIAdapter');
+    } catch(err) {
+      throw new Error(`Error loading Emporium APIAdapter: ${err}`);
+    };
+  };
+  static get MemoryAdapter() {
+    try {
+      return require('../adapters/MemoryAdapter');
+    } catch(err) {
+      throw new Error(`Error loading Emporium MemoryAdapter: ${err}`);
+    };
+  };
 };
-
-Emporium.Schema = Schema;
-Emporium.APIAdapter = APIAdapter;
-Emporium.MemoryAdapter = MemoryAdapter;
-
-module.exports = Emporium;

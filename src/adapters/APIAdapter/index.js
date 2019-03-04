@@ -1,5 +1,5 @@
 let axios = require('axios'),
-  { encodeQuery, wholeObject } = require('../helpers');
+  { encodeQuery, wholeObject } = require('../../helpers');
 
 let APIAdapter = class APIAdapter {
   constructor(data) {
