@@ -1,6 +1,6 @@
-let { arrayQuery, removeArrayEntry, updateArrayEntry } = require('../../helpers');
+const { arrayQuery, removeArrayEntry, updateArrayEntry } = require('../../helpers');
 
-let MemoryAdapter = class MemoryAdapter {
+module.exports = class MemoryAdapter {
   constructor(data) {
     this.database = {};
   };
@@ -82,5 +82,3 @@ let MemoryAdapter = class MemoryAdapter {
     return body;
   };
 };
-
-module.exports = MemoryAdapter;

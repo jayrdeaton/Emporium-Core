@@ -1,15 +1,11 @@
 const arrayQuery = require('./arrayQuery'),
-  encodeQuery = require('./encodeQuery'),
   getValueWithType = require('./getValueWithType'),
   removeArrayEntry = require('./removeArrayEntry'),
-  updateArrayEntry = require('./updateArrayEntry'),
-  wholeObject = require('./wholeObject');
+  updateArrayEntry = require('./updateArrayEntry');
 
 module.exports = {
-  arrayQuery, 
-  encodeQuery,
+  arrayQuery,
   getValueWithType,
   removeArrayEntry,
-  updateArrayEntry,
-  wholeObject
+  updateArrayEntry
 };

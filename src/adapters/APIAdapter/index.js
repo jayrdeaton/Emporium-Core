@@ -1,7 +1,7 @@
 let axios = require('axios'),
-  { encodeQuery, wholeObject } = require('../../helpers');
+  { encodeQuery, wholeObject } = require('./helpers');
 
-let APIAdapter = class APIAdapter {
+module.exports = class APIAdapter {
   constructor(data) {
     this.domain = null;
     this.headers = null;
@@ -135,5 +135,3 @@ let APIAdapter = class APIAdapter {
     this.domain = domain;
   }
 };
-
-module.exports = APIAdapter;
