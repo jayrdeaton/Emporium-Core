@@ -1,4 +1,4 @@
-const { readableConstructor, storableConstructor } = require('../constructors'),
+const { viewableConstructor, storableConstructor } = require('../constructors'),
   Schema = require('./Schema');
 
 module.exports = class Emporium {
@@ -12,15 +12,6 @@ module.exports = class Emporium {
   setIdentifier(identifier) {
     this._identifier = identifier;
   };
-  readable(name, schema) {
-    schema.name = name;
-    if (this._adapter && !schema.adapter) schema.adapter = this._adapter;
-    if (this._identifier && !schema.identifier) schema.identifier = this._identifier;
-    let Readable = readableConstructor(this, schema);
-    this[schema.name] = Readable;
-    this[`${schema.name}_Schema`] = schema;
-    return Readable;
-  };
   storable(name, schema) {
     schema.name = name;
     if (this._adapter && !schema.adapter) schema.adapter = this._adapter;
@@ -29,6 +20,15 @@ module.exports = class Emporium {
     this[schema.name] = Storable;
     this[`${schema.name}_Schema`] = schema;
     return Storable;
+  };
+  viewable(name, schema) {
+    schema.name = name;
+    if (this._adapter && !schema.adapter) schema.adapter = this._adapter;
+    if (this._identifier && !schema.identifier) schema.identifier = this._identifier;
+    let Viewable = viewableConstructor(this, schema);
+    this[schema.name] = Viewable;
+    this[`${schema.name}_Schema`] = schema;
+    return Viewable;
   };
   static get Schema() {
     return Schema;

@@ -36,15 +36,15 @@ describe('Emporium', () => {
       is(emporium['Storable_Model'].update);
     });
   });
-  describe('emporium.readable', () => {
-    it('Readable should be available through emporium', () => {
+  describe('emporium.viewable', () => {
+    it('Viewable should be available through emporium', () => {
       let schema = new Schema({ id: {type: String, default:uuid.v1 } });
-      emporium.readable('Readable_Model', schema);
-      is(emporium['Readable_Model']);
-      isnt(emporium['Readable_Model'].create);
-      isnt(emporium['Readable_Model'].delete);
-      is(emporium['Readable_Model'].get);
-      isnt(emporium['Readable_Model'].update);
+      emporium.viewable('Viewable_Model', schema);
+      is(emporium['Viewable_Model']);
+      isnt(emporium['Viewable_Model'].create);
+      isnt(emporium['Viewable_Model'].delete);
+      is(emporium['Viewable_Model'].get);
+      isnt(emporium['Viewable_Model'].update);
     });
   });
   describe('emporium[Other]', () => {

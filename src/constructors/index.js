@@ -1,7 +1,7 @@
-const readableConstructor = require('./readableConstructor'),
+const viewableConstructor = require('./viewableConstructor'),
   storableConstructor = require('./storableConstructor');
 
 module.exports = {
-  readableConstructor,
+  viewableConstructor,
   storableConstructor
 };
