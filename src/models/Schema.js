@@ -1,5 +1,6 @@
 module.exports = class Schema {
   constructor(data) {
+    if (!data) data = {};
     this.attributes = data;
     this.hidden = [];
     this.locked = [];
