@@ -1,4 +1,4 @@
-const { viewableConstructor, storableConstructor } = require('../constructors'),
+const { storableConstructor } = require('../constructors'),
   Schema = require('./Schema');
 
 module.exports = class Emporium {
