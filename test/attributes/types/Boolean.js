@@ -1,11 +1,11 @@
 const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../'),
+  Emporium = require('../../../'),
   { MemoryAdapter } = Emporium;
 let adapter, emporiumStorable, storables = [];
 
-describe('BooleanExtension', () => {
+describe('Boolean', () => {
   describe('setup', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
@@ -14,16 +14,11 @@ describe('BooleanExtension', () => {
       emporium.is(Object);
     });
   });
-  describe('define("Test", { key: BooleanExtension })', () => {
+  describe('define("Test", { key: Boolean })', () => {
     it('should define a new Storable', () => {
-      class BooleanExtension extends Boolean {
-        constructor(data) {
-          super(data);
-        };
-      };
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
-        key: BooleanExtension
+        key: Boolean
       });
       is(Storable);
     });
@@ -40,7 +35,7 @@ describe('BooleanExtension', () => {
       is(storable);
     });
   });
-  describe('Storable.create({ key: BooleanExtension })', () => {
+  describe('Storable.create({ key: Boolean })', () => {
     it('should successfully create a storable with a Boolean', async () => {
       let storable, error, key = faker.random.boolean();
       try {

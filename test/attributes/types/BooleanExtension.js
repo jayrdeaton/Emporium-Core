@@ -1,11 +1,11 @@
 const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../'),
+  Emporium = require('../../../'),
   { MemoryAdapter } = Emporium;
 let adapter, emporiumStorable, storables = [];
 
-describe('Date', () => {
+describe('BooleanExtension', () => {
   describe('setup', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
@@ -14,11 +14,16 @@ describe('Date', () => {
       emporium.is(Object);
     });
   });
-  describe('define("Test", { key: Date })', () => {
+  describe('define("Test", { key: BooleanExtension })', () => {
     it('should define a new Storable', () => {
+      class BooleanExtension extends Boolean {
+        constructor(data) {
+          super(data);
+        };
+      };
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
-        key: Date
+        key: BooleanExtension
       });
       is(Storable);
     });
@@ -35,8 +40,8 @@ describe('Date', () => {
       is(storable);
     });
   });
-  describe('Storable.create({ key: Boolean })', () => {
-    it('should successfully create a storable with a Date', async () => {
+  describe('Storable.create({ key: BooleanExtension })', () => {
+    it('should successfully create a storable with a Boolean', async () => {
       let storable, error, key = faker.random.boolean();
       try {
         storable = await Storable.create({ key });

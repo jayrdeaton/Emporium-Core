@@ -1,11 +1,11 @@
 const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
-  Emporium = require('../../'),
+  Emporium = require('../../../'),
   { MemoryAdapter } = Emporium;
 let adapter, emporiumStorable, storables = [];
 
-describe('String', () => {
+describe('Date', () => {
   describe('setup', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
@@ -14,11 +14,11 @@ describe('String', () => {
       emporium.is(Object);
     });
   });
-  describe('define("Test", { key: String })', () => {
+  describe('define("Test", { key: Date })', () => {
     it('should define a new Storable', () => {
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
-        key: String
+        key: Date
       });
       is(Storable);
     });

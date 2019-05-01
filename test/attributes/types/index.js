@@ -1,4 +1,4 @@
-describe('attribute types', () => {
+describe('types', () => {
   require('./Array');
   require('./ArrayExtension');
   require('./Boolean');

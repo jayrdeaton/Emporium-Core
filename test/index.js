@@ -1,7 +1,6 @@
 require('./_setup');
 require('./adapters');
-require('./attribute_options');
-require('./attribute_types');
+require('./attributes');
 require('./models');
-require('./storable_options');
+require('./storables');
 require('./z_teardown');
