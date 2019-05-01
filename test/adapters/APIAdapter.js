@@ -21,6 +21,8 @@ describe('APIAdapter', () => {
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: String
+      }, {
+        resourceName: 'test_models'
       });
 
       is(Storable);
@@ -47,12 +49,12 @@ describe('APIAdapter', () => {
       adapter.domain.is('Test');
     });
   });
-  describe('schema.setResourceName()', () => {
-    it('should set the resourceName for this schema', () => {
-      Storable.schema.setResourceName('test_models');
-      Storable.schema.resourceName.is('test_models');
-    });
-  });
+  // describe('schema.setResourceName()', () => {
+  //   it('should set the resourceName for this schema', () => {
+  //     Storable.schema.setResourceName('test_models');
+  //     Storable.schema.resourceName.is('test_models');
+  //   });
+  // });
   describe('Storable.create()', () => {
     it('should create a new storable with default values', async () => {
       let request;
