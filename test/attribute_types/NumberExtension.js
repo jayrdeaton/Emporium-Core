@@ -2,10 +2,10 @@ const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter,  = Emporium;
+  { MemoryAdapter } = Emporium;
 let adapter, emporiumStorable, storables = [];
 
-describe('Array', () => {
+describe('NumberExtension', () => {
   describe('setup', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
@@ -14,17 +14,22 @@ describe('Array', () => {
       emporium.is(Object);
     });
   });
-  describe('define("Test", { key: Array })', () => {
+  describe('define("Test", { key: NumberExtension })', () => {
     it('should define a new Storable', () => {
+      class NumberExtension extends Number {
+        constructor(data) {
+          super(data);
+        };
+      };
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
-        key: Array
+        key: NumberExtension
       });
       is(Storable);
     });
   });
   describe('Storable.create({ key: Array })', () => {
-    it('should create a storable with Array', async () => {
+    it('should successfully create a storable with Array', async () => {
       let storable, error, key = [ faker.random.word(), faker.random.word() ];
       try {
         storable = await Storable.create({ key });
@@ -36,51 +41,51 @@ describe('Array', () => {
     });
   });
   describe('Storable.create({ key: Boolean })', () => {
-    it('should fail to create a storable with a Boolean', async () => {
+    it('should successfully create a storable with a Date', async () => {
       let storable, error, key = faker.random.boolean();
       try {
         storable = await Storable.create({ key });
       } catch(err) {
         error = err;
       };
-      is(error);
-      isnt(storable);
+      isnt(error);
+      is(storable);
     });
   });
   describe('Storable.create({ key: Date })', () => {
-    it('should fail to create a storable with a Date', async () => {
+    it('should successfully create a storable with a Date', async () => {
       let storable, error, key = faker.date.recent();
       try {
         storable = await Storable.create({ key });
       } catch(err) {
         error = err;
       };
-      is(error);
-      isnt(storable);
+      isnt(error);
+      is(storable);
     });
   });
-  describe('Storable.create({ key: Number })', () => {
-    it('should fail to create a storable with a Number', async () => {
+  describe('Storable.create({ key: NumberExtension })', () => {
+    it('should successfully create a storable with a Number', async () => {
       let storable, error, key = faker.random.number();
       try {
         storable = await Storable.create({ key });
       } catch(err) {
         error = err;
       };
-      is(error);
-      isnt(storable);
+      isnt(error);
+      is(storable);
     });
   });
   describe('Storable.create({ key: Object })', () => {
-    it('should fail to create a storable with a Object', async () => {
+    it('should successfully create a storable with a Object', async () => {
       let storable, error, key = { a: faker.random.word(), b: faker.random.word() };
       try {
         storable = await Storable.create({ key });
       } catch(err) {
         error = err;
       };
-      is(error);
-      isnt(storable);
+      isnt(error);
+      is(storable);
     });
   });
   describe('Storable.create({ key: String })', () => {

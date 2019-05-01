@@ -2,7 +2,7 @@ const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter,  = Emporium;
+  { MemoryAdapter } = Emporium;
 let Storable, storable, defaultValue, storables = [];
 
 describe('required', () => {

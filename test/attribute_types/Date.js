@@ -2,10 +2,10 @@ const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter,  = Emporium;
+  { MemoryAdapter } = Emporium;
 let adapter, emporiumStorable, storables = [];
 
-describe('DateExtension', () => {
+describe('Date', () => {
   describe('setup', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
@@ -14,16 +14,11 @@ describe('DateExtension', () => {
       emporium.is(Object);
     });
   });
-  describe('define("Test", { key: DateExtension })', () => {
+  describe('define("Test", { key: Date })', () => {
     it('should define a new Storable', () => {
-      class DateExtension extends Date {
-        constructor(data) {
-          super(data);
-        };
-      };
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
-        key: DateExtension
+        key: Date
       });
       is(Storable);
     });
@@ -41,7 +36,7 @@ describe('DateExtension', () => {
     });
   });
   describe('Storable.create({ key: Boolean })', () => {
-    it('should successfully create a storable with a DateExtension', async () => {
+    it('should successfully create a storable with a Date', async () => {
       let storable, error, key = faker.random.boolean();
       try {
         storable = await Storable.create({ key });
@@ -52,7 +47,7 @@ describe('DateExtension', () => {
       is(storable);
     });
   });
-  describe('Storable.create({ key: DateExtension })', () => {
+  describe('Storable.create({ key: Date })', () => {
     it('should successfully create a storable with a Date', async () => {
       let storable, error, key = faker.date.recent();
       try {

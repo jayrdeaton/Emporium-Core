@@ -2,15 +2,15 @@ let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter,  = Emporium;
-let adapter, emporiumstorable, Storable, defaultValue, storables = [];
+  { MemoryAdapter } = Emporium;
+let adapter, emporiumstorable, Storable, defaultValue, storable;
 
 describe('locked', () => {
   describe('setup', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
       adapter.is(Object);
-      emporium = new Emporium({ adapter });
+      emporium = new Emporium({ adapter, identifier: 'id' });
       emporium.is(Object);
     });
   });
@@ -27,22 +27,7 @@ describe('locked', () => {
   });
   describe('Storable.create()', () => {
     it('should create a storable with locked value', async () => {
-      let storable, error;
-      try {
-        storable = await Storable.create();
-      } catch(err) {
-        error = err;
-      };
-      isnt(error);
-      is(storable);
-      storable.key.is(defaultValue);
-      storable.key = faker.random.word();
-      storable.key.is(defaultValue);
-    });
-  });
-  describe('Storable.create()', () => {
-    it('should create a storable with locked value', async () => {
-      let storable, error;
+      let error;
       try {
         storable = await Storable.create();
       } catch(err) {
@@ -57,9 +42,9 @@ describe('locked', () => {
   });
   describe('Storable.update()', () => {
     it('should not update a storables locked value', async () => {
-      let error;
+      let error, result;
       try {
-        storable = await Storable.update(storable);
+        result = await Storable.update(storable);
       } catch(err) {
         error = err;
       };
