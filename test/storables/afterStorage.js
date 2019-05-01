@@ -3,14 +3,14 @@ const { is, isnt } = require('amprisand'),
   faker = require('faker'),
   Emporium = require('../../'),
   { MemoryAdapter } = Emporium;
-let emporium, Storable;
+let Storable;
 
 describe('afterStorage', () => {
   describe('setup', () => {
     it('should create a new Emporium and Storable', () => {
       const adapter = new MemoryAdapter();
       adapter.is(Object);
-      emporium = new Emporium(adapter);
+      const emporium = new Emporium(adapter);
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: String
