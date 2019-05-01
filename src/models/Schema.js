@@ -22,7 +22,10 @@ module.exports = class Schema {
         if (value.hidden) this.hidden.push(key);
         if (value.discarded) this.discarded.push(key);
         if (value.readOnly || value.locked) this.locked.push(key);
-        if (value.required) this.required.push(key);
+        if (value.required) {
+          this.required.push(key);
+          console.log('hello');
+        };
       };
     };
   };

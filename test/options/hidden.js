@@ -1,26 +1,26 @@
-let { is, isnt } = require('amprisand'),
+const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  schema, Storable, defaultValue, storables = [];
+  { MemoryAdapter,  = Emporium;
+let adapter, emporiumStorable, defaultValue, storables = [];
 
 describe('hidden', () => {
-  describe(`new Schema({ key: { type: String, hidden: true } })`, () => {
-    it('should create a new Schema with a hidden key', () => {
-      let adapter = new MemoryAdapter();
+  describe('setup', () => {
+    it(' should setup emporium', () => {
+      adapter = new MemoryAdapter();
       adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
+      emporium = new Emporium({ adapter });
+      emporium.is(Object);
+    });
+  });
+  describe(`define('Test', { key: { type: String, hidden: true } })`, () => {
+    it('should define a new Storable with a hidden key', () => {
       defaultValue = faker.random.word();
-      schema = new Schema({
+      Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: {type: String, default: defaultValue, hidden: true}
       });
-      Storable = emporium.storable('Test_Model', schema);
       is(Storable);
     });
   });
@@ -36,25 +36,6 @@ describe('hidden', () => {
       is(storable);
       storable.key.is(defaultValue);
       isnt(Object.keys(storable).includes('key'));
-    });
-  });
-  describe(`schema.hide('key')`, () => {
-    it('should hide a key', () => {
-      let adapter = new MemoryAdapter();
-      adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-      defaultValue = faker.random.word();
-      schema = new Schema({
-        id: {type: String, default: uuid.v1},
-        key: {type: String, default: defaultValue}
-      });
-      schema.hide('key');
-      Storable = emporium.storable('Test_Model', schema);
-      is(Storable);
     });
   });
   describe('Storable.create()', () => {

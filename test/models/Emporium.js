@@ -1,9 +1,9 @@
-let { is, isnt } = require('amprisand'),
+const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  emporium, schema, Storable, storables = [];
+  { MemoryAdapter } = Emporium;
+let emporiumStorable, storables = [];
 
 describe('Emporium', () => {
   describe('new Emporium()', () => {
@@ -12,44 +12,20 @@ describe('Emporium', () => {
       emporium.is(Object);
     });
   });
-  describe('emporium.setAdapter()', () => {
-    it('should set the adapter for this emporium', () => {
-      let adapter = new MemoryAdapter();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-    });
-  });
-  describe('emporium.setIdentifier()', () => {
-    it('should set the identifier for this emporium', () => {
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-    });
-  });
-  describe('emporium.storable', () => {
+  describe('emporium.define', () => {
     it('Storable should be available through emporium', () => {
-      let schema = new Schema({ id: {type: String, default:uuid.v1 } });
-      emporium.storable('Storable_Model', schema);
-      is(emporium['Storable_Model']);
-      is(emporium['Storable_Model'].create);
-      is(emporium['Storable_Model'].delete);
-      is(emporium['Storable_Model'].get);
-      is(emporium['Storable_Model'].update);
-    });
-  });
-  describe('emporium.viewable', () => {
-    it('Viewable should be available through emporium', () => {
-      let schema = new Schema({ id: {type: String, default:uuid.v1 } });
-      emporium.viewable('Viewable_Model', schema);
-      is(emporium['Viewable_Model']);
-      isnt(emporium['Viewable_Model'].create);
-      isnt(emporium['Viewable_Model'].delete);
-      is(emporium['Viewable_Model'].get);
-      isnt(emporium['Viewable_Model'].update);
+      emporium.define('Storable_Model', { id: {type: String, default:uuid.v1 } });
+      is(emporium.models.Storable_Model);
+      is(emporium.models.Storable_Model.create);
+      is(emporium.models.Storable_Model.delete);
+      is(emporium.models.Storable_Model.get);
+      is(emporium.models.Storable_Model.update);
+      is(emporium.models.Storable_Model.schema)
     });
   });
   describe('emporium[Other]', () => {
     it('Other should not be available through emporium', () => {
-      isnt(emporium['Test']);
+      isnt(emporium.Test);
     });
   });
 });

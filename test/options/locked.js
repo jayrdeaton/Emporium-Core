@@ -2,27 +2,27 @@ let { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  schema, storable, Storable, defaultValue, storables = [];
+  { MemoryAdapter,  = Emporium;
+let adapter, emporiumstorable, Storable, defaultValue, storables = [];
 
 describe('locked', () => {
-  describe(`new Schema({ key: { type: String, locked: true } })`, () => {
-    it('should create a new Schema with a locked key', () => {
-      let adapter = new MemoryAdapter();
+  describe('setup', () => {
+    it(' should setup emporium', () => {
+      adapter = new MemoryAdapter();
       adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
+      emporium = new Emporium({ adapter });
+      emporium.is(Object);
+    });
+  });
+  describe(`define('Test', { key: { type: String, locked: true } })`, () => {
+    it('should define a new Storable with a locked key', () => {
       defaultValue = faker.random.word();
-      schema = new Schema({
+      Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: {type: String, default: defaultValue, locked: true}
       });
-      Storable = emporium.storable('Test_Model', schema);
-      is(schema.locked.includes('key'));
       is(Storable);
+      is(Storable.schema.locked.includes('key'));
     });
   });
   describe('Storable.create()', () => {
@@ -38,26 +38,6 @@ describe('locked', () => {
       storable.key.is(defaultValue);
       storable.key = faker.random.word();
       storable.key.is(defaultValue);
-    });
-  });
-  describe(`schema.lock('key')`, () => {
-    it('should lock key', () => {
-      let adapter = new MemoryAdapter();
-      adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-      defaultValue = faker.random.word();
-      schema = new Schema({
-        id: {type: String, default: uuid.v1},
-        key: {type: String, default: defaultValue}
-      });
-      schema.lock('key');
-      Storable = emporium.storable('Test_Model', schema);
-      is(schema.locked.includes('key'));
-      is(Storable);
     });
   });
   describe('Storable.create()', () => {

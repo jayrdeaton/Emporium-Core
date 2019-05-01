@@ -1,48 +1,28 @@
-let { is, isnt } = require('amprisand'),
+const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  schema, Storable, storable, defaultValue, storables = [];
+  { MemoryAdapter,  = Emporium;
+let Storable, storable, defaultValue, storables = [];
 
 describe('required', () => {
-  describe(`new Schema({ key: { type: String, required: true } })`, () => {
-    it('should create a new Schema with a required key', () => {
-      let adapter = new MemoryAdapter();
+  describe('setup', () => {
+    it(' should setup emporium', () => {
+      adapter = new MemoryAdapter();
       adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
+      emporium = new Emporium({ adapter });
+      emporium.is(Object);
+    });
+  });
+  describe(`define('Test', { key: { type: String, required: true } })`, () => {
+    it('should define a new Storable with a required key', () => {
       defaultValue = faker.random.word();
-      schema = new Schema({
+      Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: {type: String, required: true}
       });
-      Storable = emporium.storable('Test_Model', schema);
-      is(schema.required.includes('key'));
       is(Storable);
-    });
-  });
-  describe(`schema.require('key')`, () => {
-    it('should require a key', () => {
-      let adapter = new MemoryAdapter();
-      adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-      defaultValue = faker.random.word();
-      schema = new Schema({
-        id: {type: String, default: uuid.v1},
-        key: {type: String}
-      });
-      schema.require('key');
-      Storable = emporium.storable('Test_Model', schema);
-      is(schema.required.includes('key'));
-      is(Storable);
+      is(Storable.schema.required.includes('key'));
     });
   });
   describe('Storable.create()', () => {

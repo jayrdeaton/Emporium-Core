@@ -1,27 +1,27 @@
-let { is, isnt } = require('amprisand'),
+const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  schema, Storable, defaultValue, storables = [];
+  { MemoryAdapter,  = Emporium;
+let adapter, emporium, Storable, defaultValue, storables = [];
 
 describe('default', () => {
+  describe('setup', () => {
+    it(' should setup emporium', () => {
+      adapter = new MemoryAdapter();
+      adapter.is(Object);
+      emporium = new Emporium({ adapter });
+      emporium.is(Object);
+    });
+  });
   describe('Array', () => {
-    describe(`new Schema({ key: { type: Array, default: value } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: Array, default: value } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = [ faker.random.word() ];
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: Array, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });
@@ -40,7 +40,8 @@ describe('default', () => {
     });
     describe('Storable.create({})', () => {
       it('should create a storable with input value', async () => {
-        let storable, error, key = [ faker.random.word() ];
+        const key = [ faker.random.word() ];
+        let storable, error;
         try {
           storable = await Storable.create({ key });
         } catch(err) {
@@ -53,21 +54,13 @@ describe('default', () => {
     });
   });
   describe('Boolean', () => {
-    describe(`new Schema({ key: { type: Boolean, default: value } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: Boolean, default: value } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = faker.random.boolean();
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: Boolean, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });
@@ -99,21 +92,13 @@ describe('default', () => {
     });
   });
   describe('Date', () => {
-    describe(`new Schema({ key: { type: Date, default: value } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: Date, default: value } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = faker.date.recent();
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: Date, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });
@@ -145,21 +130,13 @@ describe('default', () => {
     });
   });
   describe('Number', () => {
-    describe(`new Schema({ key: { type: Number, default: value } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: Number, default: value } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = faker.random.number();
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: Number, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });
@@ -191,21 +168,13 @@ describe('default', () => {
     });
   });
   describe('Object', () => {
-    describe(`new Schema({ key: { type: Object, default: value } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: Object, default: value } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = { key: faker.random.word() };
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: Object, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });
@@ -237,21 +206,13 @@ describe('default', () => {
     });
   });
   describe('String', () => {
-    describe(`new Schema({ key: { type: String, default: value } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: String, default: value } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = faker.random.word();
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: String, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });
@@ -283,21 +244,13 @@ describe('default', () => {
     });
   });
   describe('null', () => {
-    describe(`new Schema({ key: { type: String, default: null } })`, () => {
-      it('should create a new Schema with a default for key', () => {
-        let adapter = new MemoryAdapter();
-        adapter.is(Object);
-        let emporium = new Emporium();
-        emporium.setAdapter(adapter);
-        emporium._adapter.is(adapter);
-        emporium.setIdentifier('id');
-        emporium._identifier.is('id');
+    describe(`define('Test', { key: { type: String, default: null } })`, () => {
+      it('should define a new Storable with a default for key', () => {
         defaultValue = null;
-        schema = new Schema({
+        Storable = emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: {type: String, default: defaultValue}
         });
-        Storable = emporium.storable('Test_Model', schema);
         is(Storable);
       });
     });

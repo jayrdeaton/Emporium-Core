@@ -1,30 +1,30 @@
-let { is, isnt } = require('amprisand'),
+const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  schema, Storable, storables = [];
+  { MemoryAdapter,  = Emporium;
+let adapter, emporiumStorable, storables = [];
 
 describe('NumberExtension', () => {
-  describe('new Schema({ key: NumberExtension })', () => {
-    it('should create a new Schema', () => {
-      let adapter = new MemoryAdapter();
+  describe('setup', () => {
+    it(' should setup emporium', () => {
+      adapter = new MemoryAdapter();
       adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-      let NumberExtension = class NumberExtension extends Number {
+      emporium = new Emporium({ adapter });
+      emporium.is(Object);
+    });
+  });
+  describe('define("Test", { key: NumberExtension })', () => {
+    it('should define a new Storable', () => {
+      class NumberExtension extends Number {
         constructor(data) {
           super(data);
         };
       };
-      schema = new Schema({
+      Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: NumberExtension
       });
-      Storable = emporium.storable('Test_Model', schema);
       is(Storable);
     });
   });

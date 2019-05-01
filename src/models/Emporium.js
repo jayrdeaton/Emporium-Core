@@ -7,44 +7,18 @@ module.exports = class Emporium {
     // emporium wide adapter
     this.adapter = data.adapter || null;
     // emporium wide identifying key
-    this.identifier = data.identifier || null;
+    this.identifier = data.identifier || 'id';
     // models object
     this.models = {};
-  };
-  get _adapter() { return this.adapter };
-  get _identifier() { return this.identifier };
-  setAdapter(adapter) {
-    this.adapter = adapter;
-  };
-  setIdentifier(identifier) {
-    this.identifier = identifier;
   };
   define(name, attributes, options) {
     const schema = new Schema(attributes);
     schema.name = name;
-    if (this.adapter && !schema.adapter) schema.adapter = this._adapter;
-    if (this.identifier && !schema.identifier) schema.identifier = this._identifier;
+    if (this.adapter && !schema.adapter) schema.adapter = this.adapter;
+    if (this.identifier && !schema.identifier) schema.identifier = this.identifier;
     const Storable = storableConstructor(this, schema);
     this.models[schema.name] = Storable;
     return Storable;
-  };
-  storable(name, schema) {
-    schema.name = name;
-    if (this._adapter && !schema.adapter) schema.adapter = this._adapter;
-    if (this._identifier && !schema.identifier) schema.identifier = this._identifier;
-    let Storable = storableConstructor(this, schema);
-    this[schema.name] = Storable;
-    this[`${schema.name}_Schema`] = schema;
-    return Storable;
-  };
-  viewable(name, schema) {
-    schema.name = name;
-    if (this._adapter && !schema.adapter) schema.adapter = this._adapter;
-    if (this._identifier && !schema.identifier) schema.identifier = this._identifier;
-    let Viewable = viewableConstructor(this, schema);
-    this[schema.name] = Viewable;
-    this[`${schema.name}_Schema`] = schema;
-    return Viewable;
   };
   static get Schema() {
     return Schema;

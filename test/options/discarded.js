@@ -1,27 +1,27 @@
-let { is, isnt } = require('amprisand'),
+const { is, isnt } = require('amprisand'),
   uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../'),
-  { MemoryAdapter, Schema } = Emporium,
-  schema, Storable, defaultValue, storables = [];
+  { MemoryAdapter,  = Emporium;
+let adapter, emporium , Storable, defaultValue, storables = [];
 
 describe('discarded', () => {
-  describe(`new Schema({ key: { type: String, discarded: true } })`, () => {
-    it('should create a new Schema with a discarded key', () => {
-      let adapter = new MemoryAdapter();
+  describe('setup', () => {
+    it(' should setup emporium', () => {
+      adapter = new MemoryAdapter();
       adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
+      emporium = new Emporium({ adapter });
+      emporium.is(Object);
+    });
+  });
+  describe(`define('Test', { key: { type: String, discarded: true } })`, () => {
+    it('should define a new Storable with a discarded key', () => {
       defaultValue = faker.random.word();
-      schema = new Schema({
+      Storable = emporium.define('Test', {
         id: {type: String, default: uuid.v1},
         key: {type: String, default: defaultValue, discarded: true}
       });
-      schema.discarded.includes('key').is();
-      Storable = emporium.storable('Test_Model', schema);
+      Storable.schema.discarded.includes('key').is();
       is(Storable);
     });
   });
@@ -36,25 +36,6 @@ describe('discarded', () => {
       isnt(error);
       is(storable);
       storable.key.is(defaultValue);
-    });
-  });
-  describe(`schema.discard('key')`, () => {
-    it('should discard a key', () => {
-      let adapter = new MemoryAdapter();
-      adapter.is(Object);
-      let emporium = new Emporium();
-      emporium.setAdapter(adapter);
-      emporium._adapter.is(adapter);
-      emporium.setIdentifier('id');
-      emporium._identifier.is('id');
-      defaultValue = faker.random.word();
-      schema = new Schema({
-        id: {type: String, default: uuid.v1},
-        key: {type: String, default: defaultValue}
-      });
-      schema.discard('key');
-      Storable = emporium.storable('Test_Model', schema);
-      is(Storable);
     });
   });
   describe('Storable.create()', () => {
