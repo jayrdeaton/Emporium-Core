@@ -19,6 +19,7 @@ module.exports = class Emporium {
     this.strict = strict;
   };
   define(name, attributes, options) {
+    if (!attributes) attributes = {};
     if (!options) options = {};
     if (this.beforeDefine) this.beforeDefine(attributes, options);
     if (this.adapter && !options.adapter) options.adapter = this.adapter;
