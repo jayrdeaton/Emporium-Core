@@ -1,4 +1,5 @@
-let Emporium = require('./Emporium'),
+const Adapter = require('./Adapter'),
+  Emporium = require('./Emporium'),
   Schema = require('./Schema');
 
-module.exports = { Emporium, Schema };
+module.exports = { Adapter, Emporium, Schema };
