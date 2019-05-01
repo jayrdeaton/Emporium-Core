@@ -2,15 +2,31 @@ const { viewableConstructor, storableConstructor } = require('../constructors'),
   Schema = require('./Schema');
 
 module.exports = class Emporium {
-  constructor() {
-    this._adapter = null;
-    this._identifier = null;
+  constructor(data) {
+    if (!data) data = {};
+    // emporium wide adapter
+    this.adapter = data.adapter || null;
+    // emporium wide identifying key
+    this.identifier = data.identifier || null;
+    // models object
+    this.models = {};
   };
+  get _adapter() { return this.adapter };
+  get _identifier() { return this.identifier };
   setAdapter(adapter) {
-    this._adapter = adapter;
+    this.adapter = adapter;
   };
   setIdentifier(identifier) {
-    this._identifier = identifier;
+    this.identifier = identifier;
+  };
+  define(name, attributes, options) {
+    const schema = new Schema(attributes);
+    schema.name = name;
+    if (this.adapter && !schema.adapter) schema.adapter = this._adapter;
+    if (this.identifier && !schema.identifier) schema.identifier = this._identifier;
+    const Storable = storableConstructor(this, schema);
+    this.models[schema.name] = Storable;
+    return Storable;
   };
   storable(name, schema) {
     schema.name = name;
