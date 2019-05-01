@@ -2,16 +2,18 @@ module.exports = class Schema {
   constructor(attributes, options) {
     // options
     if (!options) options = {};
-    const { adapter, discarded, hidden, identifier, locked, name, required, resourceName, strict } = options;
-    this.adapter = adapter || null;
+    const { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, name, required, resourceName, strict } = options;
+    this.adapter = adapter;
+    this.afterStorage = afterStorage;
+    this.beforeStorage = beforeStorage;
     this.discarded = discarded || [];
     this.hidden = hidden || [];
-    this.identifier = identifier || null;
+    this.identifier = identifier;
     this.locked = locked || [];
-    this.name = name || null;
+    this.name = name;
     this.required = required || [];
-    this.resourceName = resourceName || null;
-    this.strict = strict || true;
+    this.resourceName = resourceName;
+    this.strict = strict;
     // attributes
     if (!attributes) attributes = {};
     this.attributes = attributes;

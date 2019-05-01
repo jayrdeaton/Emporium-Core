@@ -1,6 +1,6 @@
-describe('options', () => {
-  require('./down');
+describe('storables', () => {
+  require('./afterStorage');
+  require('./beforeStorage');
   require('./readable');
-  require('./up');
   require('./writeable');
 });
