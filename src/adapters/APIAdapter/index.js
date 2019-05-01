@@ -13,32 +13,6 @@ module.exports = class APIAdapter {
     if (data.headers) this.headers = data.headers;
     if (data.encodingMethod) this.encodingMethod = data.encodingMethod;
   };
-  async batch(schema, body, query) {
-    let endpoint = schema.resourceName || schema.name;
-    let data = JSON.stringify(wholeObject(body));
-    let request = {
-      url: `${this.domain}/${endpoint}/batch`,
-      method: 'PUT',
-      headers: this.headers,
-      data
-    };
-    if (query) request.params = encodeQuery(this, query);
-    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
-    let response = await axios(request);
-    return response.data;
-  };
-  async count(schema, query) {
-    let endpoint = schema.resourceName || schema.name;
-    let request = {
-      url: `${this.domain}/${endpoint}/count`,
-      method: 'GET',
-      headers: this.headers
-    };
-    if (query) request.params = encodeQuery(this, query);
-    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
-    let response = await axios(request);
-    return response.data.count;
-  };
   async create(schema, body, query) {
     let endpoint = schema.resourceName || schema.name;
     let data = JSON.stringify(wholeObject(body));
@@ -67,19 +41,6 @@ module.exports = class APIAdapter {
       method: 'DELETE',
       headers: this.headers
     };
-    if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
-    let response = await axios(request);
-    return response.data;
-  };
-  async duplicate(schema, identifier, query) {
-    let endpoint = schema.resourceName || schema.name;
-    let url = `${this.domain}/${endpoint}/${identifier}/duplicate`;
-    let request = {
-      url,
-      method: 'GET',
-      headers: this.headers
-    };
-    if (query) request.params = encodeQuery(this, query);
     if (process.env.NODE_ENV === 'EMPORIUM_TEST') throw request;
     let response = await axios(request);
     return response.data;

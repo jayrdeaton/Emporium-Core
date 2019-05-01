@@ -48,14 +48,6 @@ module.exports = (emporium, schema) => {
       };
       return data;
     };
-    static async batch(body, query) {
-      let result = await schema.adapter.batch(schema, body, query);
-      return this.convertObjects(result);
-    };
-    static async count(query) {
-      let result = await schema.adapter.count(schema, query);
-      return result;
-    };
     static async create(body, query) {
       body = this.convertObjects(body);
       for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
@@ -64,13 +56,6 @@ module.exports = (emporium, schema) => {
     };
     static delete(body) {
       return schema.adapter.delete(schema, body);
-    };
-    static async duplicate(identifier, query) {
-      if (!schema.identifier) return null;
-      if (typeof identifier === 'object') identifier = identifier[schema.identifier];
-      if (!identifier) return null;
-      let result = await schema.adapter.duplicate(schema, identifier, query);
-      return result ? this.convertObjects(result) : null;
     };
     static async find(identifier, query) {
       if (!schema.identifier) return null;
