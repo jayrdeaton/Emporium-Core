@@ -1,7 +1,7 @@
-let { getValueWithType } = require('../helpers');
+const { getValueWithType } = require('../helpers');
 
 module.exports = (emporium, schema) => {
-  let Viewable = class Viewable {
+  const Viewable = class Viewable {
     constructor(data) {
       for (let attribute of Object.keys(schema.attributes)) {
         let definition = schema.attributes[attribute];
@@ -26,6 +26,9 @@ module.exports = (emporium, schema) => {
           writable: false
         });
       };
+    };
+    static get schema() {
+      return schema;
     };
     static convertObjects(data) {
       let result;
