@@ -10,7 +10,7 @@ describe('MemoryAdapter', () => {
     it('should create and configure a new Memory Adapter', () => {
       const adapter = new MemoryAdapter();
       adapter.is(Object);
-      const emporium = new Emporium({ adapter });
+      const emporium = new Emporium(adapter);
       Storable = emporium.define('Test_Model', {
         id: {type: String, default: uuid.v1},
         key: String

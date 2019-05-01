@@ -1,6 +1,6 @@
 require('./_setup');
 require('./adapters');
 require('./attributes');
-require('./models');
+require('./emporium');
 require('./storables');
 require('./z_teardown');

@@ -10,7 +10,7 @@ describe('ArrayExtension', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
       adapter.is(Object);
-      emporium = new Emporium({ adapter });
+      emporium = new Emporium(adapter);
       emporium.is(Object);
     });
   });

@@ -10,7 +10,7 @@ describe('locked', () => {
     it(' should setup emporium', () => {
       adapter = new MemoryAdapter();
       adapter.is(Object);
-      emporium = new Emporium({ adapter, identifier: 'id' });
+      emporium = new Emporium(adapter);
       emporium.is(Object);
     });
   });

@@ -14,7 +14,7 @@ describe('APIAdapter', () => {
       });
       adapter.is(Object);
       const identifier = 'id';
-      const emporium = new Emporium({ adapter, identifier });
+      const emporium = new Emporium(adapter, { identifier });
       emporium.adapter.is(adapter);
       emporium.identifier.is('id');
 
@@ -49,12 +49,6 @@ describe('APIAdapter', () => {
       adapter.domain.is('Test');
     });
   });
-  // describe('schema.setResourceName()', () => {
-  //   it('should set the resourceName for this schema', () => {
-  //     Storable.schema.setResourceName('test_models');
-  //     Storable.schema.resourceName.is('test_models');
-  //   });
-  // });
   describe('Storable.create()', () => {
     it('should create a new storable with default values', async () => {
       let request;

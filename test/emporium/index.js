@@ -1,3 +1,3 @@
-describe('models', () => {
+describe('emporium', () => {
   require('./Emporium');
 });
