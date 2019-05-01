@@ -8,23 +8,25 @@ module.exports = class Emporium {
     // models object
     this.models = {};
     if (!options) options = {};
-    const { afterDefine, afterStorage, identifier, beforeDefine, beforeStorage } = options;
+    const { afterDefine, afterStorage, identifier, beforeDefine, beforeStorage, strict } = options;
     // emporium options apply to all storables defined
     this.identifier = identifier || 'id';
     // hooks
-    this.afterDefine = afterDefine || null;
-    this.afterStorage = afterStorage || null;
-    this.beforeDefine = beforeDefine || null;
-    this.beforeStorage = beforeStorage || null;
+    this.afterDefine = afterDefine;
+    this.afterStorage = afterStorage;
+    this.beforeDefine = beforeDefine;
+    this.beforeStorage = beforeStorage;
+    this.strict = strict;
   };
   define(name, attributes, options) {
+    if (!options) options = {};
     if (this.beforeDefine) this.beforeDefine(attributes, options);
-    const schema = new Schema(attributes, options);
-    schema.name = name;
-    if (this.adapter && !schema.adapter) schema.adapter = this.adapter;
-    if (this.identifier && !schema.identifier) schema.identifier = this.identifier;
-    if (this.afterStorage && !schema.afterStorage) schema.afterStorage = this.afterStorage;
-    if (this.beforeStorage && !schema.beforeStorage) schema.beforeStorage = this.beforeStorage;
+    if (this.adapter && !options.adapter) options.adapter = this.adapter;
+    if (this.identifier && !options.identifier) options.identifier = this.identifier;
+    if (this.afterStorage && !options.afterStorage) options.afterStorage = this.afterStorage;
+    if (this.beforeStorage && !options.beforeStorage) options.beforeStorage = this.beforeStorage;
+    if (this.strict && !options.strict) options.strict = this.strict;
+    const schema = new Schema(name, attributes, options);
     const Storable = storableConstructor(this, schema);
     if (this.afterDefine) this.afterDefine(Storable);
     this.models[schema.name] = Storable;

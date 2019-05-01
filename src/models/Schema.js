@@ -1,8 +1,10 @@
 module.exports = class Schema {
-  constructor(attributes, options) {
+  constructor(name, attributes, options) {
+    // name
+    this.name = name;
     // options
     if (!options) options = {};
-    const { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, name, readable, required, resourceName, strict, writable } = options;
+    const { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, readable, required, resourceName, strict, writable } = options;
     this.adapter = adapter;
     this.afterStorage = afterStorage;
     this.beforeStorage = beforeStorage;
@@ -10,11 +12,10 @@ module.exports = class Schema {
     this.hidden = hidden || [];
     this.identifier = identifier;
     this.locked = locked || [];
-    this.name = name;
     this.readable = readable === false ? false : true;
     this.required = required || [];
     this.resourceName = resourceName;
-    this.strict = strict;
+    this.strict = strict === false ? false : true;
     this.writable = writable === false ? false : true;
     // attributes
     if (!attributes) attributes = {};
