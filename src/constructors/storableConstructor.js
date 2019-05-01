@@ -51,7 +51,9 @@ module.exports = (emporium, schema) => {
     static async create(body, query) {
       body = this.convertObjects(body);
       for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      if (schema.beforeStorage) schema.beforeStorage(body);
       let result = await schema.adapter.create(schema, body, query);
+      if (schema.afterStorage) schema.afterStorage(result);
       return result ? this.convertObjects(result) : null;
     };
     static delete(body) {

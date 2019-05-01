@@ -1,5 +1,6 @@
 describe('emporium', () => {
   require('./afterDefine');
+  require('./afterStorage');
   require('./beforeDefine');
-  require('./Emporium');
+  require('./beforeStorage');
 });

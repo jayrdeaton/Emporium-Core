@@ -2,19 +2,19 @@ const { storableConstructor } = require('../constructors'),
   Schema = require('./Schema');
 
 module.exports = class Emporium {
-  constructor(adapter, data) {
+  constructor(adapter, options) {
     // adaper
     this.adapter = adapter;
     // models object
     this.models = {};
-    if (!data) data = {};
-    const { identifier, afterDefine, beforeDefine, afterStorage, beforeStorage } = data;
+    if (!options) options = {};
+    const { afterDefine, afterStorage, identifier, beforeDefine, beforeStorage } = options;
     // emporium options apply to all storables defined
     this.identifier = identifier || 'id';
     // hooks
     this.afterDefine = afterDefine || null;
-    this.beforeDefine = beforeDefine || null;
     this.afterStorage = afterStorage || null;
+    this.beforeDefine = beforeDefine || null;
     this.beforeStorage = beforeStorage || null;
   };
   define(name, attributes, options) {
@@ -26,7 +26,7 @@ module.exports = class Emporium {
     if (this.afterStorage && !schema.afterStorage) schema.afterStorage = this.afterStorage;
     if (this.beforeStorage && !schema.beforeStorage) schema.beforeStorage = this.beforeStorage;
     const Storable = storableConstructor(this, schema);
-    if (this.afterDefine) this.afterDefine(attributes, options);
+    if (this.afterDefine) this.afterDefine(Storable);
     this.models[schema.name] = Storable;
     return Storable;
   };
