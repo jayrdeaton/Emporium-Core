@@ -5,13 +5,13 @@ const { is, isnt } = require('amprisand'),
   { MemoryAdapter } = Emporium;
 let emporium;
 
-describe('afterDefine', () => {
+describe('beforeDefine', () => {
   describe('setup', () => {
     it('should create a new Emporium', () => {
       const adapter = new MemoryAdapter();
       adapter.is(Object);
       emporium = new Emporium(adapter, {
-        afterDefine: (Storable) => { throw { success: true, Storable }}
+        beforeDefine: (attributes, options) => { throw { success: true, attributes, options }}
       });
     });
   });
@@ -22,14 +22,16 @@ describe('afterDefine', () => {
         emporium.define('Test_Model', {
           id: {type: String, default: uuid.v1},
           key: String
+        }, {
+          test: true
         });
       } catch(err) {
         result = err;
       };
       is(result);
       is(result.success);
-      is(result.Storable);
-      is(result.Storable.schema);
+      is(result.attributes);
+      is(result.options);
     });
   });
 });
