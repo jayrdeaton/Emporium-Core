@@ -20,9 +20,6 @@ module.exports = class Emporium {
     this.models[schema.name] = Storable;
     return Storable;
   };
-  static get Schema() {
-    return Schema;
-  };
   static get APIAdapter() {
     try {
       return require('../adapters/APIAdapter');
