@@ -5,7 +5,7 @@ const { storableConstructor } = require('../constructors'),
 module.exports = class Emporium {
   constructor(adapter, options) {
     // adaper
-    this.adapter = adapter;
+    this.adapter = adapter || new Adapter();
     // models object
     this.models = {};
     if (!options) options = {};
