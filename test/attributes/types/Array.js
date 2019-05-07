@@ -1,8 +1,7 @@
 const { is, isnt } = require('amprisand'),
-  uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../../'),
-  { MemoryAdapter } = Emporium;
+  MemoryAdapter = require('@emporium/memory-adapter');
 let adapter, emporiumStorable, storables = [];
 
 describe('Array', () => {
@@ -17,7 +16,7 @@ describe('Array', () => {
   describe('define("Test", { key: Array })', () => {
     it('should define a new Storable', () => {
       Storable = emporium.define('Test_Model', {
-        id: {type: String, default: uuid.v1},
+        id: {type: String, default: faker.random.uuid},
         key: Array
       });
       is(Storable);

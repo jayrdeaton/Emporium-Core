@@ -1,8 +1,7 @@
 const { is, isnt } = require('amprisand'),
-  uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../../'),
-  { MemoryAdapter } = Emporium;
+  MemoryAdapter = require('@emporium/memory-adapter');
 let adapter, emporium, Storable, defaultValue, storables = [];
 
 describe('default', () => {
@@ -19,7 +18,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = [ faker.random.word() ];
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: Array, default: defaultValue}
         });
         is(Storable);
@@ -58,7 +57,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = faker.random.boolean();
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: Boolean, default: defaultValue}
         });
         is(Storable);
@@ -96,7 +95,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = faker.date.recent();
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: Date, default: defaultValue}
         });
         is(Storable);
@@ -134,7 +133,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = faker.random.number();
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: Number, default: defaultValue}
         });
         is(Storable);
@@ -172,7 +171,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = { key: faker.random.word() };
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: Object, default: defaultValue}
         });
         is(Storable);
@@ -210,7 +209,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = faker.random.word();
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: String, default: defaultValue}
         });
         is(Storable);
@@ -248,7 +247,7 @@ describe('default', () => {
       it('should define a new Storable with a default for key', () => {
         defaultValue = null;
         Storable = emporium.define('Test_Model', {
-          id: {type: String, default: uuid.v1},
+          id: {type: String, default: faker.random.uuid},
           key: {type: String, default: defaultValue}
         });
         is(Storable);

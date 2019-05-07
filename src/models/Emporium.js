@@ -1,4 +1,5 @@
 const { storableConstructor } = require('../constructors'),
+  Adapter = require('./Adapter'),
   Schema = require('./Schema');
 
 module.exports = class Emporium {
@@ -33,18 +34,7 @@ module.exports = class Emporium {
     this.models[schema.name] = Storable;
     return Storable;
   };
-  static get APIAdapter() {
-    try {
-      return require('../adapters/APIAdapter');
-    } catch(err) {
-      throw new Error(`Error loading Emporium APIAdapter: ${err}`);
-    };
-  };
-  static get MemoryAdapter() {
-    try {
-      return require('../adapters/MemoryAdapter');
-    } catch(err) {
-      throw new Error(`Error loading Emporium MemoryAdapter: ${err}`);
-    };
+  static get Adapter() {
+    return Adapter
   };
 };

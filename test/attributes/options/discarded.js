@@ -1,8 +1,7 @@
 const { is, isnt } = require('amprisand'),
-  uuid = require('uuid'),
   faker = require('faker'),
   Emporium = require('../../../'),
-  { MemoryAdapter } = Emporium;
+  MemoryAdapter = require('@emporium/memory-adapter');
 let adapter, emporium , Storable, defaultValue, storables = [];
 
 describe('discarded', () => {
@@ -18,7 +17,7 @@ describe('discarded', () => {
     it('should define a new Storable with a discarded key', () => {
       defaultValue = faker.random.word();
       Storable = emporium.define('Test', {
-        id: {type: String, default: uuid.v1},
+        id: {type: String, default: faker.random.uuid},
         key: {type: String, default: defaultValue, discarded: true}
       });
       Storable.schema.discarded.includes('key').is();
