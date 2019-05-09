@@ -3,4 +3,5 @@ describe('emporium', () => {
   require('./afterStorage');
   require('./beforeDefine');
   require('./beforeStorage');
+  require('./resourceName');
 });

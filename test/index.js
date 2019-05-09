@@ -1,5 +1,5 @@
 require('./_setup');
 require('./attributes');
-require('./emporium');
+require('./options');
 require('./storables');
 require('./z_teardown');

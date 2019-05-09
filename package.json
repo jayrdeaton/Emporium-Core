@@ -12,7 +12,9 @@
   ],
   "author": "Jay Deaton",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "pluralize": "^7.0.0"
+  },
   "devDependencies": {
     "@emporium/memory-adapter": "0.0.1",
     "amprisand": "^0.1.3",

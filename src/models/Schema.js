@@ -1,3 +1,5 @@
+const pluralize = require('pluralize');
+
 module.exports = class Schema {
   constructor(name, attributes, options) {
     // name
@@ -15,7 +17,7 @@ module.exports = class Schema {
     this.locked = locked || [];
     this.readable = readable === false ? false : true;
     this.required = required || [];
-    this.resourceName = resourceName;
+    this.resourceName = resourceName ? resourceName : pluralize(name).toLowerCase();
     this.strict = strict === false ? false : true;
     this.writable = writable === false ? false : true;
     // attributes
