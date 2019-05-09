@@ -1,8 +1,23 @@
-const { getValueWithType } = require('../helpers');
+const { getValueWithType, isConstructor } = require('../helpers');
 
 module.exports = (emporium, schema) => {
   const Storable = class Storable {
     constructor(data) {
+      if (schema.extends) {
+        let props;
+        if (typeof schema.extends === 'string') {
+          const Extension = emporium.models[schema.extends];
+          if (!Extension) throw new Error(`${schema.name} can't find extension ${schema.extends}`);
+          props = new Extension(data);
+        } else if (isConstructor(schema.extends)) {
+          props = new schema.extends(data);
+        } else if (typeof schema.extends === 'function') {
+          props = schema.extends(data);
+        } else {
+          throw new Error(`${schema.name} has an unknown extension type`);
+        };
+        Object.assign(this, props);
+      };
       for (let attribute of Object.keys(schema.attributes)) {
         let definition = schema.attributes[attribute];
         let type;

@@ -9,6 +9,7 @@ module.exports = class Schema {
     this.afterStorage = afterStorage;
     this.beforeStorage = beforeStorage;
     this.discarded = discarded || [];
+    this.extends = options.extends;
     this.hidden = hidden || [];
     this.identifier = identifier;
     this.locked = locked || [];

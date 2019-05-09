@@ -18,7 +18,7 @@ describe('beforeStorage', () => {
       });
     });
   });
-  describe('emporium.create', () => {
+  describe('Storable.create', () => {
     it( 'should call hook', async () => {
       let result;
       try {

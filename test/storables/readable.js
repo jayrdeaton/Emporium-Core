@@ -18,7 +18,7 @@ describe('readable', () => {
       });
     });
   });
-  describe('emporium.get', () => {
+  describe('Storable.get()', () => {
     it( 'should fail to get', async () => {
       let result;
       try {
@@ -29,7 +29,7 @@ describe('readable', () => {
       is(result);
     });
   });
-  describe('emporium.find', () => {
+  describe('Storable.find()', () => {
     it( 'should fail to find', async () => {
       let result;
       try {

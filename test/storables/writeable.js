@@ -18,7 +18,7 @@ describe('writable', () => {
       });
     });
   });
-  describe('emporium.create', () => {
+  describe('Storable.create()', () => {
     it( 'should fail to create', async () => {
       let result;
       try {
@@ -29,7 +29,7 @@ describe('writable', () => {
       is(result);
     });
   });
-  describe('emporium.update', () => {
+  describe('Storable.update()', () => {
     it( 'should fail to update', async () => {
       let result;
       try {
