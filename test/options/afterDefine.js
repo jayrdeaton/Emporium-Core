@@ -10,25 +10,18 @@ describe('afterDefine', () => {
       const adapter = new MemoryAdapter();
       adapter.is(Object);
       emporium = new Emporium(adapter, {
-        afterDefine: (Storable) => { throw { success: true, Storable }}
+        afterDefine: (Storable) => { Storable.schema.attributes.test = {type: String, default: faker.random.word } }
       });
     });
   });
   describe('emporium.define', () => {
     it( 'should call hook', () => {
-      let result;
-      try {
-        emporium.define('Test_Model', {
-          id: {type: String, default: faker.random.uuid},
-          key: String
-        });
-      } catch(err) {
-        result = err;
-      };
+      const result = emporium.define('Test_Model', {
+        id: {type: String, default: faker.random.uuid},
+        key: String
+      });
       is(result);
-      is(result.success);
-      is(result.Storable);
-      is(result.Storable.schema);
+      is(result.schema.attributes.test);
     });
   });
 });

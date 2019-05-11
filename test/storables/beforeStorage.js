@@ -14,21 +14,26 @@ describe('beforeStorage', () => {
         id: {type: String, default: faker.random.uuid},
         key: String
       }, {
-        beforeStorage: (data) => { throw { success: true, data } }
+        beforeStorage: (data) => { data.key = faker.random.word() }
       });
     });
   });
-  describe('Storable.create', () => {
+  describe('emporium.create', () => {
     it( 'should call hook', async () => {
-      let result;
-      try {
-        await Storable.create();
-      } catch(err) {
-        result = err;
-      };
-      is(result);
-      is(result.success);
-      is(result.data);
+      object = await Storable.create();
+      is(object);
+      is(object.key);
+      is(typeof object.key === 'string');
+    });
+  });
+  describe('emporium.update', () => {
+    it( 'should call hook', async () => {
+      const original = object.key;
+      object = await Storable.update(object);
+      is(object);
+      is(object.key);
+      is(typeof object.key === 'string');
+      isnt(object.key === original);
     });
   });
 });

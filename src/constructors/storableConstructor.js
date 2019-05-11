@@ -81,6 +81,7 @@ module.exports = (emporium, schema) => {
       if (typeof identifier === 'object') identifier = identifier[schema.identifier];
       if (!identifier) return null;
       let result = await schema.adapter.find(schema, identifier, query);
+      if (schema.afterStorage) schema.afterStorage(result);
       return result ? this.convertObjects(result) : null;
     };
     static async get(query) {
@@ -93,7 +94,9 @@ module.exports = (emporium, schema) => {
       body = this.convertObjects(body);
       body = this.removeDiscardedAttributes(body);
       for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      if (schema.beforeStorage) schema.beforeStorage(body);
       let result = await schema.adapter.update(schema, body, query);
+      if (schema.afterStorage) schema.afterStorage(result);
       return result ? this.convertObjects(result) : null;
     };
     async save(query) {

@@ -10,27 +10,22 @@ describe('beforeDefine', () => {
       const adapter = new MemoryAdapter();
       adapter.is(Object);
       emporium = new Emporium(adapter, {
-        beforeDefine: (attributes, options) => { throw { success: true, attributes, options }}
+        beforeDefine: (attributes, options) => {
+          attributes.test = {type: String, default: faker.random.word}
+          options.writable = false;
+        }
       });
     });
   });
   describe('emporium.define', () => {
     it( 'should call hook', () => {
-      let result;
-      try {
-        emporium.define('Test_Model', {
-          id: {type: String, default: faker.random.uuid},
-          key: String
-        }, {
-          test: true
-        });
-      } catch(err) {
-        result = err;
-      };
+      const result = emporium.define('Test_Model', {
+        id: {type: String, default: faker.random.uuid},
+        key: String
+      });
       is(result);
-      is(result.success);
-      is(result.attributes);
-      is(result.options);
+      is(result.schema.attributes.test);
+      isnt(result.schema.writeable);
     });
   });
 });
