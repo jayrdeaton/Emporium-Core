@@ -83,12 +83,12 @@ module.exports = (emporium, schema) => {
     };
     static async update(body, query) {
       if (!schema.writable) throw new Error(`${schema.name} is not writable`);
+      const updateKeys = Object.keys(body);
       body = this.convertObjects(body);
       body = this.removeDiscardedAttributes(body);
-      for (let key of schema.required) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
-      if (schema.beforeStorage) schema.beforeStorage(body);
+      for (let key of schema.required) if (updateKeys.includes(key)) if (typeof body[key] === 'undefined' || body[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`);
+      for (const key of Object.keys(body)) if (!updateKeys.includes(key)) delete body[key];
       let result = await schema.adapter.update(schema, body, query);
-      if (schema.afterStorage) schema.afterStorage(result);
       return result ? this.convertObjects(result) : null;
     };
     async save(query) {
