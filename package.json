@@ -1,6 +1,6 @@
 {
   "name": "@emporium/core",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A flexible data store utility",
   "main": "index.js",
   "scripts": {
