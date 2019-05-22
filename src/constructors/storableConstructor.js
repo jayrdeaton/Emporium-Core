@@ -31,16 +31,8 @@ module.exports = (emporium, schema) => {
         if (typeof this[attribute] !== 'undefined' && this[attribute] !== null) this[attribute] = getValueWithType(this[attribute], type);
       };
       if (data && !schema.strict) for (const key of Object.keys(data)) if (!Object.keys(schema.attributes).includes(key) && !Object.keys(this).includes(key)) this[key] = data[key];
-      for (let hide of schema.hidden) {
-        Object.defineProperty(this, hide, {
-          enumerable: false
-        });
-      };
-      for (let lock of schema.locked) {
-        Object.defineProperty(this, lock, {
-          writable: false
-        });
-      };
+      for (let hide of schema.hidden) Object.defineProperty(this, hide, { enumerable: false });
+      for (let lock of schema.locked) Object.defineProperty(this, lock, { writable: false });
     };
     static get schema() {
       return schema;
