@@ -38,12 +38,13 @@ module.exports = (emporium, schema) => {
       return schema
     }
     static convertObjects(data) {
+      const Class = this
       let result
       if (Array.isArray(data)) {
         result = []
-        for (let entry of data) result.push(new this(entry))
+        for (let entry of data) result.push(new Class(entry))
       } else {
-        result = new this(data)
+        result = new Class(data)
       }
       return result
     }
