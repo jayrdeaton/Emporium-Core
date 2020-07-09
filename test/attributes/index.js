@@ -1,4 +1,4 @@
 describe('adapters', () => {
-  require('./options');
-  require('./types');
-});
+  require('./options')
+  require('./types')
+})

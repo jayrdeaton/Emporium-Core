@@ -1,5 +1,5 @@
-require('./_setup');
-require('./attributes');
-require('./options');
-require('./storables');
-require('./z_teardown');
+require('./_setup')
+require('./attributes')
+require('./options')
+require('./storables')
+require('./z_teardown')

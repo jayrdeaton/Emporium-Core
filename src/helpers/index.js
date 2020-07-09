@@ -2,7 +2,7 @@ const arrayQuery = require('./arrayQuery'),
   getValueWithType = require('./getValueWithType'),
   isConstructor = require('./isConstructor'),
   removeArrayEntry = require('./removeArrayEntry'),
-  updateArrayEntry = require('./updateArrayEntry');
+  updateArrayEntry = require('./updateArrayEntry')
 
 module.exports = {
   arrayQuery,
@@ -10,4 +10,4 @@ module.exports = {
   isConstructor,
   removeArrayEntry,
   updateArrayEntry
-};
+}

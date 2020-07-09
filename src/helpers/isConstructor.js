@@ -1,8 +1,8 @@
-module.exports = (f) => {
+module.exports = (F) => {
   try {
-    new f();
-    return true;
+    new F()
+    return true
   } catch (err) {
-    return false;
-  };
-};
+    return false
+  }
+}
