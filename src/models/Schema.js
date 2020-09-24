@@ -15,15 +15,15 @@ module.exports = class Schema {
       if (typeof options.extends === 'string') {
         const Extension = emporium.models[options.extends]
         if (!Extension) throw new Error(`${schema.name} can't find extension ${options.extends}`)
-        extended = Extension.schema
+        extended = Object.assign({}, Extension.schema)
       } else if (isConstructor(options.extends)) {
-        extended = options.extends.schema
+        extended = Object.assign({}, options.extends.schema)
       } else {
         throw new Error(`${schema.name} has an unknown extension type`)
       }
       this.extends = extended
 
-      attributes = Object.assign(extended.attributes, attributes)
+      attributes = Object.assign({}, extended.attributes, attributes)
 
       if (!adapter) adapter = extended.adapter
       if (!afterStorage) afterStorage = extended.afterStorage
