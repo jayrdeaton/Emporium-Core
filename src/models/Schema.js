@@ -1,17 +1,50 @@
-const pluralize = require('pluralize')
+const pluralize = require('pluralize'),
+  { isConstructor } = require('../helpers')
 
 module.exports = class Schema {
-  constructor(name, attributes, options) {
+  constructor(emporium, name, attributes, options) {
+    if (!attributes) attributes = {}
     // name
     this.name = name
     // options
     if (!options) options = {}
-    const { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, methods, readable, required, resourceName, staticMethods, strict, writable } = options
+    let { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, methods, readable, required, resourceName, staticMethods, strict, writable } = options
+
+    if (options.extends) {
+      let extended
+      if (typeof options.extends === 'string') {
+        const Extension = emporium.models[options.extends]
+        if (!Extension) throw new Error(`${schema.name} can't find extension ${options.extends}`)
+        extended = Extension.schema
+      } else if (isConstructor(options.extends)) {
+        extended = options.extends.schema
+      } else {
+        throw new Error(`${schema.name} has an unknown extension type`)
+      }
+      this.extends = extended
+
+      attributes = Object.assign(extended.attributes, attributes)
+
+      if (!adapter) adapter = extended.adapter
+      if (!afterStorage) afterStorage = extended.afterStorage
+      if (!beforeStorage) beforeStorage = extended.beforeStorage
+      if (discarded) discarded = discarded.push(...extended.discarded)
+      if (hidden) hidden = hidden.push(...extended.hidden)
+      if (!identifier) identifier = extended.identifier
+      if (locked) locked = locked.push(...extended.locked)
+      if (readable === undefined) readable = extended.readable
+      if (required) required = required.push(...extended.required)
+      // if (!resourceName) resourceName = extended.resourceName
+      if (strict === undefined) strict = extended.strict
+      if (writable === undefined) writable = extended.writable
+      methods = Object.assign(methods || {}, extended.methods)
+      staticMethods = Object.assign(staticMethods || {}, extended.staticMethods)
+    }
+
     this.adapter = adapter
     this.afterStorage = afterStorage
     this.beforeStorage = beforeStorage
     this.discarded = discarded || []
-    this.extends = options.extends
     this.hidden = hidden || []
     this.identifier = identifier
     this.locked = locked || []
@@ -24,7 +57,6 @@ module.exports = class Schema {
     this.staticMethods = staticMethods || {}
 
     // attributes
-    if (!attributes) attributes = {}
     this.attributes = attributes
     for (const key of Object.keys(attributes)) {
       const value = attributes[key]
