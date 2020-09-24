@@ -6,7 +6,7 @@ module.exports = class Schema {
     this.name = name
     // options
     if (!options) options = {}
-    const { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, readable, required, resourceName, strict, writable } = options
+    const { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, methods, readable, required, resourceName, staticMethods, strict, writable } = options
     this.adapter = adapter
     this.afterStorage = afterStorage
     this.beforeStorage = beforeStorage
@@ -20,6 +20,9 @@ module.exports = class Schema {
     this.resourceName = resourceName ? resourceName : pluralize(name).toLowerCase()
     this.strict = strict === false ? false : true
     this.writable = writable === false ? false : true
+    this.methods = methods || {}
+    this.staticMethods = staticMethods || {}
+
     // attributes
     if (!attributes) attributes = {}
     this.attributes = attributes

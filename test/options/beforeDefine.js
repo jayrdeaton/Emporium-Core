@@ -18,7 +18,7 @@ describe('beforeDefine', () => {
     })
   })
   describe('emporium.define', () => {
-    it( 'should call hook', () => {
+    it('should call hook', () => {
       const result = emporium.define('Test_Model', {
         id: {type: String, default: faker.random.uuid},
         key: String

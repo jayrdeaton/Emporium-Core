@@ -19,7 +19,7 @@ describe('extends', () => {
     })
   })
   describe('new Storable', () => {
-    it( 'should extend Storable', async () => {
+    it('should extend Storable', async () => {
       const result = new Storable()
       is(result)
       is(result.id)
@@ -40,7 +40,7 @@ describe('extends', () => {
     })
   })
   describe('new Storable', () => {
-    it( 'should extend Storable', async () => {
+    it('should extend Storable', async () => {
       const result = new Storable()
       is(result)
       is(result.id)
@@ -59,7 +59,7 @@ describe('extends', () => {
     })
   })
   describe('new Storable', () => {
-    it( 'should extend Storable', async () => {
+    it('should extend Storable', async () => {
       const result = new Storable()
       is(result)
       is(result.id)

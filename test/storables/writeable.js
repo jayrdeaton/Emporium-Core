@@ -19,7 +19,7 @@ describe('writable', () => {
     })
   })
   describe('Storable.create()', () => {
-    it( 'should fail to create', async () => {
+    it('should fail to create', async () => {
       let result
       try {
         await Storable.create({ key: 'test' })
@@ -30,7 +30,7 @@ describe('writable', () => {
     })
   })
   describe('Storable.update()', () => {
-    it( 'should fail to update', async () => {
+    it('should fail to update', async () => {
       let result
       try {
         await Storable.update({ key: 'test' })

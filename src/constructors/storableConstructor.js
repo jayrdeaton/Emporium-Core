@@ -33,6 +33,7 @@ module.exports = (emporium, schema) => {
       if (data && !schema.strict) for (const key of Object.keys(data)) if (!Object.keys(schema.attributes).includes(key) && !Object.keys(this).includes(key)) this[key] = data[key]
       for (let hide of schema.hidden) Object.defineProperty(this, hide, { enumerable: false })
       for (let lock of schema.locked) Object.defineProperty(this, lock, { writable: false })
+      Object.keys(schema.methods).map(k => this[k] = schema.methods[k])
     }
     static get schema() {
       return schema
@@ -107,5 +108,8 @@ module.exports = (emporium, schema) => {
       return schema.adapter.delete(schema, this)
     }
   }
+  
+  Object.keys(schema.staticMethods).map(k => Storable[k] = schema.staticMethods[k])
+
   return Storable
 }

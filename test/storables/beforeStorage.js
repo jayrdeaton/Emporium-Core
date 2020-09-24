@@ -19,7 +19,7 @@ describe('beforeStorage', () => {
     })
   })
   describe('emporium.create', () => {
-    it( 'should call hook', async () => {
+    it('should call hook', async () => {
       object = await Storable.create()
       is(object)
       is(object.key)
@@ -27,7 +27,7 @@ describe('beforeStorage', () => {
     })
   })
   describe('emporium.update', () => {
-    it( 'should call hook', async () => {
+    it('should call hook', async () => {
       const original = object.key
       object = await Storable.update(object)
       is(object)

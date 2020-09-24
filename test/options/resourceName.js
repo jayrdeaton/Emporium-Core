@@ -11,7 +11,7 @@ describe('resourceName', () => {
     })
   })
   describe('resourceName: tests', () => {
-    it( 'should create a Schema with a custom resourceName', () => {
+    it('should create a Schema with a custom resourceName', () => {
       const Storable = emporium.define('Test_Storable', null, { resourceName: 'tests' })
       Storable.schema.resourceName.is('tests')
     })

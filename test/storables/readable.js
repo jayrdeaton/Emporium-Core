@@ -19,7 +19,7 @@ describe('readable', () => {
     })
   })
   describe('Storable.get()', () => {
-    it( 'should fail to get', async () => {
+    it('should fail to get', async () => {
       let result
       try {
         await Storable.get()
@@ -30,7 +30,7 @@ describe('readable', () => {
     })
   })
   describe('Storable.find()', () => {
-    it( 'should fail to find', async () => {
+    it('should fail to find', async () => {
       let result
       try {
         await Storable.get('test')
