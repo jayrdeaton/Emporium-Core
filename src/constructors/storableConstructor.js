@@ -15,10 +15,10 @@ module.exports = (emporium, schema) => {
         if (data && typeof data[attribute] !== 'undefined') this[attribute] = data[attribute]
         if (typeof this[attribute] !== 'undefined' && this[attribute] !== null) this[attribute] = getValueWithType(this[attribute], type)
       }
-      if (data && !schema.strict) for (const key of Object.keys(data)) if (!Object.keys(schema.attributes).includes(key) && !Object.keys(this).includes(key)) this[key] = data[key]
-      for (let hide of schema.hidden) Object.defineProperty(this, hide, { enumerable: false })
-      for (let lock of schema.locked) Object.defineProperty(this, lock, { writable: false })
-      Object.keys(schema.methods).map(k => this[k] = schema.methods[k])
+      if (data && !schema.strict) Object.keys(data).map(k => !Object.keys(schema.attributes).includes(k) && !Object.keys(this).includes(k) ? this[k] === data[k] : null)
+      schema.hidden.map(k => Object.defineProperty(this, k, { enumerable: false }))
+      schema.locked.map(k => Object.defineProperty(this, k, { writable: false }))
+      Object.keys(schema.methods).map(k => Object.defineProperty(this, k, { value: schema.methods[k], enumerable: false }))
     }
     static get schema() {
       return schema
@@ -27,7 +27,7 @@ module.exports = (emporium, schema) => {
       let result
       if (Array.isArray(data)) {
         result = []
-        for (let entry of data) result.push(new this(entry))
+        data.map(d => result.push(new this(d)))
       } else {
         result = new this(data)
       }
@@ -35,9 +35,9 @@ module.exports = (emporium, schema) => {
     }
     static removeDiscardedAttributes(data) {
       if (Array.isArray(data)) {
-        for (let entry of data) for (let lock of schema.discarded) delete entry[lock]
+        data.map(d => schema.discarded.map(e => delete d[e]))
       } else {
-        for (let lock of schema.discarded) delete data[lock]
+        schema.discarded.map(e => delete data[e])
       }
       return data
     }
