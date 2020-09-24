@@ -1,7 +1,7 @@
 const { getValueWithType, isConstructor } = require('../helpers')
 
 module.exports = (emporium, schema) => {
-  const Storable = class Storable {
+  class Storable {
     constructor(data) {
       if (schema.extends) {
         let props
@@ -38,13 +38,12 @@ module.exports = (emporium, schema) => {
       return schema
     }
     static convertObjects(data) {
-      const Class = this
       let result
       if (Array.isArray(data)) {
         result = []
-        for (let entry of data) result.push(new Class(entry))
+        for (let entry of data) result.push(new this(entry))
       } else {
-        result = new Class(data)
+        result = new this(data)
       }
       return result
     }
