@@ -15,7 +15,7 @@ module.exports = (emporium, schema) => {
         if (data && typeof data[attribute] !== 'undefined') this[attribute] = data[attribute]
         if (typeof this[attribute] !== 'undefined' && this[attribute] !== null) this[attribute] = getValueWithType(this[attribute], type)
       }
-      if (data && !schema.strict) Object.keys(data).map(k => !Object.keys(schema.attributes).includes(k) && !Object.keys(this).includes(k) ? this[k] === data[k] : null)
+      if (data && !schema.strict) Object.keys(data).map(k => !Object.keys(schema.attributes).includes(k) && !Object.keys(this).includes(k) ? this[k] = data[k] : null)
       schema.hidden.map(k => Object.defineProperty(this, k, { enumerable: false }))
       schema.locked.map(k => Object.defineProperty(this, k, { writable: false }))
       Object.keys(schema.methods).map(k => Object.defineProperty(this, k, { value: schema.methods[k], enumerable: false }))
