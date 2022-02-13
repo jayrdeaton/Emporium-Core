@@ -1,5 +1,6 @@
 require('./_setup')
 require('./attributes')
+require('./collections')
 require('./options')
 require('./storables')
 require('./z_teardown')

@@ -8,7 +8,7 @@ module.exports = class Schema {
     this.name = name
     // options
     if (!options) options = {}
-    let { adapter, afterStorage, beforeStorage, discarded, hidden, identifier, locked, methods, readable, required, resourceName, staticMethods, strict, writable } = options
+    let { adapter, afterStorage, beforeStorage, collectionMethods, collectionStaticMethods, discarded, hidden, identifier, locked, methods, readable, required, resourceName, staticMethods, strict, writable } = options
 
     if (options.extends) {
       let extended
@@ -55,6 +55,8 @@ module.exports = class Schema {
     this.writable = writable === false ? false : true
     this.methods = methods || {}
     this.staticMethods = staticMethods || {}
+    this.collectionMethods = collectionMethods || {}
+    this.collectionStaticMethods = collectionStaticMethods || {}
 
     // attributes
     this.attributes = attributes

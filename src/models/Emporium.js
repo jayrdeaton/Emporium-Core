@@ -1,4 +1,5 @@
-const { storableConstructor } = require('../constructors'),
+const pluralize = require('pluralize'),
+  { collectionConstructor, storableConstructor } = require('../constructors'),
   Adapter = require('./Adapter'),
   Schema = require('./Schema')
 
@@ -7,6 +8,7 @@ module.exports = class Emporium {
     // adaper
     this.adapter = adapter || new Adapter()
     // models object
+    this.collections = {}
     this.models = {}
     if (!options) options = {}
     const { afterDefine, afterStorage, identifier, beforeDefine, beforeStorage, strict } = options
@@ -29,7 +31,9 @@ module.exports = class Emporium {
     if (this.beforeStorage && options.beforeStorage === undefined) options.beforeStorage = this.beforeStorage
     if (this.strict !== undefined && options.strict === undefined) options.strict = this.strict
     const schema = new Schema(this, name, attributes, options)
-    const Storable = storableConstructor(this, schema)
+    const Collection = collectionConstructor(this, schema)
+    this.collections[pluralize(schema.name)] = Collection
+    const Storable = storableConstructor(this, schema, Collection)
     if (this.afterDefine) this.afterDefine(Storable)
     this.models[schema.name] = Storable
     return Storable

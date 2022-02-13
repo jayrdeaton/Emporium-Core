@@ -1,5 +1,4 @@
-const storableConstructor = require('./storableConstructor')
-
 module.exports = {
-  storableConstructor
+  collectionConstructor: require('./collectionConstructor'),
+  storableConstructor: require('./storableConstructor')
 }
