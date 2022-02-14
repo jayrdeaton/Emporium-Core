@@ -20,7 +20,6 @@ describe('methods', () => {
           }
         }
       })
-      console.log(emporium.collections)
       Collection = emporium.collections.ATests
       is(Collection)
     })
@@ -48,6 +47,17 @@ describe('methods', () => {
       })
       const collectionB = new emporium.collections.BTests()
       is(collectionB.first === undefined)
+      is(collection.first)
+    })
+  })
+  describe('collection.extend', () => {
+    it('should extend', async () => {
+      emporium.define('CTest', {
+        id: {type: String, default: faker.random.uuid},
+        key: String
+      }, { extends: Storable })
+      const collectionC = new emporium.collections.CTests()
+      is(typeof collectionC.first === 'function')
       is(collection.first)
     })
   })

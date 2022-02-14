@@ -39,6 +39,8 @@ module.exports = class Schema {
       if (writable === undefined) writable = extended.writable
       methods = Object.assign(methods || {}, extended.methods)
       staticMethods = Object.assign(staticMethods || {}, extended.staticMethods)
+      collectionMethods = Object.assign(collectionMethods || {}, extended.collectionMethods)
+      collectionStaticMethods = Object.assign(collectionStaticMethods || {}, extended.collectionStaticMethods)
     }
 
     this.adapter = adapter
