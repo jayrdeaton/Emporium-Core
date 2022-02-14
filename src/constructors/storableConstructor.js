@@ -21,12 +21,10 @@ module.exports = (emporium, schema, Collection) => {
       // instance methods
       Object.keys(schema.methods).map(k => Object.defineProperty(this, k, { value: schema.methods[k], enumerable: false }))
     }
-    static get schema() {
-      return schema
-    }
-    get schema() {
-      return schema
-    }
+    static get Collection() { return Collection }
+    get Collection() { return Collection }
+    static get schema() { return schema }
+    get schema() { return schema }
     static convertObjects(data) {
       let result
       if (Array.isArray(data)) {
