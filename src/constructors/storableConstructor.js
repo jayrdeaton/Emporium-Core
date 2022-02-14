@@ -24,6 +24,9 @@ module.exports = (emporium, schema, Collection) => {
     static get schema() {
       return schema
     }
+    get schema() {
+      return schema
+    }
     static convertObjects(data) {
       let result
       if (Array.isArray(data)) {

@@ -50,7 +50,7 @@ describe('methods', () => {
       is(collection.first)
     })
   })
-  describe('collection.extend', () => {
+  describe('collection extends', () => {
     it('should extend', async () => {
       emporium.define('CTest', {
         id: {type: String, default: faker.random.uuid},
@@ -59,6 +59,11 @@ describe('methods', () => {
       const collectionC = new emporium.collections.CTests()
       is(typeof collectionC.first === 'function')
       is(collection.first)
+    })
+  })
+  describe('collection.schema', () => {
+    it('should return schema', async () => {
+      is(collection.schema)
     })
   })
 })

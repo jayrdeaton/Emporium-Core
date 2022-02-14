@@ -11,6 +11,9 @@ module.exports = (emporium, schema) => {
     static get schema() {
       return schema
     }
+    get schema() {
+      return schema
+    }
   }
   // static methods
   Object.keys(schema.collectionStaticMethods).map(k => Collection[k] = schema.collectionStaticMethods[k])
