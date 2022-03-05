@@ -8,6 +8,7 @@ module.exports = (emporium, schema) => {
       // instance methods
       Object.keys(schema.collectionMethods).map(k => Object.defineProperty(this, k, { value: schema.collectionMethods[k], enumerable: false }))
     }
+    get Collection() { return Collection }
     static get schema() { return schema }
     get schema() { return schema }
   }

@@ -90,9 +90,10 @@ module.exports = (emporium, schema, Collection) => {
       if (schema.beforeStorage) schema.beforeStorage(this)
       const object = await schema.adapter.update(schema, this, query)
       if (schema.afterStorage) schema.afterStorage(this)
-      return new this.constructor(object)
+      return Object.assign(this, new this.constructor(object))
     }
     delete() {
+      // Object.keys(this).map(i => delete this[i])
       return schema.adapter.delete(schema, this)
     }
   }
