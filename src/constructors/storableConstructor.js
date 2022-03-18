@@ -87,9 +87,10 @@ module.exports = (emporium, schema, Collection) => {
       if (!schema.writable) throw new Error(`${schema.name} is not writable`)
       Storable.removeDiscardedAttributes(this)
       for (let key of schema.required) if (typeof this[key] === 'undefined' || this[key] === null) throw new Error(`${schema.name} missing required value: ${key}!`)
-      if (schema.beforeStorage) schema.beforeStorage(this)
-      const object = await schema.adapter.update(schema, this, query)
-      if (schema.afterStorage) schema.afterStorage(this)
+      const body = Object.assign({}, this)
+      if (schema.beforeStorage) schema.beforeStorage(body)
+      const object = await schema.adapter.update(schema, body, query)
+      if (schema.afterStorage) schema.afterStorage(body)
       return Object.assign(this, new this.constructor(object))
     }
     delete() {
