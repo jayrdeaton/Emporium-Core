@@ -2,7 +2,7 @@ module.exports = (value, type) => {
   let result
   if (type === Array || type.prototype instanceof Array) {
     try {
-      result = new type(...value)
+      result = new type().concat(...value)
     } catch(err) {
       throw new Error(`Unable to construct ${typeof value} '${JSON.stringify(value)}' as an Array`)
     }
