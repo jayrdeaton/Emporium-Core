@@ -21,12 +21,15 @@ module.exports = (emporium, schema) => {
       // instance methods
       Object.keys(schema.methods).map(k => Object.defineProperty(this, k, { value: schema.methods[k], enumerable: false }))
     }
+    // controller
+    static abort() { return schema.abort() }
+    // collection
     static get Collection() { return schema.Collection }
     get Collection() { return schema.Collection }
-    static get controller() { return schema.controller }
-    get controller() { return schema.controller }
+    // schema
     static get schema() { return schema }
     get schema() { return schema }
+    // helpers
     static convertObjects(data) {
       let result
       if (Array.isArray(data)) {
@@ -46,6 +49,7 @@ module.exports = (emporium, schema) => {
       }
       return data
     }
+    // crud
     static async create(body, query) {
       if (!schema.writable) throw new Error(`${schema.name} is not writable`)
       body = this.convertObjects(body)

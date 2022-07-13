@@ -75,6 +75,11 @@ module.exports = class Schema {
     }
 
     this.Collection = collectionConstructor(this)
+    emporium.collections[pluralize(this.name)] = this.Collection
+    this.controller = new AbortController()
+  }
+  abort () {
+    this.controller.abort()
     this.controller = new AbortController()
   }
 }

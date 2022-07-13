@@ -33,8 +33,6 @@ module.exports = class Emporium {
     if (this.beforeStorage && options.beforeStorage === undefined) options.beforeStorage = this.beforeStorage
     if (this.strict !== undefined && options.strict === undefined) options.strict = this.strict
     const schema = new Schema(this, name, attributes, options)
-    this.collections[pluralize(schema.name)] = schema.Collection
-    this.controllers[`${schema.name}Controller`] = schema.controller
     const Storable = storableConstructor(this, schema)
     if (this.afterDefine) this.afterDefine(Storable)
     this.models[schema.name] = Storable

@@ -21,9 +21,7 @@ describe('methods', () => {
         }
       })
       controller = emporium.controllers.ATestController
-      is(controller)
-      is(Storable.controller)
-      is(controller === Storable.controller)
+      is(Storable.abort)
     })
   })
 })
