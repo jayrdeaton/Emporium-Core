@@ -1,5 +1,5 @@
 const { is, isnt } = require('amprisand'),
-  faker = require('faker'),
+  { faker } = require('@faker-js/faker'),
   Emporium = require('../../../'),
   MemoryAdapter = require('@emporium/memory-adapter')
 let Storable, storable, defaultValue, storables = []
@@ -17,7 +17,7 @@ describe('required', () => {
     it('should define a new Storable with a required key', () => {
       defaultValue = faker.random.word()
       Storable = emporium.define('Test_Model', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: {type: String, required: true}
       })
       is(Storable)

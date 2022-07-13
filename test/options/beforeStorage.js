@@ -1,5 +1,5 @@
 const { is, isnt } = require('amprisand'),
-  faker = require('faker'),
+  { faker } = require('@faker-js/faker'),
   Emporium = require('../../'),
   MemoryAdapter = require('@emporium/memory-adapter')
 let emporium, Storable
@@ -13,7 +13,7 @@ describe('beforeStorage', () => {
         beforeStorage: (data) => { data.key = faker.random.word() }
       })
       Storable = emporium.define('Test_Model', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: String
       })
     })

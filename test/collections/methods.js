@@ -1,5 +1,5 @@
 const { is, isnt } = require('amprisand'),
-  faker = require('faker'),
+  { faker } = require('@faker-js/faker'),
   Emporium = require('../../'),
   MemoryAdapter = require('@emporium/memory-adapter')
 let emporium, Storable, Collection, storableA, storableB, collection
@@ -11,7 +11,7 @@ describe('methods', () => {
       adapter.is(Object)
       emporium = new Emporium(adapter)
       Storable = emporium.define('ATest', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: String
       }, {
         collectionMethods: {
@@ -42,7 +42,7 @@ describe('methods', () => {
   describe('collection != collection', () => {
     it('should be unique', async () => {
       emporium.define('BTest', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: String
       })
       const collectionB = new emporium.collections.BTests()
@@ -53,7 +53,7 @@ describe('methods', () => {
   describe('collection extends', () => {
     it('should extend', async () => {
       emporium.define('CTest', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: String
       }, { extends: Storable })
       const collectionC = new emporium.collections.CTests()

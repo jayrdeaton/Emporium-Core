@@ -1,5 +1,5 @@
 const { is, isnt } = require('amprisand'),
-  faker = require('faker'),
+  { faker } = require('@faker-js/faker'),
   Emporium = require('../../'),
   emporium = new Emporium()
 let Storable
@@ -8,7 +8,7 @@ describe('extends', () => {
   describe('extends: Storable', () => {
     it('should create a Storable that extends another', () => {
       const Base = emporium.define('Base', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: {type: String, default: faker.random.word}
       }, {
         methods: {

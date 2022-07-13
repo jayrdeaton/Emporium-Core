@@ -1,5 +1,5 @@
 const { is, isnt } = require('amprisand'),
-  faker = require('faker'),
+  { faker } = require('@faker-js/faker'),
   Emporium = require('../../'),
   MemoryAdapter = require('@emporium/memory-adapter')
 let Storable
@@ -11,7 +11,7 @@ describe('methods', () => {
       adapter.is(Object)
       const emporium = new Emporium(adapter)
       Storable = emporium.define('Test_Model', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: String
       }, {
         methods: {
@@ -25,7 +25,7 @@ describe('methods', () => {
     it('should have instance method', async () => {
       const storable = new Storable()
       is(storable.methodA)
-      const s = faker.random.uuid()
+      const s = faker.datatype.uuid()
       const result = storable.methodA(s)
       is(result)
       result.is(s)

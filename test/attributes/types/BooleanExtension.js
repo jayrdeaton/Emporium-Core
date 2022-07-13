@@ -1,5 +1,5 @@
 const { is, isnt } = require('amprisand'),
-  faker = require('faker'),
+  { faker } = require('@faker-js/faker'),
   Emporium = require('../../../'),
   MemoryAdapter = require('@emporium/memory-adapter')
 let adapter, emporiumStorable, storables = []
@@ -21,7 +21,7 @@ describe('BooleanExtension', () => {
         }
       }
       Storable = emporium.define('Test_Model', {
-        id: {type: String, default: faker.random.uuid},
+        id: {type: String, default: faker.datatype.uuid},
         key: BooleanExtension
       })
       is(Storable)
@@ -41,7 +41,7 @@ describe('BooleanExtension', () => {
   })
   describe('Storable.create({ key: BooleanExtension })', () => {
     it('should successfully create a storable with a Boolean', async () => {
-      let storable, error, key = faker.random.boolean()
+      let storable, error, key = faker.datatype.boolean()
       try {
         storable = await Storable.create({ key })
       } catch(err) {
@@ -65,7 +65,7 @@ describe('BooleanExtension', () => {
   })
   describe('Storable.create({ key: Number })', () => {
     it('should successfully create a storable with a Number', async () => {
-      let storable, error, key = faker.random.number()
+      let storable, error, key = faker.datatype.number()
       try {
         storable = await Storable.create({ key })
       } catch(err) {
