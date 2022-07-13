@@ -1,7 +1,7 @@
 const { getValueWithType, isConstructor } = require('../helpers')
 
 // wrapper for storables
-module.exports = (emporium, schema) => {
+module.exports = (schema) => {
   class Collection extends Array {
     constructor(...data) {
       super(...data)

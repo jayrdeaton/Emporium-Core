@@ -1,6 +1,6 @@
 const { getValueWithType, isConstructor } = require('../helpers')
 
-module.exports = (emporium, schema, Collection) => {
+module.exports = (emporium, schema) => {
   class Storable {
     constructor(data) {
       for (let attribute of Object.keys(schema.attributes)) {
@@ -21,14 +21,16 @@ module.exports = (emporium, schema, Collection) => {
       // instance methods
       Object.keys(schema.methods).map(k => Object.defineProperty(this, k, { value: schema.methods[k], enumerable: false }))
     }
-    static get Collection() { return Collection }
-    get Collection() { return Collection }
+    static get Collection() { return schema.Collection }
+    get Collection() { return schema.Collection }
+    static get controller() { return schema.controller }
+    get controller() { return schema.controller }
     static get schema() { return schema }
     get schema() { return schema }
     static convertObjects(data) {
       let result
       if (Array.isArray(data)) {
-        result = new Collection()
+        result = new schema.Collection()
         data.map(d => result.push(new this(d)))
         // result = new Collection(result)
       } else {

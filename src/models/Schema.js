@@ -1,4 +1,5 @@
 const pluralize = require('pluralize'),
+  { collectionConstructor } = require('../constructors'),
   { isConstructor } = require('../helpers')
 
 module.exports = class Schema {
@@ -72,5 +73,8 @@ module.exports = class Schema {
         if (value.required) this.required.push(key)
       }
     }
+
+    this.Collection = collectionConstructor(this)
+    this.controller = new AbortController()
   }
 }

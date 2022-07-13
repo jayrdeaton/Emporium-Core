@@ -22,6 +22,8 @@ describe('methods', () => {
       })
       Collection = emporium.collections.ATests
       is(Collection)
+      is(Storable.Collection)
+      is(Collection === Storable.Collection)
     })
   })
   describe('Collection', () => {
